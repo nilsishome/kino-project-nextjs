@@ -1,8 +1,9 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { Box, Button} from "@mui/material";
-import { useRef } from "react";
+import { Box, Button } from "@mui/material";
+// import { useRef } from "react";
+import { Navigation } from "swiper/modules";
 
 const images = [
   "/psycho.jpg",
@@ -11,8 +12,6 @@ const images = [
 ];
 
 const CarouselComponent: React.FC = () => {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
   return (
     <Box
       sx={{
@@ -24,29 +23,25 @@ const CarouselComponent: React.FC = () => {
         position: "relative",
         overflow: "hidden",
       }}
-      >
-        {/* Left button */}
-        <Button 
-        className="swiper-button-prev"
-        ref={prevRef}
-        sx={{
-          position: "absolute",
-          left: "20px", 
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 10,
-          backgroundColor: "rgba(255,255,255,0.6)"
+    >
+      <Swiper
+        style={{ width: "100vw", maxWidth: "1280px" }}
+        spaceBetween={0}
+        slidesPerView={1}
+        loop
+        navigation={{
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
         }}
-        >
-          ⬅
-        </Button>
-      <Swiper style= {{ width: "100vw", maxWidth: "1280px" }} spaceBetween={0} slidesPerView={1} loop>
+        modules={[Navigation]}
+      >
         {images.map((image, i) => (
           <SwiperSlide key={i}>
             <img
               src={image}
               alt="Slide"
               style={{
+                position: "relative",
                 width: "100%",
                 maxWidth: "1280px",
                 height: "auto",
@@ -56,25 +51,41 @@ const CarouselComponent: React.FC = () => {
                 borderRadius: "10px",
               }}
             />
+
+            {/* Left button */}
+            <Button
+              className="swiper-button-prev"
+              sx={{
+                position: "absolute",
+                left: "20px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10,
+                backgroundColor: "rgba(255,255,255,0.9)",
+                border: "1px solid white",
+              }}
+            >
+              ⬅
+            </Button>
+
+            {/* Right button */}
+            <Button
+              className="swiper-button-next"
+              sx={{
+                position: "absolute",
+                right: "20px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10,
+                backgroundColor: "rgba(255,255,255,0.9)",
+                border: "1px solid white",
+              }}
+            >
+              ➡
+            </Button>
           </SwiperSlide>
         ))}
       </Swiper>
-
-       {/* Right button */}
-       <Button
-        className="swiper-button-next"
-        ref={nextRef}
-        sx={{
-          position: "absolute",
-          right: "20px",
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 10,
-          backgroundColor: "rgba(255,255,255,0.6)"
-        }}
-      >
-        ➡
-      </Button>
     </Box>
   );
 };
