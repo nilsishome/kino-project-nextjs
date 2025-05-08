@@ -61,13 +61,18 @@ const CarouselComponent: React.FC = () => {
                 top: "50%",
                 transform: "translateY(-50%)",
                 zIndex: 10,
-                backgroundColor: "rgba(255,255,255,0.9)",
-                border: "1px solid white",
+                backgroundColor: "#f1ddc5",
+                color: "#c43c3a",
+                border: "2px solid black",
+                // "&:hover": {
+                //   backgroundColor: "#c43c3a",
+                // },
+                // color: "#f1ddc5"
               }}
             >
               ⬅
             </Button>
-
+            
             {/* Right button */}
             <Button
               className="swiper-button-next"
@@ -77,8 +82,9 @@ const CarouselComponent: React.FC = () => {
                 top: "50%",
                 transform: "translateY(-50%)",
                 zIndex: 10,
-                backgroundColor: "rgba(255,255,255,0.9)",
-                border: "1px solid white",
+                backgroundColor: "#f1ddc5",
+                color: "#c43c3a",
+                border: "2px solid black",
               }}
             >
               ➡
