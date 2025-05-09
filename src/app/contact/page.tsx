@@ -16,22 +16,9 @@ export default function contact() {
   };
 
   return (
-    <ThemeProvider theme={theme}> 
+    <ThemeProvider theme={theme}>
       <Box
         sx={{
-          //  padding: 4,
-          //  borderRadius: 3,
-          //  maxWidth: 700,
-          //  width: "100%",
-          //  margin: "auto",
-          //  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-          //   display: "flex",
-          //   alignItems: "center",
-          //   justifyContent: "center",
-          //   // textAlign: "center",
-          //   flexDirection: "column",
-          //   height: "100vh",
-          //   // padding: 5,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -41,8 +28,17 @@ export default function contact() {
           borderRadius: 2,
         }}
       >
-        <Typography variant="h1" gutterBottom sx={{ textAlign: "center", marginBottom: 6, color: "text.primary",  fontSize: "3rem",
-      fontWeight: 700,}}>
+        <Typography
+          variant="h1"
+          gutterBottom
+          sx={{
+            textAlign: "center",
+            marginBottom: 6,
+            color: "text.primary",
+            fontSize: "3rem",
+            fontWeight: 700,
+          }}
+        >
           Kontakta oss
         </Typography>
         <Box
@@ -53,8 +49,6 @@ export default function contact() {
             width: "80%",
             margin: "auto",
             boxShadow: " 0 6px 10px #f2753b;",
-            // backgroundColor: "rgba(39, 39, 43, 0.9)", 
-            // textAlign: "center",
           }}
         >
           <form
@@ -64,7 +58,6 @@ export default function contact() {
             style={{ padding: "24px" }}
           >
             <Stack
-              // spacing={4}
               sx={{
                 backgroundColor: "none",
                 padding: 3,
@@ -74,6 +67,7 @@ export default function contact() {
                 color: "text.primary",
                 fontSize: "1rem",
                 fontWeight: 800,
+              
               }}
             >
               <FormField label="Namn" name="name" />
