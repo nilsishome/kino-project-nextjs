@@ -30,7 +30,8 @@ const FormField: React.FC<FormFieldProps> = ({
       variant="outlined"
       multiline={multiline}
       rows={rows}
-      sx={{ backgroundColor: "white" }} // Set color on fields to white
+      sx={{ backgroundColor: "white", "& .MuiInputBase-input": {
+      height: "40px"}, }} // Set color on fields to white
       slotProps={{ htmlInput: { style: { color: "black" } } }} // Instead of inputProps
     />
   </FormControl>
