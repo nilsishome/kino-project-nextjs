@@ -19,7 +19,7 @@ export default function RootLayout(props: { children: any; }) {
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
             <Header></Header>
-            {props.children}
+              {props.children}
             <Footer></Footer>
           </ThemeProvider>
         </AppRouterCacheProvider>
@@ -27,4 +27,5 @@ export default function RootLayout(props: { children: any; }) {
     </html>
   );
 }
+
 

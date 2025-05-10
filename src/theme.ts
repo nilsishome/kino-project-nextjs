@@ -1,6 +1,21 @@
 'use client';
 
 import { createTheme } from '@mui/material/styles';
+import { Yesteryear, Poppins } from "next/font/google";
+
+const yesteryear = Yesteryear({ subsets: ["latin"], weight: "400" });
+const poppinsRegular = Poppins({ subsets: ["latin"], weight: "400" });
+const poppinsSemiBold = Poppins({ subsets: ["latin"], weight: "600" });
+
+declare module "@mui/material/styles" {
+  interface TypographyOptions {
+    fonts?: {
+      yesteryear: string;
+      poppinsRegular: string;
+      poppinsSemiBold: string;
+    };
+  }
+}
 
 const theme = createTheme({
   palette: {
@@ -14,6 +29,12 @@ const theme = createTheme({
   },
 
   typography: {
+    fontFamily: poppinsRegular.style.fontFamily, // Default for the app
+    fonts: {
+      yesteryear: yesteryear.style.fontFamily,
+      poppinsRegular: poppinsRegular.style.fontFamily,
+      poppinsSemiBold: poppinsSemiBold.style.fontFamily,
+    },
     h1: {
       fontSize: "3rem",
       fontWeight: 700,
@@ -33,7 +54,6 @@ const theme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
-        
         root: {
           "&:focus": {
             outline: "none",
@@ -48,6 +68,14 @@ const theme = createTheme({
         },
       },
     },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          margin: 0,
+          padding: 0,
+        }
+      }
+    }
   },
 });
 
