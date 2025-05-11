@@ -1,22 +1,10 @@
 import { NextResponse } from "next/server";
-import mongoose from "mongoose";
-import { Movies } from "@/models";
+import { retrieveMovies } from "@/database/collections/movies";
 
 export async function GET() {
-  const uri =
-    "mongodb+srv://nilsnyberg24:yIGZm59YQC0CaqvH@kinocluster.dtam1oe.mongodb.net/Kino?retryWrites=true&w=majority&appName=KinoCluster";
+  const movies = await retrieveMovies();
 
-  await mongoose.connect(uri);
-
-  try {
-    const movies = await Movies.find();
-    return NextResponse.json(
-      {
-        data: movies,
-      },
-      { status: 200 }
-    );
-  } catch {
+  if (movies.length === 0) {
     return NextResponse.json(
       {
         error: "MongoDB collection not found!",
@@ -24,4 +12,11 @@ export async function GET() {
       { status: 500 }
     );
   }
+
+  return NextResponse.json(
+    {
+      data: movies,
+    },
+    { status: 200 }
+  );
 }
