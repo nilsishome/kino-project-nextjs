@@ -14,6 +14,7 @@ const moviesSchema = new mongoose.Schema({
   decade: String,
   upcoming: Boolean,
   ageLimit: Number,
+  release: Number,
 });
 
 export const Movies = mongoose.model("Movies", moviesSchema);
