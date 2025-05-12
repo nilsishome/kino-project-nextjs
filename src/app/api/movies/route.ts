@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { retrieveMovies } from "@/database/collections/movies";
+import { Movies } from "@/database/models";
 
 export async function GET() {
-  const movies = await retrieveMovies();
+  await retrieveMovies();
+  const movies = await Movies.find();
 
   if (movies.length === 0) {
     return NextResponse.json(
