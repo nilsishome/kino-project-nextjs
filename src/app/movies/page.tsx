@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Movie } from "@/types";
 
 export default async function Page() {
@@ -15,10 +16,12 @@ export default async function Page() {
       <h1>Movies</h1>
       <ul>
         {movies.map((movie) => (
-          <li key={movie._id}>
-            <img src={movie.coverImage} />
-            <p>{movie.title}</p>
-          </li>
+          <Link key={movie.title} href={`/movies/${movie._id}`}>
+            <li>
+              <img src={movie.coverImage} />
+              <p>{movie.title}</p>
+            </li>
+          </Link>
         ))}
       </ul>
     </>
