@@ -9,9 +9,9 @@ export async function GET() {
   if (movies.length === 0) {
     return NextResponse.json(
       {
-        error: "MongoDB collection not found!",
+        error: "Movies not found!",
       },
-      { status: 500 }
+      { status: 404 }
     );
   }
 
