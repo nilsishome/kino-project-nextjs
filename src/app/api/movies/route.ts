@@ -3,22 +3,29 @@ import { retrieveMovies } from "@/database/collections/movies";
 import { Movies } from "@/database/models";
 
 export async function GET() {
-  await retrieveMovies();
-  const movies = await Movies.find();
+  try {
+    await retrieveMovies();
+    const movies = await Movies.find();
 
-  if (movies.length === 0) {
+    if (movies.length === 0) {
+      return NextResponse.json(
+        {
+          error: "Movies not found!",
+        },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json(
       {
-        error: "MongoDB collection not found!",
+        data: movies,
       },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
-
-  return NextResponse.json(
-    {
-      data: movies,
-    },
-    { status: 200 }
-  );
 }
