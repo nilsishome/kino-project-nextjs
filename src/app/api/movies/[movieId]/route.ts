@@ -12,22 +12,29 @@ export async function GET(
 ) {
   const { movieId } = await params;
 
-  await retrieveMovies();
-  const movie = await Movies.findById(movieId);
+  try {
+    await retrieveMovies();
+    const movie = await Movies.findById(movieId);
 
-  if (!movie) {
+    if (!movie) {
+      return NextResponse.json(
+        {
+          error: "Movie not found!",
+        },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json(
       {
-        error: "MongoDB collection not found!",
+        data: movie,
       },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
-
-  return NextResponse.json(
-    {
-      data: movie,
-    },
-    { status: 200 }
-  );
 }
