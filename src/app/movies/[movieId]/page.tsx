@@ -1,3 +1,5 @@
+import { Movie } from "@/types";
+
 export default async function Page({
   params,
 }: {
@@ -11,11 +13,18 @@ export default async function Page({
   }
 
   const payload = await response.json();
-  const movie = payload.data;
+  const movie: Movie = payload.data;
 
   return (
     <>
       <img src={movie.coverImage} />
+      <h2>
+        {movie.title} <small>({movie.release})</small>
+      </h2>
+      <p>
+        <small>{movie.genre}</small>
+      </p>
+      <p>{movie.story}</p>
     </>
   );
 }
