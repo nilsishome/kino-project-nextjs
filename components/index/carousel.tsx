@@ -4,11 +4,11 @@ import "swiper/css";
 import { Box } from "@mui/material";
 import { Navigation } from "swiper/modules";
 import SwiperButtons from "./SwiperButtons";
+import Image from "next/image";
 const images = [
   "/psycho.jpg",
   "/singing in the rain.jpg",
   "/studie i brott.jpg",
- 
 ];
 
 const CarouselComponent: React.FC = () => {
@@ -37,21 +37,31 @@ const CarouselComponent: React.FC = () => {
       >
         {images.map((image, i) => (
           <SwiperSlide key={i}>
-            <img
-              src={image}
-              alt="Slide"
-              style={{
+            <Box
+              sx={{
                 position: "relative",
                 width: "100%",
                 maxWidth: "1280px",
-                height: "auto",
-                aspectRatio: "1280/554",
-                objectFit: "cover",
+                aspectRatio: "1280 / 554",
                 margin: "auto",
+                overflow: "hidden",
                 borderRadius: "10px",
               }}
-            />
-    <SwiperButtons />
+            >
+              <Image
+                src={image}
+                alt="Slide"
+                // width={1280}
+                // height={554}
+                fill
+                style={{
+                  objectFit: "cover",
+                  borderRadius: "10px",
+                  margin: "auto",
+                }}
+              />
+            </Box>
+            <SwiperButtons />
           </SwiperSlide>
         ))}
       </Swiper>
