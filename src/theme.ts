@@ -1,27 +1,16 @@
-'use client';
+"use client";
 
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 import { Yesteryear, Poppins } from "next/font/google";
 
-const yesteryear = Yesteryear({ subsets: ["latin"], weight: "400" });
-const poppinsRegular = Poppins({ subsets: ["latin"], weight: "400" });
-const poppinsSemiBold = Poppins({ subsets: ["latin"], weight: "600" });
-
-declare module "@mui/material/styles" {
-  interface TypographyOptions {
-    fonts?: {
-      yesteryear: string;
-      poppinsRegular: string;
-      poppinsSemiBold: string;
-    };
-  }
-}
+export const yesteryear = Yesteryear({ subsets: ["latin"], weight: "400" });
+export const poppinsRegular = Poppins({ subsets: ["latin"], weight: "400" });
+export const poppinsSemiBold = Poppins({ subsets: ["latin"], weight: "600" });
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#27272b",
-      dark: "#0066CC",
+      main: "#1A323C",
     },
     text: {
       primary: "#f1ddc5",
@@ -29,25 +18,20 @@ const theme = createTheme({
   },
 
   typography: {
-    fontFamily: poppinsRegular.style.fontFamily, // Default for the app
-    fonts: {
-      yesteryear: yesteryear.style.fontFamily,
-      poppinsRegular: poppinsRegular.style.fontFamily,
-      poppinsSemiBold: poppinsSemiBold.style.fontFamily,
-    },
+    fontFamily: poppinsRegular.style.fontFamily,
     h1: {
       fontSize: "3rem",
       fontWeight: 700,
-      color: "text.primary"
+      color: "text.primary",
     },
     h2: {
       fontSize: "1.75rem",
       fontWeight: 600,
-      color: "text.primary"
+      color: "text.primary",
     },
     body1: {
       fontSize: "1rem",
-      color: "text.primary"
+      color: "text.primary",
     },
   },
 
@@ -64,7 +48,7 @@ const theme = createTheme({
           "&:hover": {
             backgroundColor: "#c43c3a",
           },
-          color: "#f1ddc5"
+          color: "#f1ddc5",
         },
       },
     },
@@ -73,9 +57,9 @@ const theme = createTheme({
         root: {
           margin: 0,
           padding: 0,
-        }
-      }
-    }
+        },
+      },
+    },
   },
 });
 
