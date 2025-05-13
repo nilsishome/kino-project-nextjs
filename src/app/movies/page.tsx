@@ -16,12 +16,12 @@ export default async function Page() {
       <h1>Movies</h1>
       <ul>
         {movies.map((movie) => (
-          <Link key={movie.title} href={`/movies/${movie._id}`}>
-            <li>
+          <li key={movie.title}>
+            <Link href={`/movies/${movie._id}`}>
               <img src={movie.coverImage} />
               <p>{movie.title}</p>
-            </li>
-          </Link>
+            </Link>
+          </li>
         ))}
       </ul>
     </>
