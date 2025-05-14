@@ -1,4 +1,6 @@
 import { Movie } from "@/types";
+import { Box, Typography } from '@mui/material';
+import * as styles from './moviesPage.style';
 
 export default async function Page() {
   const response = await fetch("http://localhost:3000/api/movies");
@@ -11,16 +13,20 @@ export default async function Page() {
   const movies: Movie[] = payload.data;
 
   return (
-    <>
-      <h1>Movies</h1>
-      <ul>
-        {movies.map((movie) => (
-          <li key={movie._id}>
-            <img src={movie.coverImage} />
-            <p>{movie.title}</p>
-          </li>
-        ))}
-      </ul>
-    </>
+    <Box sx={styles.container}>
+    <Typography sx={styles.title}>Movies</Typography>
+    <Box sx={styles.list}>
+      {movies.map((movie) => (
+        <Box key={movie._id} sx={styles.listItem}>
+          <img
+            src={movie.coverImage}
+            alt={movie.title}
+            style={styles.image}
+          />
+          <Typography sx={styles.titleText}>{movie.title}</Typography>
+        </Box>
+      ))}
+    </Box>
+  </Box>  
   );
 }
