@@ -1,17 +1,43 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Box } from "@mui/material";
 import { Navigation } from "swiper/modules";
 import SwiperButtons from "./SwiperButtons";
 import Image from "next/image";
-const images = [
-  "/psycho.jpg",
-  "/singing in the rain.jpg",
-  "/studie i brott.jpg",
-];
 
-const CarouselComponent: React.FC = () => {
+
+interface Movie { 
+  _id: string; 
+  title: string; 
+  sliderImage: string;
+}
+
+const CarouselComponent: React.FC = () => { 
+  const [movies, setMovies] = useState<Movie[]>([]);
+  useEffect(() => { 
+    async function fetchMovies() { 
+      try { 
+        const res = await fetch ("/api/movies"); 
+        const json = await res.json(); 
+        setMovies(json.data);
+      } catch (err) { 
+        console.error("Failed to fetch movies", err);
+      }
+    }
+    fetchMovies();
+  }, []);
+
+
+
+// const images = [
+//   "/psycho.jpg",
+//   "/singing in the rain.jpg",
+//   "/studie i brott.jpg",
+// ];
+
+// const CarouselComponent: React.FC = () => {
   return (
     <Box
       sx={{
@@ -35,8 +61,8 @@ const CarouselComponent: React.FC = () => {
         }}
         modules={[Navigation]}
       >
-        {images.map((image, i) => (
-          <SwiperSlide key={i}>
+        {movies.map((movie) => (
+          <SwiperSlide key={movie._id}>
             <Box
               sx={{
                 position: "relative",
@@ -49,8 +75,8 @@ const CarouselComponent: React.FC = () => {
               }}
             >
               <Image
-                src={image}
-                alt="Slide"
+                src={movie.sliderImage}
+                alt={movie.title}
                 // width={1280}
                 // height={554}
                 fill
