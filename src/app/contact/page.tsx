@@ -37,13 +37,14 @@ export default function contact() {
             color: "text.primary",
             fontSize: "3rem",
             fontWeight: 700,
+            margin: 7,
           }}
         >
           Kontakta oss
         </Typography>
         <Box
           sx={{
-            padding: 40,
+            padding: 2,
             borderRadius: 4,
             maxWidth: 600,
             width: "80%",
@@ -51,11 +52,12 @@ export default function contact() {
             boxShadow: " 0 6px 10px #f2753b;",
           }}
         >
-          <form
+          <Box
+            component="form"
             noValidate
             autoComplete="off"
             onSubmit={handleSubmit}
-            style={{ padding: "24px" }}
+            style={{ padding: "2px" }}
           >
             <Stack
               sx={{
@@ -67,7 +69,6 @@ export default function contact() {
                 color: "text.primary",
                 fontSize: "1rem",
                 fontWeight: 800,
-              
               }}
             >
               <FormField label="Namn" name="name" />
@@ -79,7 +80,7 @@ export default function contact() {
             <Button variant="contained" color="primary" type="submit">
               Skicka
             </Button>
-          </form>
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>

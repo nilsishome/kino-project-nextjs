@@ -33,9 +33,9 @@ const FormField: React.FC<FormFieldProps> = ({
       sx={{
         backgroundColor: "white",
         "& .MuiInputBase-input": {
-          height: "40px", 
+          height: "40px",
         },
-      }} // Set color on fields to white 
+      }} // Set color on fields to white
       slotProps={{ htmlInput: { style: { color: "black" } } }} // Instead of inputProps
     />
   </FormControl>
