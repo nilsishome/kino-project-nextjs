@@ -28,6 +28,7 @@ export async function GET(
     return NextResponse.json(
       {
         data: movie,
+        rating: 3.5,
       },
       { status: 200 }
     );
