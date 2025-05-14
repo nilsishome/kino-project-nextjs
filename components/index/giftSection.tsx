@@ -14,6 +14,7 @@ export default function GiftSection() {
     >
       <Typography
         sx={{
+          color: "#000",
           padding: 1,
         }}
         variant="h1"
@@ -22,6 +23,7 @@ export default function GiftSection() {
       </Typography>
       <Typography
         sx={{
+          color: "#000",
           padding: 8,
         }}
         variant="body1"
