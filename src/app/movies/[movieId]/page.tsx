@@ -18,28 +18,42 @@ export default async function Page({
 
   const payload = await response.json();
   const movie: Movie = payload.data;
+  const rating: number = payload.rating;
 
   return (
-    <Box
-      sx={{
-        width: "100vw",
-        height: "80vh",
-        position: "relative",
-      }}
-    >
+    <>
       <Box
         sx={{
-          padding: "6% 0 0 5%",
+          width: "100vw",
+          height: { xs: "45rem", sm: "47rem" },
+          position: "relative",
+          paddingBottom: "2%",
         }}
       >
+        <Box
+          sx={{
+            paddingTop: "6%",
+          }}
+        >
+          <Image
+            alt="Poster image"
+            src={movie.coverImage}
+            width={300}
+            height={400}
+            style={{ margin: "0 0 1% 5%", display: "block" }}
+          />
+          <Text movie={movie} /> {/* This is all the text for the hero */}
+        </Box>
         <Image
-          alt="Poster image"
-          src={movie.coverImage}
-          width={300}
-          height={400}
-          style={{ marginBottom: "2%" }}
+          alt="Cover image"
+          src={movie.sliderImage}
+          fill
+          style={{
+            objectFit: "cover",
+            filter: "brightness(30%)",
+            zIndex: "-1",
+          }}
         />
-        <Text movie={movie} /> {/* This is all the text for the hero */}
       </Box>
       <Box
         sx={{
@@ -52,21 +66,11 @@ export default async function Page({
         <Rating
           sx={{ margin: "1% 0 0 5%", fontSize: "2.5rem" }}
           name="read-only"
-          value={3.5}
+          value={rating}
           precision={0.1}
           readOnly
         />
       </Box>
-      <Image
-        alt="Cover image"
-        src={movie.sliderImage}
-        fill
-        style={{
-          objectFit: "cover",
-          filter: "brightness(30%)",
-          zIndex: "-1",
-        }}
-      />
-    </Box>
+    </>
   );
 }
