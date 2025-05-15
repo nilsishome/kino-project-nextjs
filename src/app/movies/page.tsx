@@ -16,7 +16,7 @@ export default async function Page() {
       <h1>Movies</h1>
       <ul>
         {movies.map((movie) => (
-          <li key={movie.title}>
+          <li key={movie._id}>
             <Link href={`/movies/${movie._id}`}>
               <img src={movie.coverImage} />
               <p>{movie.title}</p>
