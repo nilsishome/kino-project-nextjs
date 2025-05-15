@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
 
 const SwiperButtons: React.FC = () => { 
+ console.log("SwiperButtons rendered");
+
     return (
-<>
+<> 
 
             {/* Left button */}
             <Button

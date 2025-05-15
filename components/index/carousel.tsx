@@ -19,26 +19,33 @@ interface Movie {
 
 const CarouselComponent: React.FC = () => { 
   const [movies, setMovies] = useState<Movie[]>([]);
+
+  const useFeaturedOnly = true; // True only shows movies from original design. False show all in API.
+
   useEffect(() => { 
     async function fetchMovies() { 
       try { 
         const res = await fetch ("/api/movies"); 
         const json = await res.json(); 
+
+      if (useFeaturedOnly) { 
+        const featuredTitles = [ 
+          "Psycho",
+          "Studie i brott",
+          "Singin' In The Rain",
+        ];
+        const filtered = json.data.filter((movie: Movie) => 
+        featuredTitles.includes(movie.title)
+      );
+      setMovies(filtered);
+      } else 
         setMovies(json.data);
       } catch (err) { 
         console.error("Failed to fetch movies", err);
       }
     }
     fetchMovies();
-  }, []);
-
-// const images = [
-//   "/psycho.jpg",
-//   "/singing in the rain.jpg",
-//   "/studie i brott.jpg",
-// ];
-
-// const CarouselComponent: React.FC = () => {
+  }, [useFeaturedOnly]);
 
   return (
     <Box
@@ -79,8 +86,6 @@ const CarouselComponent: React.FC = () => {
               <Image
                 src={movie.sliderImage}
                 alt={movie.title}
-                // width={1280}
-                // height={554}
                 fill
                 style={{
                   objectFit: "cover",
@@ -94,21 +99,22 @@ const CarouselComponent: React.FC = () => {
                 bottom: 0,
                 left: 0,
                 width: "100%",
-                background: "rgba(0,0,0,0.6)",
+                background: "rgba(0,0,0,0.5)",
                 color: "white",
                 padding: "16px",
                 boxSizing: "border-box",
               }}
               > 
-              <h2 style={{ margin: 0, fontSize: "1.5rem"}}>{movie.title}</h2>
-              <p style={{ margin: 0}}>
+              <h2 style={{ margin: 0, fontSize: "1.5rem", color: "#f1ddc5"}}>{movie.title}</h2>
+              <p style={{ margin: 0, color: "#f1ddc5"}}>
                 {movie.genre} | {movie.hour}h {movie.minute}min
               </p>
               </Box>
             </Box>
-            <SwiperButtons />
+
           </SwiperSlide>
         ))}
+ <SwiperButtons />
       </Swiper>
     </Box>
   );
