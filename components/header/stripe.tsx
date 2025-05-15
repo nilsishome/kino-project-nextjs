@@ -25,8 +25,8 @@ export default function Stripe() {
         <Image
           src="/popcorn_header.png"
           alt="Popcorn Header"
-          layout="fill"
-          objectFit="contain"
+          fill
+          style ={{objectFit: 'cover'}}
         />
       </Box>
 
