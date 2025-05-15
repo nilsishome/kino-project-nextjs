@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Box } from "@mui/material";
-import { Navigation } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
 import SwiperButtons from "./SwiperButtons";
 import Image from "next/image";
 
@@ -58,6 +58,10 @@ const CarouselComponent: React.FC = () => {
       }}
     >
       <Swiper
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
         style={{ width: "100vw", maxWidth: "1280px" }}
         spaceBetween={0}
         slidesPerView={1}
@@ -66,7 +70,7 @@ const CarouselComponent: React.FC = () => {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
         }}
-        modules={[Navigation]}
+        modules={[Navigation, Autoplay]}
       >
         {movies.map((movie) => (
           <SwiperSlide key={movie._id}>
