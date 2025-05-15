@@ -2,8 +2,6 @@
 
 import { Button, Box, Typography, Stack } from "@mui/material";
 import FormField from "@/components/FormField";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "@/theme";
 
 export default function contact() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -16,7 +14,6 @@ export default function contact() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
       <Box
         sx={{
           display: "flex",
@@ -77,12 +74,11 @@ export default function contact() {
               <FormField label="Ämne" name="subject" required />
               <FormField label="Meddelande" name="message" multiline rows={3} />
             </Stack>
-            <Button variant="contained" color="primary" type="submit">
+            <Button variant="contained" color="primary" type="submit" sx={{ backgroundColor: '#f2753b', marginLeft: "24px" }}>
               Skicka
             </Button>
           </Box>
         </Box>
       </Box>
-    </ThemeProvider>
   );
 }
