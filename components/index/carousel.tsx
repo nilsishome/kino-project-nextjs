@@ -12,6 +12,9 @@ interface Movie {
   _id: string; 
   title: string; 
   sliderImage: string;
+  genre: string;
+  hour: number; 
+  minute: number;
 }
 
 const CarouselComponent: React.FC = () => { 
@@ -29,8 +32,6 @@ const CarouselComponent: React.FC = () => {
     fetchMovies();
   }, []);
 
-
-
 // const images = [
 //   "/psycho.jpg",
 //   "/singing in the rain.jpg",
@@ -38,6 +39,7 @@ const CarouselComponent: React.FC = () => {
 // ];
 
 // const CarouselComponent: React.FC = () => {
+
   return (
     <Box
       sx={{
@@ -86,6 +88,23 @@ const CarouselComponent: React.FC = () => {
                   margin: "auto",
                 }}
               />
+              <Box
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                background: "rgba(0,0,0,0.6)",
+                color: "white",
+                padding: "16px",
+                boxSizing: "border-box",
+              }}
+              > 
+              <h2 style={{ margin: 0, fontSize: "1.5rem"}}>{movie.title}</h2>
+              <p style={{ margin: 0}}>
+                {movie.genre} | {movie.hour}h {movie.minute}min
+              </p>
+              </Box>
             </Box>
             <SwiperButtons />
           </SwiperSlide>
