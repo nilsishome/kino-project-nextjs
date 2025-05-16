@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Movie } from "@/types";
+import { Box, Typography } from "@mui/material";
+import * as styles from "./moviesPage.style";
 
 export default async function Page() {
   const response = await fetch("http://localhost:3000/api/movies");
