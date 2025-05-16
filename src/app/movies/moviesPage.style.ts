@@ -47,4 +47,5 @@ export const image: CSSProperties = {
 export const titleText: SxProps<Theme> = {
   marginTop: 2,
   marginBottom: 4,
+  textAlign: "center",
 };

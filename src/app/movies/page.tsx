@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import * as styles from "./moviesPage.style";
-import Link from "next/link";
+import Link from "@mui/material/Link";
 import { Movie } from "@/types";
 
 export default async function Page() {
