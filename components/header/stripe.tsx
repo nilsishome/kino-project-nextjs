@@ -26,7 +26,9 @@ export default function Stripe() {
           src="/popcorn_header.png"
           alt="Popcorn Header"
           fill
-          style ={{objectFit: 'cover'}}
+          style={{ objectFit: "cover" }}
+          sizes="(max-width: 600px) 210px, (max-width: 900px) 240px, 280px"
+          priority={true}
         />
       </Box>
 
