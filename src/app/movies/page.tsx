@@ -1,6 +1,3 @@
-import { Box, Typography } from "@mui/material";
-import * as styles from "./moviesPage.style";
-import Link from "@mui/material/Link";
 import { Movie } from "@/types";
 import MovieFilter from "../../../components/movies/MovieFilter";
 
