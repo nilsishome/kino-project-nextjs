@@ -15,6 +15,13 @@ const moviesSchema = new mongoose.Schema({
   upcoming: Boolean,
   ageLimit: Number,
   release: Number,
+  screenings: [
+    {
+      time: String,
+      date: Date,
+      saloon: String,
+    },
+  ],
 });
 
 export const Movies = mongoose.model("Movies", moviesSchema);
