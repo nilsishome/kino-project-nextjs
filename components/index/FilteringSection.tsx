@@ -2,6 +2,7 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {Box, Select, MenuItem, Button, TextField, Typography, useMediaQuery } from "@mui/material";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const localTheme = createTheme({ 
   components: { 
@@ -21,14 +22,26 @@ const localTheme = createTheme({
   },
 });
 
-const genres = ["Thriller", "Komedi", "Äventyr", "Action", "Drama"];
-const decades = ["50-tal", "60-tal", "70-tal", "80-tal", "90-tal", "00-tal", "10-tal"];
-const filmTypes = ["Svartvit", "Färgfilm"];
+const genres: string[] = ["Thriller", "Komedi", "Äventyr", "Action", "Drama"];
+const decades: string[] = ["50-tal", "60-tal", "70-tal", "80-tal", "90-tal", "00-tal", "10-tal"];
+const filmTypes: string[] = ["Svartvit", "Färgfilm"];
 
 export default function FilteringSection() {
-  const [genre, setGenre] = useState("");
-  const [search, setSearch] = useState("");
+  const [genre, setGenre] = useState<string>("");
+  const [decade, setDecade] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+  const [filmType, setFilmType] = useState<string>("");
   const isMobile = useMediaQuery("(max-width:600px)");
+
+  const router = useRouter();
+
+  const applyFilters = () => { 
+
+    const params = new URLSearchParams({ 
+      genre, decade, filmType, search,
+    });
+    router.push(`/movies?${params.toString()}`);
+  };
 
   return (
     <ThemeProvider theme={localTheme}>
@@ -82,7 +95,9 @@ export default function FilteringSection() {
               justifyContent: "center",
             }}
           >
-             {genres.map((g) => <Button key={g} variant="contained">{g}</Button>)}
+             {genres.map((g) => <Button key={g} variant="contained" onClick={() => { 
+               console.log("Genre ändrad till:", g);
+              setGenre(g)}}>{g}</Button>)}
           </Box>
 
           <Box
@@ -93,11 +108,16 @@ export default function FilteringSection() {
               justifyContent: "center",
             }}
           >
-            {decades.map((d) => <Button key={d} variant="contained">{d}</Button>)}
+            {decades.map((d) => <Button key={d} variant="contained" onClick={() => { 
+               console.log("Genre ändrad till:", d);
+              setDecade(d)}}>{d}</Button>)}
           </Box>
           <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
-            {filmTypes.map((type) => <Button key={type} variant="contained">{type}</Button>)}
+            {filmTypes.map((type) => <Button key={type} variant="contained" onClick={() => { 
+               console.log("Genre ändrad till:", type);
+              setFilmType(type)}}>{type}</Button>)}
           </Box>
+          <Button sx={{ color: "red"}} onClick={applyFilters} variant="contained">Filtrera</Button>
         </>
       )}
     </Box>
