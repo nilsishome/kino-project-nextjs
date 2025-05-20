@@ -2,6 +2,8 @@ import { Box, Typography } from "@mui/material";
 import * as styles from "./moviesPage.style";
 import Link from "@mui/material/Link";
 import { Movie } from "@/types";
+import MovieFilter from "../../../components/movies/MovieFilter";
+
 
 export default async function Page() {
   const response = await fetch("http://localhost:3000/api/movies");
@@ -30,6 +32,7 @@ export default async function Page() {
           </Box>
         ))}
       </Box>
+       <MovieFilter movies={movies} />
     </Box>
   );
 }
