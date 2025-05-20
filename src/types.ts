@@ -13,4 +13,11 @@ export type Movie = {
   upcoming: boolean;
   ageLimit: number;
   release: number;
+  screenings: [
+    {
+      time: String;
+      date: Date;
+      saloon: String;
+    }
+  ];
 };

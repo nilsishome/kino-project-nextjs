@@ -1,8 +1,17 @@
-import { Box, Rating } from "@mui/material";
+import {
+  Box,
+  Rating,
+  Typography,
+  List,
+  ListItem,
+  Button,
+  Divider,
+} from "@mui/material";
 import Image from "next/image";
 
 import { Movie } from "@/types";
 import Text from "../../../../components/movies/[movieId]/text";
+import Screenings from "../../../../components/movies/[movieId]/screenings";
 
 export default async function Page({
   params,
@@ -70,6 +79,14 @@ export default async function Page({
           precision={0.1}
           readOnly
         />
+
+        <Box sx={{ maxWidth: { xs: "100%", sm: "45%" } }}>
+          <Typography variant="h2" sx={{ margin: "2vh 0 0 4.5vw" }}>
+            Visningar
+          </Typography>
+
+          <Screenings movie={movie} />
+        </Box>
       </Box>
     </>
   );
