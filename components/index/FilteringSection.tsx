@@ -31,14 +31,14 @@ const localTheme = createTheme({
 });
 
 const genres: string[] = ["Thriller", "Komedi", "Äventyr", "Action", "Drama"];
-const decades: string[] = [
-  "50-tal",
-  "60-tal",
-  "70-tal",
-  "80-tal",
-  "90-tal",
-  "00-tal",
-  "10-tal",
+const decades: { label: string; value: string }[] = [
+  {label: "50-tal", value: "50"},
+ { label: "60-tal", value: "60"},
+ { label: "70-tal", value: "70"},
+  {label: "80-tal", value: "80"},
+  {label: "90-tal", value: "90"},
+ {label:  "00-tal", value: "00"},
+  {label: "10-tal", value: "10"},
 ];
 const filmTypes: string[] = ["Svartvit", "Färgfilm"];
 
@@ -105,9 +105,9 @@ export default function FilteringSection() {
             </Select>
             <Select>
               <MenuItem value="">Välj årtionde</MenuItem>
-              {decades.map((d) => (
-                <MenuItem key={d} value={d}>
-                  {d}
+              {decades.map(({ label, value }) => (
+                <MenuItem key={value} value={value}>
+                  {label}
                 </MenuItem>
               ))}
             </Select>
@@ -157,20 +157,20 @@ export default function FilteringSection() {
                 justifyContent: "center",
               }}
             >
-              {decades.map((d) => (
+              {decades.map(({ label, value }) => (
                 <Button
-                  key={d}
+                  key={value}
                   variant="contained"
                   onClick={() => {
-                    console.log("Årtal ändrad:", d);
-                    setDecade(d);
+                    console.log("Årtal ändrad:", value);
+                    setDecade(value);
                   }}
                   sx={{
-                    backgroundColor: decade === d ? "#c43c3a" : "inherit",
+                    backgroundColor: decade === value ? "#c43c3a" : "inherit",
                     "&:hover": { backgroundColor: "#c43c3a" },
                   }}
                 >
-                  {d}
+                  {label}
                 </Button>
               ))}
             </Box>

@@ -17,21 +17,6 @@ export default async function Page() {
 
   return (
     <Box sx={styles.container}>
-      <Typography sx={styles.title}>Movies</Typography>
-      <Box sx={styles.list}>
-        {movies.map((movie) => (
-          <Box key={movie._id} sx={styles.listItem}>
-            <Link href={`/movies/${movie._id}`}>
-              <img
-                src={movie.coverImage}
-                alt={movie.title}
-                style={styles.image}
-              />
-              <Typography sx={styles.titleText}>{movie.title}</Typography>
-            </Link>
-          </Box>
-        ))}
-      </Box>
        <MovieFilter movies={movies} />
     </Box>
   );
