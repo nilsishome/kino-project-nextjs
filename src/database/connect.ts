@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export async function retrieveMovies() {
+export async function connectToDatabase() {
   const USERNAME = process.env.MONGO_USER;
   const PASSWORD = process.env.MONGO_PASS;
 
