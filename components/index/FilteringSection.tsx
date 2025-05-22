@@ -136,8 +136,7 @@ export default function FilteringSection() {
                   key={g}
                   variant="contained"
                   onClick={() => {
-                    console.log("Genre ändrad till:", g);
-                    setGenre(g);
+                    setGenre((prev) => (prev === g ? "" : g));
                   }}
                   sx={{
                     backgroundColor: genre === g ? "#c43c3a" : "inherit",
@@ -162,8 +161,7 @@ export default function FilteringSection() {
                   key={value}
                   variant="contained"
                   onClick={() => {
-                    console.log("Årtal ändrad:", value);
-                    setDecade(value);
+                    setDecade((prev) => (prev === value ? "" : value));
                   }}
                   sx={{
                     backgroundColor: decade === value ? "#c43c3a" : "inherit",
@@ -180,8 +178,7 @@ export default function FilteringSection() {
                   key={type}
                   variant="contained"
                   onClick={() => {
-                    console.log("Typ ändrad:", type);
-                    setFilmType(type);
+                    setFilmType((prev) => (prev === type ? "" : type));
                   }}
                   sx={{
                     backgroundColor: filmType === type ? "#c43c3a" : "inherit",
@@ -198,6 +195,19 @@ export default function FilteringSection() {
               variant="contained"
             >
               Filtrera
+            </Button>
+            <Button 
+            sx={{ color: "red"}}
+            onClick={() => { 
+              setGenre("");
+              setDecade("");
+              setFilmType("");
+              setSearch("");
+              router.push("/movies");
+            }}
+            variant="contained"
+            >
+              Visa alla filmer
             </Button>
           </>
         )}
