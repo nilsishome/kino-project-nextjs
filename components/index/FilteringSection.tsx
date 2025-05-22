@@ -6,7 +6,6 @@ import {
   MenuItem,
   Button,
   TextField,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
 import { useState } from "react";
@@ -94,7 +93,7 @@ export default function FilteringSection() {
               onChange={(e) => setGenre(e.target.value)}
               displayEmpty
               fullWidth
-              sx={{ bgcolor: "primary.color" }}
+              sx={{ color: "#f1ddc5", border: "2px solid #f1ddc5" }}
             >
               <MenuItem value="">Välj genre (Ingen vald)</MenuItem>
               {genres.map((g) => (
@@ -103,7 +102,13 @@ export default function FilteringSection() {
                 </MenuItem>
               ))}
             </Select>
-            <Select>
+            <Select
+            value={decade}
+            onChange={(e) => setDecade(e.target.value)}
+            displayEmpty
+            fullWidth
+            sx={{color: "#f1ddc5", border: "2px solid #f1ddc5"}}
+            >
               <MenuItem value="">Välj årtionde</MenuItem>
               {decades.map(({ label, value }) => (
                 <MenuItem key={value} value={value}>
@@ -111,8 +116,14 @@ export default function FilteringSection() {
                 </MenuItem>
               ))}
             </Select>
-            <Select>
-              <MenuItem value="">Svartvit</MenuItem>
+            <Select 
+            value={filmType}
+            onChange={(e) => setFilmType(e.target.value)}
+            displayEmpty
+            fullWidth
+            sx={{color: "#f1ddc5", border: "2px solid #f1ddc5"}}
+            >
+              <MenuItem value="">Välj Svartvit/Färgfilm</MenuItem>
               {filmTypes.map((type) => (
                 <MenuItem key={type} value={type}>
                   {type}
@@ -189,15 +200,17 @@ export default function FilteringSection() {
                 </Button>
               ))}
             </Box>
+               </>
+        )}
             <Button
-              sx={{ color: "red" }}
+              sx={{ color: "#f1ddc5" }}
               onClick={applyFilters}
               variant="contained"
             >
               Filtrera
             </Button>
             <Button 
-            sx={{ color: "red"}}
+            sx={{ color: "#f1ddc5"}}
             onClick={() => { 
               setGenre("");
               setDecade("");
@@ -209,8 +222,7 @@ export default function FilteringSection() {
             >
               Visa alla filmer
             </Button>
-          </>
-        )}
+       
       </Box>
     </ThemeProvider>
   );
