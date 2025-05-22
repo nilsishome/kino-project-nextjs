@@ -41,6 +41,39 @@ const decades: { label: string; value: string }[] = [
 ];
 const filmTypes: string[] = ["Svartvit", "Färgfilm"];
 
+//Helper function for rendering Select-components for mobile view.
+const mobileSelectSX = {color: "#f1ddc5", border: "2px solid #f1ddc5"};
+
+function renderSelect( 
+  value: string,
+  setValue: (value: string) => void,
+  placeholder: string,
+  options: (string | {label: string; value: string })[]
+) { 
+  return ( 
+    <Select
+    value={value}
+    onChange={(e) => setValue(e.target.value)}
+    displayEmpty
+    fullWidth
+    sx={mobileSelectSX}
+    >
+      <MenuItem value="">{placeholder}</MenuItem>
+      {options.map((option) =>
+      typeof option === "string" ? (
+        <MenuItem key={option} value={option}>
+          {option}
+        </MenuItem>
+      ):( 
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      )
+      )}
+    </Select>
+  );
+}
+
 export default function FilteringSection() {
   const [genre, setGenre] = useState<string>("");
   const [decade, setDecade] = useState<string>("");
@@ -88,48 +121,10 @@ export default function FilteringSection() {
         {isMobile ? (
           // Dropdown mobile
           <>
-            <Select
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
-              displayEmpty
-              fullWidth
-              sx={{ color: "#f1ddc5", border: "2px solid #f1ddc5" }}
-            >
-              <MenuItem value="">Välj genre (Ingen vald)</MenuItem>
-              {genres.map((g) => (
-                <MenuItem key={g} value={g}>
-                  {g}
-                </MenuItem>
-              ))}
-            </Select>
-            <Select
-            value={decade}
-            onChange={(e) => setDecade(e.target.value)}
-            displayEmpty
-            fullWidth
-            sx={{color: "#f1ddc5", border: "2px solid #f1ddc5"}}
-            >
-              <MenuItem value="">Välj årtionde</MenuItem>
-              {decades.map(({ label, value }) => (
-                <MenuItem key={value} value={value}>
-                  {label}
-                </MenuItem>
-              ))}
-            </Select>
-            <Select 
-            value={filmType}
-            onChange={(e) => setFilmType(e.target.value)}
-            displayEmpty
-            fullWidth
-            sx={{color: "#f1ddc5", border: "2px solid #f1ddc5"}}
-            >
-              <MenuItem value="">Välj Svartvit/Färgfilm</MenuItem>
-              {filmTypes.map((type) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
+          {renderSelect(genre, setGenre, "Välj genre(Ingen vald)", genres)}
+          {renderSelect(decade, setDecade, "Välj årtionde", decades)}
+           {renderSelect(filmType, setFilmType, "Välj Svartvit/Färgfilm", filmTypes)}
+         
           </>
         ) : (
           //Desktop
