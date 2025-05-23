@@ -30,51 +30,6 @@ const localTheme = createTheme({
   },
 });
 
-const genres: string[] = ["Thriller", "Komedi", "Äventyr", "Action", "Drama"];
-const decades: { label: string; value: string }[] = [
-  { label: "50-tal", value: "50" },
-  { label: "60-tal", value: "60" },
-  { label: "70-tal", value: "70" },
-  { label: "80-tal", value: "80" },
-  { label: "90-tal", value: "90" },
-  { label: "00-tal", value: "00" },
-  { label: "10-tal", value: "10" },
-];
-const filmTypes: string[] = ["Svartvit", "Färgfilm"];
-
-//Helper function for rendering Select-components for mobile view.
-const mobileSelectSX = { color: "#f1ddc5", border: "2px solid #f1ddc5" };
-
-function renderSelect(
-  value: string,
-  setValue: (value: string) => void,
-  placeholder: string,
-  options: (string | { label: string; value: string })[]
-) {
-  return (
-    <Select
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      displayEmpty
-      fullWidth
-      sx={mobileSelectSX}
-    >
-      <MenuItem value="">{placeholder}</MenuItem>
-      {options.map((option) =>
-        typeof option === "string" ? (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ) : (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        )
-      )}
-    </Select>
-  );
-}
-
 export default function FilteringSection() {
   const [genre, setGenre] = useState<string>("");
   const [decade, setDecade] = useState<string>("");
@@ -119,20 +74,6 @@ export default function FilteringSection() {
             maxWidth: 400,
           }}
         />
-        {isMobile ? (
-          // Dropdown mobile
-          <>
-            {renderSelect(genre, setGenre, "Välj genre(Ingen vald)", genres)}
-            {renderSelect(decade, setDecade, "Välj årtionde", decades)}
-            {renderSelect(
-              filmType,
-              setFilmType,
-              "Välj Svartvit/Färgfilm",
-              filmTypes
-            )}
-          </>
-        ) : (
-          //Imported from FilterButtons file
 
           <FilterButtons
             isMobile={isMobile}
@@ -143,7 +84,7 @@ export default function FilteringSection() {
             filmType={filmType}
             setFilmType={setFilmType}
           />
-        )}
+      
         <Button
           sx={{ color: "#f1ddc5" }}
           onClick={applyFilters}
