@@ -1,169 +1,213 @@
-
 "use client";
-import { Typography, Box, TextField, FormControlLabel, Checkbox, Button, Link, Grid, Container, dividerClasses } from "@mui/material";
-import NextLink from 'next/link';
-import { Link as MuiLink } from '@mui/material';
+
+import {
+  Alert,
+  IconButton,
+  Collapse,
+  Typography,
+  Box,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Button,
+  Link,
+  Grid,
+  Container,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import NextLink from "next/link";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Register = () => {
-    const [form, setForm] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (error) {
+      setShowAlert(true);
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setPending(true);
+    setError(null); // Rensar error vid varje inlämning
+
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
     });
-    const [pending, setPending] = useState(false);
-    const [error, setError] = useState(null);
-    const router = useRouter();
+    const data = await res.json();
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setPending(true);
-        console.log(form);
-        setPending(false);
-        
-        const res = await fetch("/api/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify(form),
-        });
-        const data = await res.json();
-        
-        if (res.ok) {
-            setPending(false);
-            toast.success(data.message);
-            router.push("/login");
-        } else if (res.status === 400) {
-            setError(data.message);
-            setPending(false);
-            
-        } else if (res.status === 500) {
-            setError(data.message);
-            setPending(false);
-        }
-    };
-
-
+    if (res.ok) {
+      setPending(false);
+      toast.success(data.message);
+      router.push("/login");
+    } else if (res.status === 400) {
+      setError(data.message);
+      setPending(false);
+    } else if (res.status === 500) {
+      setError(data.message);
+      setPending(false);
+    }
+  };
 
   return (
-    
-    <Container maxWidth="xs" sx={{ mt: 8, mb: 4 }}>
-        <Typography component="h1" variant="h5">
-          Skapa ett konto
-        </Typography>
-        {!!error && (
-            <div className="bg-destrucive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
-                <p>{error}</p>
-                <p>hejsan</p>
-            </div>
-        )}
-        
-        <Box 
-        component ="form" 
-        onSubmit={handleSubmit} 
-        noValidate sx={{ mt: 1 }}
-        >
-            <Box display="flex" gap={2}>
-                <TextField
-                placeholder="Förnamn"
-                disabled={pending}
-                value={form.firstName}
-                onChange={(e) => setForm({ ...form, firstName: e.target.value})}
-                fullWidth
-                required
-                autoFocus
-                sx={{ mb: 1}} 
-                />
+    <Container maxWidth='xs' sx={{ mt: 8, mb: 4 }}>
+      <Typography component='h1' variant='h5'>
+        Skapa ett konto
+      </Typography>
 
-                <TextField
-                placeholder="Efternamn"
-                disabled={pending}
-                value={form.lastName}
-                onChange={(e) => setForm({ ...form, lastName: e.target.value})}
-                fullWidth
-                required
-                autoFocus
-                sx={{ mb: 2}} 
-                />
-            </Box>
-            <TextField
-            placeholder="e-mail"
+      {mounted && !!error && (
+        <Collapse in={showAlert}>
+          <Alert
+            severity='error'
+            sx={{
+              mb: 2,
+              borderRadius: 2,
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+              fontSize: "0.875rem",
+            }}
+            action={
+              <IconButton
+                aria-label='stäng'
+                size='small'
+                onClick={() => setShowAlert(false)}
+              >
+                <CloseIcon fontSize='inherit' />
+              </IconButton>
+            }
+          >
+            {error}
+          </Alert>
+        </Collapse>
+      )}
+
+      <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box display='flex' gap={2}>
+          <TextField
+            type='text'
+            placeholder='Förnamn'
             disabled={pending}
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value})}
+            value={form.firstName}
+            onChange={(e) => setForm({ ...form, firstName: e.target.value })}
             fullWidth
             required
-            sx={{ mb: 2}} 
-            />
+            autoFocus
+            sx={{ mb: 1 }}
+          />
 
-            <TextField
-            placeholder="lösenord"
+          <TextField
+            type='text'
+            placeholder='Efternamn'
             disabled={pending}
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value})}
+            value={form.lastName}
+            onChange={(e) => setForm({ ...form, lastName: e.target.value })}
             fullWidth
             required
-            type="password"
-            sx={{ mb: 2}} 
-            />
+            autoFocus
+            sx={{ mb: 2 }}
+          />
+        </Box>
+        <TextField
+          type='email'
+          placeholder='e-mail'
+          disabled={pending}
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          fullWidth
+          required
+          sx={{ mb: 2 }}
+        />
 
-            <TextField
-            placeholder="bekräfta lösenord"
+        <TextField
+          type='password'
+          placeholder='lösenord'
+          disabled={pending}
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          fullWidth
+          required
+          sx={{ mb: 2 }}
+        />
+
+        <TextField
+          placeholder='bekräfta lösenord'
+          disabled={pending}
+          value={form.confirmPassword}
+          onChange={(e) =>
+            setForm({ ...form, confirmPassword: e.target.value })
+          }
+          fullWidth
+          required
+          type='password'
+        />
+
+        <FormControlLabel
+          control={<Checkbox value='remember' color='primary' />}
+          label='Kom ihåg mig'
+        />
+        <Box display='flex' gap={1}>
+          <Button
+            //type="submit"
             disabled={pending}
-            value={form.confirmPassword}
-            onChange={(e) => setForm({ ...form, confirmPassword: e.target.value})}
             fullWidth
-            required
-            type="password"/>
+            variant='contained'
+            sx={{ mt: 3, mb: 2, flex: 1 }}
+          >
+            Tillbaka
+          </Button>
 
-            <FormControlLabel
-            control={<Checkbox 
-            value="remember" 
-            color="primary" />}
-            label="Kom ihåg mig"
-            />
-            <Box display="flex" gap={1}>
-                <Button 
-                //type="submit"
-                disabled={pending} 
-                fullWidth 
-                variant="contained" 
-                sx={{ mt: 3, mb: 2, flex: 1}}
-                >
-                Tillbaka
-                </Button>
+          <Button
+            type='submit'
+            disabled={pending}
+            fullWidth
+            variant='contained'
+            sx={{ mt: 3, mb: 2, flex: 1 }}
+          >
+            Skapa konto
+          </Button>
+        </Box>
+      </Box>
 
-                <Button 
-                type="submit"
-                disabled={pending} 
-                fullWidth 
-                variant="contained" 
-                sx={{ mt: 3, mb: 2, flex: 1 }}
-                >
-                Skapa konto
-                </Button>
-            </Box>
-         </Box>
-
-        <Grid container justifyContent='space-between' sx={{mt: 1}}>
-            <Grid>
-                <Link component={NextLink} href="/login" variant="body2">
-                    Har du redan ett konto? Logga in
-                </Link>
-            </Grid>
-            <Grid>
-                <Link component={NextLink} href="/forgot" variant="body2">
-                    Glömt lösenord?
-                </Link>
-            </Grid> 
+      <Grid container justifyContent='space-between' sx={{ mt: 1 }}>
+        <Grid>
+          <Link component={NextLink} href='/login' variant='body2'>
+            Har du redan ett konto? Logga in
+          </Link>
         </Grid>
+        <Grid>
+          <Link component={NextLink} href='/forgot' variant='body2'>
+            Glömt lösenord?
+          </Link>
+        </Grid>
+      </Grid>
     </Container>
-
-    
   );
-}
+};
 
 export default Register;

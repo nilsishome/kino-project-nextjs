@@ -46,46 +46,52 @@ const handler = NextAuth({
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
-                    return null;
-                }
                 try {
-                    const user = await User.findOne({ email: credentials.email }).lean();
+                    await connectToDatabase();
+                    const user = await User.findOne({ email: credentials?.email });
+
                     if (!user) {
-                        return null;
+                        throw new Error("Ogiltig e-postadress eller lösenord.");
                     }
-                    const isPasswordValid = await bcrypt.compare(
-                        credentials.password, user.password as string
+                    const isValidPassword = await bcrypt.compare(
+                        credentials?.password ?? "", user.password as string
                     );
-                    if (!isPasswordValid) {
-                        throw new Error("Invalid password");
+                    if (!isValidPassword) {
+                        throw new Error("Ogiltig e-postadress eller lösenord.");
                     }
                     return user;
-                } catch {
+                }
+                catch {
                     return null;
                 }
             }
-        }),
+                
+        })
     ],
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
                 token.email = user.email;
-                token.firstName = user.firstName;
-                token.lastName = user.lastName;
             }
             return token;
         },
-        async session({ session, token }) {
+        async session ({ session, token }) {
             if (token) {
                 session.user = {
                     email: token.email,
                     firstName: token.firstName,
                     lastName: token.lastName,
                 };
-            }
+            };
             return session;
-        },
+        }
     },
+    pages: {
+        signIn: "/login",
+    },
+    secret: process.env.NEXTAUTH_SECRET,
 });
+
+
+export {handler as GET, handler as POST};

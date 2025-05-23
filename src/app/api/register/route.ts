@@ -11,26 +11,26 @@ export async function POST(request: Request) {
     return emailRegex.test(email);  
   }
   if(!firstName || !lastName || !email || !password || !confirmPassword) {
-    return NextResponse.json({ error: "Alla fält är obligatoriska." }, { status: 400 });
+    return NextResponse.json({ message: "Alla fält är obligatoriska." }, { status: 400 });
   }
 
     if(!isValidEmail(email)) {
-        return NextResponse.json({ error: "Ogiltig e-postadress." }, { status: 400 });
+        return NextResponse.json({ message: "Ogiltig e-postadress." }, { status: 400 });
     }
 
     if(password !== confirmPassword) {
-        return NextResponse.json({ error: "Lösenorden matchar inte." }, { status: 400 });
+        return NextResponse.json({ message: "Lösenorden matchar inte." }, { status: 400 });
     }
 
     if(password.length < 6) {
-        return NextResponse.json({ error: "Lösenordet måste vara minst 6 tecken långt." }, { status: 400 });
+        return NextResponse.json({ message: "Lösenordet måste vara minst 6 tecken långt." }, { status: 400 });
     }
 
     try {
         await connectToDatabase();
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return NextResponse.json({ error: "E-postadressen är redan registrerad." }, { status: 400 });
+            return NextResponse.json({ message: "E-postadressen är redan registrerad." }, { status: 400 });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -45,6 +45,6 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: "Registrering lyckades!" }, { status: 201 });
 
     } catch (error) {
-        return NextResponse.json({ error: "Ett fel inträffade vid registreringen." }, { status: 500 });
+        return NextResponse.json({ message: "Ett fel inträffade vid registreringen." }, { status: 500 });
     }
 }
