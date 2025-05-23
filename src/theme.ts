@@ -13,7 +13,7 @@ const theme = createTheme({
       main: "#1A323C",
     },
     text: {
-      primary: "#f1ddc5"
+      primary: "#f1ddc5",
     },
   },
 
@@ -55,18 +55,38 @@ const theme = createTheme({
           "&:hover": {
             backgroundColor: "#c43c3a",
           },
+          "&.MuiButton-outlined": {
+            border: "1.5px solid #f1ddc5",
+            borderRadius: "2px",
+
+            "&:hover": {
+              backgroundColor: "#c43c3a",
+              border: "1.5px solid #c43c3a",
+            },
+          },
+          "&.MuiButton-outlinedSecondary": {
+            border: "1.5px solid #f1ddc5",
+            borderRadius: "2px",
+
+            "&:hover": {
+              backgroundColor: "#c43c3a",
+              border: "1.5px solid #c43c3a",
+            },
+          },
+
           color: "#f1ddc5",
         },
       },
     },
-    MuiLink: { //Påverkar alla Link
+    MuiLink: {
+      //Påverkar alla Link
       styleOverrides: {
         root: {
-          color: '#f1ddc5',
-          textDecoration: 'none',
-          transition: 'color 0.2s ease',
-          '&:hover': {
-            color: '#c43c3a',
+          color: "#f1ddc5",
+          textDecoration: "none",
+          transition: "color 0.2s ease",
+          "&:hover": {
+            color: "#c43c3a",
           },
         },
       },
@@ -76,6 +96,13 @@ const theme = createTheme({
         root: {
           // margin: 0, Tar bort centreringen på container om den är 0
           // padding: 0,Tar bort centreringen på container om den är 0
+        },
+      },
+    },
+    MuiStepper: {
+      styleOverrides: {
+        root: {
+          color: "#f1ddc5",
         },
       },
     },

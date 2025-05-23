@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { retrieveMovies } from "@/database/collections/movies";
+import { connectToDatabase } from "@/database/connect";
 import { Movies } from "@/database/models";
+import { resetScreenings } from "@/database/collections/screenings";
 
 export async function GET(
   req: NextRequest,
@@ -12,8 +13,14 @@ export async function GET(
 ) {
   const { movieId } = await params;
 
+  // ONLY ACTIVE WHEN RESETTING DATABASE FOR SCREENINGS (TEMPORARY)
+  //
+  // resetScreenings();
+  //
+  // DON'T TOUCH
+
   try {
-    await retrieveMovies();
+    await connectToDatabase();
     const movie = await Movies.findById(movieId);
 
     if (!movie) {
