@@ -14,6 +14,7 @@ declare module "next-auth" {
       email?: string | null;
       firstName?: string;
       lastName?: string;
+      image?: string | null;
     };
   }
   interface User {
@@ -22,6 +23,7 @@ declare module "next-auth" {
     firstName?: string;
     lastName?: string;
     password?: string;
+    image?: string | null;
   }
 }
 
@@ -73,6 +75,8 @@ const handler = NextAuth({
             if (user) {
                 token.id = user.id;
                 token.email = user.email;
+                token.firstName = user.firstName;
+                token.picture = user.image;
             }
             return token;
         },
@@ -81,7 +85,7 @@ const handler = NextAuth({
                 session.user = {
                     email: token.email,
                     firstName: token.firstName,
-                    lastName: token.lastName,
+                    image: token.picture,
                 };
             };
             return session;
