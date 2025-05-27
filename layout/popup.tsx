@@ -36,7 +36,7 @@ const Popup: React.FC<Props> = ({ movie }) => {
             md: "2px solid white"
           } ,
           width: "80vw",
-          //height: "80vh",
+          height: "auto",
           margin: "auto",
           borderRadius: "3px",
         }}

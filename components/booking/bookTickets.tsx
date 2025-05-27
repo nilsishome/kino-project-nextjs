@@ -1,226 +1,171 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import React, { useState } from "react";
 import { Movie } from "@/types";
+import TicketCounter from "./components/TicketCounter";
 
 type Props = {
   movie: Movie;
 };
 
 const BookTickets: React.FC<Props> = ({ movie }) => {
+  const [adultCount, setAdultCount] = useState(0);
+  const [childCount, setChildCount] = useState(0);
+  const [seniorCount, setSeniorCount] = useState(0);
+
+	const totalTickets = adultCount + childCount + seniorCount;
+const ticketPrice = 120; // exempelpris per biljett
+const totalPrice = totalTickets * ticketPrice;
+
   return (
     <>
+          <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: {
+          xs: "1fr 1fr", 
+          sm: "2fr 1fr 1fr", 
+        },
+        gridAutoRows: "auto",
+        gap: 2,
+        width: "95%",
+        margin: "20px auto",
+      }}
+    >
+    
       <Box
         sx={{
-          display: "flex",
-          flexDirection: {
-            xs: "column",
-            sm: "row",
-          },
-
-          width: {
-            xs: "95%",
-            sm: "90%",
-          },
-          marginLeft: {
-            sm: "40px",
-          },
-          marginTop: "20px",
-          gap: 2,
+          gridColumn: { xs: "1", sm: "1" },
         }}
       >
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "1fr 1fr",
-              sm: "2fr 1fr 1fr",
-            },
-            gridTemplateRows: {
-              xs: "auto auto",
-              sm: "auto",
-            },
-          }}
-        >
-          <Box
-            sx={{
-              maxWidth: "100%",
-            }}
-          >
-            <Typography variant="h2">{movie.title}</Typography>
-            <Typography variant="body1">{movie.story}</Typography>
-          </Box>
+        <Typography variant="h2">{movie.title}</Typography>
+        <Typography variant="body1">{movie.story}</Typography>
+      </Box>
 
-          <Box
-            component="img"
-            src={movie.coverImage}
-            alt="Filmomslag"
-            sx={{
-              width: "80%",
-              height: "auto",
-            }}
+  
+      <Box
+        component="img"
+        src={movie.coverImage}
+        alt="Filmomslag"
+        sx={{
+          width: {
+						xs: "50%",
+						sm: "80%"
+					},
+					justifySelf: {
+						xs: "start",
+						sm: "end"
+					},
+          height: "auto",
+          gridColumn: { xs: "1", sm: "2" },
+        }}
+      />
+
+    
+<Box
+        sx={{
+          borderRadius: "16px",
+          backgroundColor: "#374B54",
+          height: "20vh",
+          padding: 2,
+          color: "white",
+          gridColumn: {
+            xs: "1",
+            sm: "3",
+          },
+          gridRow: {
+            xs: "5",
+            sm: "1",
+          },
+          display: "flex",
+          flexDirection: "column",
+          alignItems: {
+            xs: "flex-start",
+            sm: "flex-start",
+          },
+					
+        }}
+      >
+        <Typography variant="body1">Biljetter: {totalTickets}</Typography>
+        <Typography variant="body1">Totalt pris: {totalPrice} kr</Typography>
+      </Box>
+			
+		
+
+      <Button
+        sx={{
+          border: "1px solid white",
+          borderRadius: "16px",
+          width: "100%",
+          height: "5vh",
+          gridColumn: {
+            xs: "1",
+            sm: "1 / 3", 
+          },
+        }}
+      >
+        Logga in
+      </Button>
+
+    
+      <Box
+        sx={{
+          border: "1px solid white",
+          borderRadius: "16px",
+          padding: 2,
+          gridColumn: {
+            xs: "1",
+            sm: "1 / 3",
+          },
+        }}
+      >
+        <Typography variant="h3" sx={{ marginBottom: 2 }}>
+          Välj antal biljetter
+        </Typography>
+
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <TicketCounter
+            label="Vuxen"
+            count={adultCount}
+            onIncrement={() => setAdultCount((prev) => prev + 1)}
+            onDecrement={() => setAdultCount((prev) => Math.max(prev - 1, 0))}
           />
-
-          <Box
-            sx={{
-              borderRadius: "16px",
-              backgroundColor: "#374B54",
-              marginTop: {
-                xs: "10px",
-                sm: "0",
-              },
-              gridColumn: {
-                xs: "1 / span 2",
-                sm: "auto",
-              },
-              height: "20vh",
-            }}
+          <TicketCounter
+            label="Barn"
+            count={childCount}
+            onIncrement={() => setChildCount((prev) => prev + 1)}
+            onDecrement={() => setChildCount((prev) => Math.max(prev - 1, 0))}
+          />
+          <TicketCounter
+            label="Pensionär / Student"
+            count={seniorCount}
+            onIncrement={() => setSeniorCount((prev) => prev + 1)}
+            onDecrement={() => setSeniorCount((prev) => Math.max(prev - 1, 0))}
           />
         </Box>
       </Box>
 
+     
       <Box
-        display="flex"
-        flexDirection="column"
-        gap={2}
         sx={{
-          width: "100%",
-          marginTop: "20px",
+          display: "flex",
+          justifyContent: "space-between",
+          gridColumn: "1 / -1",
         }}
       >
+        <Button sx={{ border: "1px solid white", borderRadius: "16px" }}>
+          Tillbaka
+        </Button>
         <Button
           sx={{
             border: "1px solid white",
             borderRadius: "16px",
-            width: {
-              xs: "70vw",
-              sm: "50vw",
-            },
-            height: "5vh",
-            display: "block",
-            margin: {
-              xs: "auto",
-              sm: "0 0 0 40px",
-            },
+            width: "90px",
           }}
         >
-          Logga in
+          Fortsätt
         </Button>
-
-        <Box
-          sx={{
-            border: "1px solid white",
-            borderRadius: "16px",
-            width: {
-              xs: "70vw",
-              sm: "50vw",
-            },
-            height: {
-              xs: "30vh",
-              sm: "25vh",
-            },
-            display: "block",
-            margin: {
-              xs: "auto",
-              sm: "10px 0 0 40px",
-            },
-          }}
-        >
-          <Typography variant="h3" sx={{ margin: "10px" }}>
-            Välj antal biljetter
-          </Typography>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              margin: "15px",
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography>Vuxen</Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginLeft: "auto",
-                  gap: 8,
-                }}
-              >
-                <RemoveCircleOutlineIcon sx={{ fontSize: "30px" }} />
-                <AddCircleOutlineIcon sx={{ fontSize: "30px" }} />
-              </Box>
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography>Barn</Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginLeft: "auto",
-                  gap: 8,
-                }}
-              >
-                <RemoveCircleOutlineIcon sx={{ fontSize: "30px" }} />
-                <AddCircleOutlineIcon sx={{ fontSize: "30px" }} />
-              </Box>
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography>
-                Pensionär/ <br />
-                Student
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginLeft: "auto",
-                  gap: 8,
-                }}
-              >
-                <RemoveCircleOutlineIcon sx={{ fontSize: "30px" }} />
-                <AddCircleOutlineIcon sx={{ fontSize: "30px" }} />
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            gap: {
-              xs: "10%",
-              sm: "85%",
-            },
-            margin: {
-              xs: "10px 0 0 0",
-              sm: "0 10px 0 10px",
-            },
-          }}
-        >
-          <Button
-            sx={{
-              border: "1px solid white",
-              borderRadius: "16px",
-              marginBottom: "5px",
-            }}
-          >
-            Tillbaka
-          </Button>
-          <Button
-            sx={{
-              border: "1px solid white",
-              borderRadius: "16px",
-              width: "90px",
-              marginBottom: "5px",
-            }}
-          >
-            Fortsätt
-          </Button>
-        </Box>
       </Box>
+    </Box>
     </>
   );
 };
