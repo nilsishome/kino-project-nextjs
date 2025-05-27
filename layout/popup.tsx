@@ -1,12 +1,18 @@
 "use client";
 
 import React from "react";
-
+import { Movie } from "@/types";
 import { Box, Fade, Typography, Stepper, StepLabel, Step } from "@mui/material";
+import BookTickets from "../components/booking/bookTickets";
+
+type Props = {
+  movie: Movie;
+}
+
 
 const steps = ["Biljettbokning", "Platsbokning", "Inloggning"];
 
-export default function popup() {
+const Popup: React.FC<Props> = ({ movie }) => {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -26,9 +32,11 @@ export default function popup() {
       <Box
         sx={{
           backgroundColor: "#1A323C",
-          border: "2px solid white",
+          border: { //ingen border på liten skärm
+            md: "2px solid white"
+          } ,
           width: "80vw",
-          height: "80vh",
+          //height: "80vh",
           margin: "auto",
           borderRadius: "3px",
         }}
@@ -71,7 +79,11 @@ export default function popup() {
         </Stepper>
 
         {/* Booking components under here */}
+          <BookTickets movie={movie}/>
+        
       </Box>
     </Fade>
   );
 }
+
+export default Popup;

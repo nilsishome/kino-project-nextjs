@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import { Movie } from "@/types";
 import Text from "../../../../components/movies/[movieId]/text";
+import Popup from "../../../../layout/popup";
 
 export default async function Page({
   params,
@@ -22,6 +23,7 @@ export default async function Page({
 
   return (
     <>
+    <Popup movie={movie}/>
       <Box
         sx={{
           width: "100vw",
