@@ -5,30 +5,34 @@ import { Movies } from "@/database/models";
 export async function GET() {
   try {
     await connectToDatabase();
-    const currentScreenings: { date: string; title: string; cover: string }[] =
-      await Movies.aggregate([
-        { $unwind: "$screenings" },
-        {
-          $match: {
-            "screenings.date": {
-              $gt: new Date(),
-              $lte: new Date(new Date().getTime() + 120 * 60 * 60 * 1000),
-              // 120: hours, 60: minutes, 60: seconds, 1000: milliseconds
-            },
+    const currentScreenings: {
+      title: string;
+      coverImage: string;
+      date: string;
+      time: string;
+    }[] = await Movies.aggregate([
+      { $unwind: "$screenings" },
+      {
+        $match: {
+          "screenings.date": {
+            $gt: new Date(),
+            $lte: new Date(new Date().getTime() + 120 * 60 * 60 * 1000),
+            // 120: hours, 60: minutes, 60: seconds, 1000: milliseconds
           },
         },
-        { $sort: { "screenings.date": 1 } },
-        { $limit: 10 },
-        {
-          $project: {
-            _id: 0,
-            title: 1,
-            coverImage: 1,
-            date: "$screenings.date",
-            time: "$screenings.time",
-          },
+      },
+      { $sort: { "screenings.date": 1 } },
+      { $limit: 10 },
+      {
+        $project: {
+          _id: 0,
+          title: 1,
+          coverImage: 1,
+          date: "$screenings.date",
+          time: "$screenings.time",
         },
-      ]);
+      },
+    ]);
 
     if (currentScreenings.length === 0) {
       return NextResponse.json(
