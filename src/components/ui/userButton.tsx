@@ -48,7 +48,7 @@ const handleMenuClose = () => {
               {avatarFallback}
             </Avatar>
           }
-          sx={{ textTransform: "none", p: { xs: 2, md: 3 } }}
+          sx={{ textTransform: "none", px: { xs: 1, md: 2 }, py: 0, }}
         >
           {session.user?.firstName}
         </Button>

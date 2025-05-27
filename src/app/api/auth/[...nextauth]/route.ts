@@ -16,6 +16,7 @@ declare module "next-auth" {
       lastName?: string;
       image?: string | null;
     };
+    maxAge?: number;
   }
   interface User {
     id: string;
@@ -71,24 +72,30 @@ const handler = NextAuth({
         })
     ],
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
-                token.id = user.id;
-                token.email = user.email;
-                token.firstName = user.firstName;
-                token.picture = user.image;
-            }
-            return token;
-        },
-        async session ({ session, token }) {
-            if (token) {
-                session.user = {
-                    email: token.email,
-                    firstName: token.firstName,
-                    image: token.picture,
-                };
+    async jwt({ token, user, trigger, session }) {
+        // Spara remember-flaggan vid inloggning
+        if (trigger === "signIn" && session?.remember !== undefined) {
+            token.remember = session.remember;
+        }
+        if (user) {
+            token.id = user.id;
+            token.email = user.email;
+            token.firstName = user.firstName;
+            token.picture = user.image;
+        }
+        return token;
+    },
+    async session({ session, token }) {
+        if (token) {
+            session.user = {
+                email: token.email,
+                firstName: token.firstName,
+                image: token.picture,
             };
-            return session;
+            // Sätt sessionstid beroende på remember
+            session.maxAge = token.remember ? 60 * 60 * 24 : 60 * 60 * 4; // 30 dagar eller 4 timmar
+        }
+        return session;
         }
     },
     pages: {

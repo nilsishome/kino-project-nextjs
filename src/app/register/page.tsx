@@ -7,8 +7,6 @@ import {
   Typography,
   Box,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Button,
   Link,
   Grid,
@@ -20,6 +18,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import outlinedTextField from "@/styles/outlinedTextField";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -111,6 +110,7 @@ const Register = () => {
         <Box display='flex' gap={2}>
           <TextField
             type='text'
+            variant='outlined'
             placeholder='Förnamn'
             disabled={pending}
             value={form.firstName}
@@ -118,11 +118,12 @@ const Register = () => {
             fullWidth
             required
             autoFocus
-            sx={{ mb: 1 }}
+            sx={outlinedTextField}
           />
 
           <TextField
             type='text'
+            variant='outlined'
             placeholder='Efternamn'
             disabled={pending}
             value={form.lastName}
@@ -130,54 +131,54 @@ const Register = () => {
             fullWidth
             required
             autoFocus
-            sx={{ mb: 2 }}
+            sx={outlinedTextField}
           />
         </Box>
         <TextField
           type='email'
+          variant='outlined'
           placeholder='e-mail'
           disabled={pending}
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           fullWidth
           required
-          sx={{ mb: 2 }}
+          sx={outlinedTextField}
         />
 
         <TextField
           type='password'
+          variant='outlined'
           placeholder='lösenord'
           disabled={pending}
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
           fullWidth
           required
-          sx={{ mb: 2 }}
+          sx={outlinedTextField}
         />
 
         <TextField
+          type='password'
+          variant='outlined'
           placeholder='bekräfta lösenord'
           disabled={pending}
           value={form.confirmPassword}
           onChange={(e) =>
             setForm({ ...form, confirmPassword: e.target.value })
           }
+          sx={outlinedTextField}
           fullWidth
           required
-          type='password'
         />
 
-        <FormControlLabel
-          control={<Checkbox value='remember' color='primary' />}
-          label='Kom ihåg mig'
-        />
         <Box display='flex' gap={1}>
           <Button
-            //type="submit"
-            disabled={pending}
+            type='button'
             fullWidth
             variant='contained'
             sx={{ mt: 3, mb: 2, flex: 1 }}
+            onClick={() => router.back()}
           >
             Tillbaka
           </Button>

@@ -1,26 +1,21 @@
 "use client";
-import { useState } from "react";
-import { 
-    Box,
-    Container, 
-    Button, 
-    TextField, 
-    Typography, 
-    Alert, 
-    IconButton,
-    Collapse, 
-} from "@mui/material";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { Box, Link, Grid, Container, Button, TextField, Typography, Alert, IconButton, Collapse } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import outlinedTextField from "@/styles/outlinedTextField";
-import { useEffect } from "react";
+import NextLink from "next/link";
 
-export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+export default function ResetPasswordPage() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token") || "";
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
-   useEffect(() => {
+  useEffect(() => {
     if (error || success) {
       setShowAlert(true);
       const timer = setTimeout(() => {
@@ -35,15 +30,21 @@ export default function ForgotPasswordPage() {
     setError("");
     setSuccess(false);
 
-    const res = await fetch("/api/auth/reset-request", {
+    if (password !== confirmPassword) {
+      setError("Lösenorden matchar inte.");
+      return;
+    }
+
+    const res = await fetch("/api/auth/reset-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ token, password }),
     });
 
     if (res.ok) {
       setSuccess(true);
-      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
     } else {
       const data = await res.json();
       setError(data.message || "Något gick fel.");
@@ -52,7 +53,8 @@ export default function ForgotPasswordPage() {
 
   return (
     <Container maxWidth='xs' sx={{ mt: 8, mb: 4 }}>
-      <Typography variant="h5" mb={2}>Glömt lösenord?</Typography>
+      <Typography component='h1' variant='h5' mb={2}>Återställ lösenord</Typography>
+
       <Collapse in={showAlert}>
         {success && (
           <Alert
@@ -68,7 +70,7 @@ export default function ForgotPasswordPage() {
               </IconButton>
             }
           >
-            Om e-postadressen finns skickas en återställningslänk.
+            Lösenordet är återställt! Du kan nu logga in.
           </Alert>
         )}
         {error && (
@@ -92,18 +94,36 @@ export default function ForgotPasswordPage() {
 
       <form onSubmit={handleSubmit}>
         <TextField
-          placeholder='e-mail'
-          type="email"
-          value={email}
+          placeholder="Nytt lösenord"
+          type="password"
           fullWidth
           required
-          onChange={e => setEmail(e.target.value)}
+          value={password}
           sx={outlinedTextField}
+          onChange={e => setPassword(e.target.value)}
+          margin="normal"
+        />
+        <TextField
+          placeholder="Bekräfta nytt lösenord"
+          type="password"
+          fullWidth
+          required
+          value={confirmPassword}
+          sx={outlinedTextField}
+          onChange={e => setConfirmPassword(e.target.value)}
+          margin="normal"
         />
         <Button type="submit" variant="contained" fullWidth>
-          Skicka återställningslänk
+          Spara nytt lösenord
         </Button>
       </form>
+      <Grid container justifyContent='center' sx={{ mt: 1 }}>
+        <Grid>
+          <Link component={NextLink} href='/login' variant='body2'>
+            Logga in
+          </Link>
+        </Grid>
+      </Grid>
     </Container>
   );
 }

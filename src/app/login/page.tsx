@@ -13,14 +13,20 @@ import {
   Link,
   Grid,
   Container,
+  InputAdornment,
 } from "@mui/material";
 import NextLink from "next/link";
 import CloseIcon from "@mui/icons-material/Close";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import { useEffect } from "react";
+import outlinedTextField from "@/styles/outlinedTextField";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -28,6 +34,8 @@ const Login = () => {
   const [pending, setPending] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const [error, setError] = useState("");
 
@@ -40,7 +48,7 @@ const Login = () => {
       setShowAlert(true);
       const timer = setTimeout(() => {
         setShowAlert(false);
-      }, 3000);
+      }, 4000);
       return () => clearTimeout(timer);
     }
   }, [error]);
@@ -53,9 +61,10 @@ const Login = () => {
       redirect: false,
       email,
       password,
+      remember,
     });
     if (res?.ok) {
-      router.push("/");
+      router.push("/mina-sidor");
       setPending(false);
       toast.success("Inloggning lyckades!");
     } else if (res?.status === 401) {
@@ -102,40 +111,68 @@ const Login = () => {
         <TextField
           type='email'
           placeholder='e-mail'
+          variant='outlined'
           disabled={pending}
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setEmail(e.target.value)
+          }
           fullWidth
           required
-          sx={{ mb: 2 }}
+          sx={outlinedTextField}
         />
 
         <TextField
-          disabled={pending}
+          type={showPassword ? "text" : "password"}
+          variant='outlined'
           placeholder='lösenord'
+          disabled={pending}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
           required
-          type='password'
-          sx={{ mb: 2 }}
+          sx={outlinedTextField}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label={showPassword ? "Dölj lösenord" : "Visa lösenord"}
+                  onClick={() => setShowPassword((show) => !show)}
+                  edge='end'
+                >
+                  {showPassword ? 
+                  <VisibilityOff sx={{ color: "#F1DDC5" }}/>
+                  : <Visibility sx={{ color: "#F1DDC5" }}/>}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <FormControlLabel
-          control={<Checkbox value='remember' color='primary' />}
+          control={
+            <Checkbox
+              value='remember'
+              color='primary'
+              checked={remember}
+              onChange={(e) => setRemember(e.target.checked)}
+              icon={<CheckBoxOutlineBlankIcon sx={{ color: "#F1DDC5" }} />}
+              checkedIcon={<CheckBoxIcon sx={{ color: "#F1DDC5" }} />}
+            />
+          }
           label='Kom ihåg mig'
         />
 
         <Box display='flex' gap={1}>
           <Button
-            //type="submit"
+            type='button'
             fullWidth
             variant='contained'
             sx={{ mt: 3, mb: 2, flex: 1 }}
+            onClick={() => router.back()}
           >
             Tillbaka
           </Button>
-
           <Button
             type='submit'
             disabled={pending}
