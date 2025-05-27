@@ -1,16 +1,13 @@
 import { NextResponse } from "next/server";
+
 import { connectToDatabase } from "@/database/connect";
 import { Movies } from "@/database/models";
+import { MovieScreening } from "@/types";
 
 export async function GET() {
   try {
     await connectToDatabase();
-    const currentScreenings: {
-      title: string;
-      coverImage: string;
-      date: string;
-      time: string;
-    }[] = await Movies.aggregate([
+    const currentScreenings: MovieScreening[] = await Movies.aggregate([
       { $unwind: "$screenings" },
       {
         $match: {

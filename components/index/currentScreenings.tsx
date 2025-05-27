@@ -2,12 +2,7 @@ import { Box, Divider, List, ListItem, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
-interface MovieTemplate {
-  title: string;
-  coverImage: string;
-  date?: string;
-  time: string;
-}
+import { MovieScreening } from "@/types";
 
 const CurrentScreenings: React.FC = async () => {
   const response = await fetch("http://localhost:3000/api/movies/showing");
@@ -15,10 +10,10 @@ const CurrentScreenings: React.FC = async () => {
   if (!response.ok) throw new Error("Failed to retrieve data!");
 
   const payload = await response.json();
-  const movieData: MovieTemplate[] = payload.data;
+  const movieData: MovieScreening[] = payload.data;
 
   const dates: string[] = [];
-  const movieScreenings: MovieTemplate[][] = [];
+  const movieScreenings: MovieScreening[][] = [];
 
   sortScreenings(movieData, dates, movieScreenings);
 
@@ -41,7 +36,7 @@ const CurrentScreenings: React.FC = async () => {
           />
           <List sx={{ display: "flex", overflow: "auto" }}>
             {movieScreenings[dateIndex].map(
-              (movie: MovieTemplate, listIndex: number) => (
+              (movie: MovieScreening, listIndex: number) => (
                 <ListItem
                   key={listIndex}
                   sx={{
@@ -87,9 +82,9 @@ const CurrentScreenings: React.FC = async () => {
 
 // Algorithm for sorting movies and dates into 2 arrays
 function sortScreenings(
-  movieData: MovieTemplate[],
+  movieData: MovieScreening[],
   dates: string[],
-  movieScreenings: MovieTemplate[][]
+  movieScreenings: MovieScreening[][]
 ) {
   const usedDates: number[] = [];
 
