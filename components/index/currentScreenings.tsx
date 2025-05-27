@@ -4,6 +4,8 @@ import React from "react";
 
 import { MovieScreening } from "@/types";
 
+// This is a server component for rendering movie screenings on the home page.
+
 const CurrentScreenings: React.FC = async () => {
   const response = await fetch("http://localhost:3000/api/movies/showing");
 
