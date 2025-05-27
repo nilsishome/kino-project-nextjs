@@ -106,24 +106,25 @@ const insertMovies = async (moviesLength: number) => {
 };
 
 const fakeMovieData: Movie = {
-  title: "HEY",
-  story: "string",
-  genre: "string",
-  hour: 5,
-  minute: 5,
-  coverImage: "string",
-  sliderImage: "string",
+  title: "Mission Impossible",
+  story:
+    "Tom Cruise springer med handflatorna utsträckta, för att få mer fart...",
+  genre: "Action",
+  hour: 1,
+  minute: 49,
+  coverImage: "Tom Cruise-bild",
+  sliderImage: "slider-bild",
   reviews: [],
   color: true,
-  decade: "string",
+  decade: "90",
   upcoming: false,
   ageLimit: 15,
   release: 2001,
   screenings: [
     {
-      time: "String",
+      time: "12",
       date: new Date(Date.now() + 60 * 60 * 1000),
-      saloon: "String",
+      saloon: "Serif",
     },
   ],
 };
