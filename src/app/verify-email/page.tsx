@@ -1,32 +1,33 @@
-import { connectToDatabase } from "@/database/connect";
-import User from "@/database/user_model";
+"use client";
+import { useEffect, useState } from "react";
 import VerifyRedirect from "./VerifyRedirect";
 import { Box, Paper, Typography } from "@mui/material";
-import React from "react";
 
-export default async function VerifyEmailPage({
-  searchParams,
-}: {
-  searchParams: { token?: string };
-}) {
+export default function VerifyEmailPage({ searchParams }: { searchParams: { token?: string } }) {
+  const [message, setMessage] = useState("Verifierar...");
   const token = searchParams.token;
 
-  if (!token) {
-    return <div>Ogiltig verifieringslänk.</div>;
-  }
-
-  await connectToDatabase();
-  const user = await User.findOne({ verificationToken: token });
-
-  if (!user) {
-    return <div>Ogiltig eller förbrukad verifieringslänk.</div>;
-  }
-
-  user.isVerified = true;
-  user.verificationToken = undefined;
-  await user.save();
-
-  const { firstName, lastName, email } = user;
+  useEffect(() => {
+    const verify = async () => {
+      if (!token) {
+        setMessage("Ogiltig verifieringslänk.");
+        return;
+      }
+      try {
+        const res = await fetch("/api/verify-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+        });
+        const data = await res.json();
+        setMessage(data.message);
+      } catch {
+        setMessage("Ett fel uppstod vid verifiering.");
+      }
+    };
+    verify();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -57,10 +58,13 @@ export default async function VerifyEmailPage({
             align='center'
             sx={{ fontSize: "1.5rem", fontWeight: 600, color: "#22c55e" }}
           >
-            Tack! Din e-postadress är nu verifierad.
+            {message}
           </Typography>
-          <Typography align="center"
-  sx={{ fontSize: "1rem", mt: 1 }}>Du skickas strax till inloggningen...</Typography>
+          {message === "Verifiering lyckades!" && (
+            <Typography align="center" sx={{ fontSize: "1rem", mt: 1 }}>
+              Du skickas strax till inloggningen...
+            </Typography>
+          )}
         </Paper>
       </Box>
       <VerifyRedirect />

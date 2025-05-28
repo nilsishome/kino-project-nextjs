@@ -5,7 +5,7 @@ export default function VerifyRedirect() {
   useEffect(() => {
     const timer = setTimeout(() => {
       window.location.href = "/login";
-    }, 10000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
