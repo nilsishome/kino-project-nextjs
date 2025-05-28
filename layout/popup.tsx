@@ -71,19 +71,19 @@ export default function popup() {
           ))}
         </Stepper>
          {/* Navigation buttons */}
-        <Box sx={{ marginTop: "2rem", flexGrow: 1, height: "60%" }}>
+        <Box sx={{ marginTop: "2rem", flexGrow: 1, height: "60%", borderRadius: "10px" }}>
           {activeStep === 3 && <PaymentPopup onNextStep={() => setActiveStep(4)} />}
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", position: "relative", padding: "2rem", width: "95%", left: 0}}>
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", position: "relative", padding: "3rem"}}>
           {/* Back */}
           {activeStep > 0 && ( 
-            <Button variant="outlined" color="secondary" onClick={handleBack}>
+            <Button variant="outlined" color="secondary" onClick={handleBack} sx={{ position: "absolute", bottom: 0, left: "10rem"}}>
               Tillbaka
             </Button>
           )}
             {/* Continue */}
             {activeStep < steps.length - 1 && ( 
-              <Button variant="outlined" color="secondary" onClick={handleNext} sx={{ marginLeft: "1rem" }}>
+              <Button variant="outlined" color="secondary" onClick={handleNext} sx={{  position: "absolute", bottom: 0, right: "10rem" }}>
                 Fortsätt
               </Button>
             )}
