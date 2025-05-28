@@ -40,6 +40,7 @@ describe("GET /api/movies/showing", () => {
 
     expect(parsedData).not.toStrictEqual(parsedScreenings);
     expect(parsedData).not.toHaveLength(parsedScreenings.length);
+    expect(parsedScreenings).toHaveLength(1);
   });
 
   test("retrieval of 10 movie screenings from database", async () => {
@@ -57,6 +58,7 @@ describe("GET /api/movies/showing", () => {
 
     expect(parsedData).toStrictEqual(parsedScreenings);
     expect(parsedData).toHaveLength(parsedScreenings.length);
+    expect(parsedScreenings).toHaveLength(10);
   });
 
   test("retrieval of 11 movie screenings from database", async () => {
@@ -75,6 +77,7 @@ describe("GET /api/movies/showing", () => {
 
     expect(parsedData).not.toStrictEqual(parsedScreenings);
     expect(parsedData).not.toHaveLength(parsedScreenings.length);
+    expect(parsedScreenings).toHaveLength(11);
   });
 
   test("insufficient number of screenings", async () => {
