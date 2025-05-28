@@ -23,27 +23,7 @@ describe("GET /api/movies/showing", () => {
 
   afterAll(async () => db.closeDatabase());
 
-  test("retrieval of 1 movie screening from database", async () => {
-    await insertMovies(movieLength);
-    numberOfScreenings = 1;
-    const screenings: MovieScreening[] = await getHomePageScreenings(
-      numberOfScreenings
-    );
-    const parsedScreenings = JSON.parse(JSON.stringify(screenings));
-
-    const res = await GET();
-    const payload = await res.json();
-
-    const data: MovieScreening[] | undefined =
-      payload.data === undefined ? undefined : payload.data;
-    const parsedData = JSON.parse(JSON.stringify(data)) || undefined;
-
-    expect(parsedData).not.toStrictEqual(parsedScreenings);
-    expect(parsedData).not.toHaveLength(parsedScreenings.length);
-    expect(parsedScreenings).toHaveLength(1);
-  });
-
-  test("retrieval of 10 movie screenings from database", async () => {
+  test("default retrieval of movie screenings from database", async () => {
     await insertMovies(movieLength);
     const screenings: MovieScreening[] = await getHomePageScreenings(
       numberOfScreenings
@@ -66,6 +46,26 @@ describe("GET /api/movies/showing", () => {
       expect(obj).toHaveProperty("date");
       expect(obj).toHaveProperty("time");
     });
+  });
+
+  test("retrieval of 1 movie screening from database", async () => {
+    await insertMovies(movieLength);
+    numberOfScreenings = 1;
+    const screenings: MovieScreening[] = await getHomePageScreenings(
+      numberOfScreenings
+    );
+    const parsedScreenings = JSON.parse(JSON.stringify(screenings));
+
+    const res = await GET();
+    const payload = await res.json();
+
+    const data: MovieScreening[] | undefined =
+      payload.data === undefined ? undefined : payload.data;
+    const parsedData = JSON.parse(JSON.stringify(data)) || undefined;
+
+    expect(parsedData).not.toStrictEqual(parsedScreenings);
+    expect(parsedData).not.toHaveLength(parsedScreenings.length);
+    expect(parsedScreenings).toHaveLength(1);
   });
 
   test("retrieval of 11 movie screenings from database", async () => {
