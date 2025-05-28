@@ -1,17 +1,10 @@
-import {
-  Box,
-  Rating,
-  Typography,
-  List,
-  ListItem,
-  Button,
-  Divider,
-} from "@mui/material";
+import { Box, Rating, Typography } from "@mui/material";
 import Image from "next/image";
 
 import { Movie } from "@/types";
 import Text from "../../../../components/movies/[movieId]/text";
 import Screenings from "../../../../components/movies/[movieId]/screenings";
+import Reviews from "../../../../components/movies/[movieId]/reviews";
 
 export default async function Page({
   params,
@@ -86,6 +79,14 @@ export default async function Page({
           </Typography>
 
           <Screenings movie={movie} />
+        </Box>
+
+        <Box>
+          <Typography variant="h2" sx={{ margin: "2vh 0 0 4.5vw" }}>
+            Recensioner
+          </Typography>
+
+          <Reviews movie={movie} />
         </Box>
       </Box>
     </>

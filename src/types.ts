@@ -7,7 +7,14 @@ export type Movie = {
   minute: number;
   coverImage: string;
   sliderImage: string;
-  reviews: [];
+  reviews: [
+    {
+      date: Date;
+      comment: String;
+      author: String;
+      rating: Number;
+    }
+  ];
   color: boolean;
   decade: string;
   upcoming: boolean;
