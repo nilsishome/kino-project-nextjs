@@ -10,11 +10,6 @@ import GiftSection from "../../components/index/giftSection";
 export default function Home() {
   return (
     <>
-      <div>
-        <SessionProvider>
-          <UserButton />
-        </SessionProvider>
-      </div>
       <CarouselComponent />
       <GiftSection />
     </>

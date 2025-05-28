@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/database/connect';
 import User from '@/database/user_model';
+import { sendVerificationMail } from "@/utils/sendVerificationMail";
+import crypto from "crypto";
 
 export async function POST(request: Request) {
   const { firstName, lastName, email, password, confirmPassword } = await request.json();
@@ -35,16 +37,23 @@ export async function POST(request: Request) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // 1. Skapa en verifieringstoken
+    const verificationToken = crypto.randomUUID();
+
         const newUser = new User({
             firstName,
             lastName,
             email,
             password: hashedPassword,
+            verificationToken,
+            isVerified: false, // verifieringsstatus
         });
         await newUser.save();
-        return NextResponse.json({ message: "Registrering lyckades!" }, { status: 201 });
+    await sendVerificationMail(email, verificationToken);
 
-    } catch (error) {
-        return NextResponse.json({ message: "Ett fel inträffade vid registreringen." }, { status: 500 });
-    }
+    return NextResponse.json({ message: "Registrering lyckades! Kontrollera din e-post för verifiering." }, { status: 201 });
+
+  } catch (error) {
+    return NextResponse.json({ message: "Ett fel inträffade vid registreringen." }, { status: 500 });
+  }
 }

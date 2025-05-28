@@ -1,3 +1,4 @@
+"use client";
 
 import React, { useState } from "react";
 import { Avatar, Backdrop, CircularProgress, Menu, MenuItem, ListItem, Typography, Box, Button } from "@mui/material";

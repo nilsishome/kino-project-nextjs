@@ -6,6 +6,8 @@ interface IUser extends Document {
   email: string;
   password?: string;
   id: string;
+  isVerified?: boolean;
+  verificationToken?: string;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
 }
@@ -26,6 +28,16 @@ const UserSchema: Schema<IUser> = new mongoose.Schema({
   },
   password: {
     type: String,
+    required: false,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+    required: false,
+  },
+  verificationToken: {
+    type: String,
+    default: null,
     required: false,
   },
    resetPasswordToken: {

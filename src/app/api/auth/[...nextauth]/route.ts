@@ -4,10 +4,10 @@ import { connectToDatabase } from "@/database/connect";
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-// Extend NextAuth types to include firstName and lastName
 import type { NextAuthOptions, Session, User as NextAuthUser } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 
+// Typförlängning för NextAuth
 declare module "next-auth" {
   interface Session {
     user: {
@@ -34,75 +34,81 @@ declare module "next-auth/jwt" {
     email?: string;
     firstName?: string;
     lastName?: string;
+    remember?: boolean;
+    picture?: string | null;
   }
 }
 
-const handler = NextAuth({
-    session: {
-        strategy: "jwt",
-    },
-    providers: [
-        CredentialsProvider({
-            name: "Credentials",
-            credentials: {
-                email: { label: "Email", type: "text" },
-                password: { label: "Password", type: "password" },
-            },
-            async authorize(credentials) {
-                try {
-                    await connectToDatabase();
-                    const user = await User.findOne({ email: credentials?.email });
+// --- Här är authOptions-objektet ---
+export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        try {
+          await connectToDatabase();
+          const user = await User.findOne({ email: credentials?.email });
 
-                    if (!user) {
-                        throw new Error("Ogiltig e-postadress eller lösenord.");
-                    }
-                    const isValidPassword = await bcrypt.compare(
-                        credentials?.password ?? "", user.password as string
-                    );
-                    if (!isValidPassword) {
-                        throw new Error("Ogiltig e-postadress eller lösenord.");
-                    }
-                    return user;
-                }
-                catch {
-                    return null;
-                }
-            }
-                
-        })
-    ],
-    callbacks: {
+          if (!user) {
+            throw new Error("Ogiltig e-postadress eller lösenord.");
+          }
+          const isValidPassword = await bcrypt.compare(
+            credentials?.password ?? "",
+            user.password as string
+          );
+          if (!isValidPassword) {
+            throw new Error("Ogiltig e-postadress eller lösenord.");
+          }
+          return user;
+        } catch {
+          return null;
+        }
+      },
+    }),
+  ],
+  callbacks: {
     async jwt({ token, user, trigger, session }) {
-        // Spara remember-flaggan vid inloggning
-        if (trigger === "signIn" && session?.remember !== undefined) {
-            token.remember = session.remember;
-        }
-        if (user) {
-            token.id = user.id;
-            token.email = user.email;
-            token.firstName = user.firstName;
-            token.picture = user.image;
-        }
-        return token;
+      // Spara remember-flaggan vid inloggning
+      if (trigger === "signIn" && session?.remember !== undefined) {
+        token.remember = session.remember;
+      }
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+        token.picture = user.image;
+      }
+      return token;
     },
     async session({ session, token }) {
-        if (token) {
-            session.user = {
-                email: token.email,
-                firstName: token.firstName,
-                image: token.picture,
-            };
-            // Sätt sessionstid beroende på remember
-            session.maxAge = token.remember ? 60 * 60 * 24 : 60 * 60 * 4; // 30 dagar eller 4 timmar
-        }
-        return session;
-        }
+      if (token) {
+        session.user = {
+          email: token.email,
+          firstName: token.firstName,
+          lastName: token.lastName,
+          image: token.picture,
+        };
+        // Sätt sessionstid beroende på remember
+       session.maxAge = token.remember ? 60 * 60 * 24 : 60 * 60; // 1 dag eller 1 timme
+      }
+      return session;
     },
-    pages: {
-        signIn: "/login",
-    },
-    secret: process.env.NEXTAUTH_SECRET,
-});
+  },
+  pages: {
+    signIn: "/login",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
 
+// --- Skapa och exportera handler ---
+const handler = NextAuth(authOptions);
 
-export {handler as GET, handler as POST};
+export { handler as GET, handler as POST };
