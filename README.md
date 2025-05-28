@@ -1,35 +1,50 @@
 # kino-project-nextjs
 Remaking the Kino - (Västerås) - website in Next.js!
 
-# Testning
+## 🧪 Testning
 
-## Teststrategi
+### Testningsstrategi
 
-- **Enhetstester**: Testar hjälpfunktioner som e-postutskick.
-- **Integrationstester**: Testar API-routes för registrering, lösenordsåterställning m.m.
-- **Mockning** används för externa beroenden (t.ex. Resend).
+- **Enhetstester:** Testar hjälpfunktioner, t.ex. e-postutskick.
+- **Integrationstester:** Testar API-routes för registrering, lösenordsåterställning och e-postverifiering.
+- **Negativa tester:** Säkerställer att felhantering fungerar, t.ex. ogiltig e-post, för kort lösenord, ogiltiga eller utgångna tokens.
+- **Mockning:** Externa beroenden som e-posttjänster mockas för att undvika riktiga utskick och beroenden av API-nycklar.
+- **Isolerad databas:** Alla integrationstester körs mot en in-memory MongoDB (mongodb-memory-server) för att inte påverka riktig data.
 
-## Köra tester
+---
 
-1. Installera beroenden:
+### Testade delar
+
+| Testtyp           | Funktion/Endpoint                        | Filnamn                                 |
+|-------------------|------------------------------------------|-----------------------------------------|
+| Enhetstest        | Skicka verifieringsmail                  | `sendVerificationMail.test.ts`          |
+| Enhetstest        | Skicka reset-mail                        | `verify-email.test.tsx`                 |
+| Integrationstest  | Registrering (lyckad)                    | `register.api.test.ts`                  |
+| Integrationstest  | Registrering (fel/negativ)               | `register.negative.api.test.ts`         |
+| Integrationstest  | Lösenordsåterställning (lyckad)          | `resetPassword.api.test.ts`             |
+| Integrationstest  | Lösenordsåterställning (fel/negativ)     | `resetPassword.negative.api.test.ts`    |
+| Integrationstest  | E-postverifiering (lyckad/fel)           | `verify-email.api.test.ts`              |
+
+---
+
+### Köra tester
+
+1. **Installera beroenden:**
+   ```sh
+   npm install
    ```
-   npm install --save-dev jest ts-jest @types/jest node-mocks-http supertest
-   ```
 
-2. Lägg till i `package.json`:
-   ```json
-   "scripts": {
-     "test": "jest"
-   }
-   ```
-
-3. Kör tester:
-   ```
+2. **Kör testerna:**
+   ```sh
    npm run test
    ```
+   eller
+   ```sh
+   npx jest
+   ```
 
-## Testade delar
+---
 
-- **Registrering**: `/api/register`
-- **Lösenordsåterställning**: `/api/auth/reset-password`
-- **E-postutskick**: `sendVerificationMail`, `sendResetMail`
+**Alla tester körs automatiskt mot en isolerad testdatabas.  
+Du behöver ingen riktig API-nyckel för e-post i testmiljö tack vare mockning.  
+Lägg till egna tester i `/tests`-mappen och följ samma struktur.**
