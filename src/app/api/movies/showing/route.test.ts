@@ -59,6 +59,13 @@ describe("GET /api/movies/showing", () => {
     expect(parsedData).toStrictEqual(parsedScreenings);
     expect(parsedData).toHaveLength(parsedScreenings.length);
     expect(parsedScreenings).toHaveLength(10);
+
+    parsedData.forEach((obj: MovieScreening) => {
+      expect(obj).toHaveProperty("title");
+      expect(obj).toHaveProperty("coverImage");
+      expect(obj).toHaveProperty("date");
+      expect(obj).toHaveProperty("time");
+    });
   });
 
   test("retrieval of 11 movie screenings from database", async () => {
