@@ -9,7 +9,7 @@ Remaking the Kino - (Västerås) - website in Next.js!
 - **Integrationstester:** Testar API-routes för registrering, lösenordsåterställning och e-postverifiering.
 - **Negativa tester:** Säkerställer att felhantering fungerar, t.ex. ogiltig e-post, för kort lösenord, ogiltiga eller utgångna tokens.
 - **Mockning:** Externa beroenden som e-posttjänster mockas för att undvika riktiga utskick och beroenden av API-nycklar.
-- **Isolerad databas:** Alla integrationstester körs mot en in-memory MongoDB (mongodb-memory-server) för att inte påverka riktig data.
+- **Isolerad databas:** Alla integrationstester körs mot en mongodb-memory-server för att inte påverka riktig data.
 
 ---
 
@@ -45,6 +45,4 @@ Remaking the Kino - (Västerås) - website in Next.js!
 
 ---
 
-**Alla tester körs automatiskt mot en isolerad testdatabas.  
-Du behöver ingen riktig API-nyckel för e-post i testmiljö tack vare mockning.  
-Lägg till egna tester i `/tests`-mappen och följ samma struktur.**
+**Alla tester körs automatiskt mot en isolerad testdatabas.
