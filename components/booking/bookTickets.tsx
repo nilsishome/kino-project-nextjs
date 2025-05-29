@@ -76,25 +76,50 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
             },
             display: "flex",
             flexDirection: "column",
+            justifyContent: "space-between",
             alignItems: {
               xs: "flex-start",
               sm: "flex-start",
             },
           }}
         >
-          {adultCount !== 0 && (
-            <Typography variant="body1">Vuxen {adultPrice} kr</Typography>
-          )}
-          {childCount !== 0 && (
-            <Typography variant="body1">Barn {childPrice} kr</Typography>
-          )}
-          {seniorCount !== 0 && (
-            <Typography variant="body1">
-              Senior / Student {seniorPrice} kr
-            </Typography>
-          )}
-
-          <Typography variant="body1">Summa:{adultPrice + childPrice + seniorPrice} kr</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 0.5,
+              width: "100%",
+            }}
+          >
+            {adultCount !== 0 && (
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography variant="body1">Vuxen</Typography>
+                <Typography variant="body1">{adultPrice} kr</Typography>
+              </Box>
+            )}
+            {childCount !== 0 && (
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography variant="body1">Barn</Typography>
+                <Typography variant="body1">{childPrice} kr</Typography>
+              </Box>
+            )}
+            {seniorCount !== 0 && (
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography variant="body1">Senior / Student</Typography>
+                <Typography variant="body1">{seniorPrice} kr</Typography>
+              </Box>
+            )}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Typography variant="h3">Summa:</Typography>
+            <Typography>{adultPrice + childPrice + seniorPrice} kr</Typography>
+          </Box>
         </Box>
 
         <Button
@@ -136,8 +161,8 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
                 setAdultPrice((prev) => prev + ticketPrice);
               }}
               onDecrement={() => {
-                setAdultCount((prev) => Math.max(prev - 1, 0))
-                setAdultPrice((prev) => Math.max(prev - ticketPrice, 0))
+                setAdultCount((prev) => Math.max(prev - 1, 0));
+                setAdultPrice((prev) => Math.max(prev - ticketPrice, 0));
               }}
             />
             <TicketCounter
@@ -148,8 +173,8 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
                 setChildPrice((prev) => prev + ticketPrice / 2);
               }}
               onDecrement={() => {
-                setChildCount((prev) => Math.max(prev - 1, 0))
-                setChildPrice((prev) => Math.max(prev - ticketPrice / 2, 0))
+                setChildCount((prev) => Math.max(prev - 1, 0));
+                setChildPrice((prev) => Math.max(prev - ticketPrice / 2, 0));
               }}
             />
             <TicketCounter
@@ -160,8 +185,8 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
                 setSeniorPrice((prev) => prev + ticketPrice * 0.8);
               }}
               onDecrement={() => {
-                setSeniorCount((prev) => Math.max(prev - 1, 0))
-                setSeniorPrice((prev) => Math.max(prev - ticketPrice * 0.8, 0))
+                setSeniorCount((prev) => Math.max(prev - 1, 0));
+                setSeniorPrice((prev) => Math.max(prev - ticketPrice * 0.8, 0));
               }}
             />
           </Box>
