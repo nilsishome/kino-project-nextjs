@@ -65,6 +65,11 @@ export default function FilteringSection() {
           placeholder="Sök"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => { 
+            if (e.key === "Enter") { 
+              applyFilters();
+            }
+          }}
           fullWidth
           sx={{
             backgroundColor: "#f1ddc5",
