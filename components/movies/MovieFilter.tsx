@@ -4,10 +4,12 @@ import { useSearchParams } from "next/navigation";
 import { Movie } from "@/types";
 import Link from "@mui/material/Link";
 import * as styles from "@/app/movies/moviesPage.style";
-import { Box, Typography, CardMedia } from "@mui/material";
+import { Box, Typography, CardMedia, Button } from "@mui/material";
+import { useRouter } from "next/navigation"; 
 
 const MovieFilter = ({ movies }: { movies: Movie[] }) => {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const genre = searchParams.get("genre") || "";
   const decade = searchParams.get("decade") || "";
@@ -32,6 +34,14 @@ return matches;
 
   return (
     <Box sx={styles.container}>
+      <Button
+      variant="outlined"
+      sx={{ mb: 2 }}
+      onClick={() => router.push("/")}
+      >
+      Tillbaka 
+      </Button>
+
       {moviesToRender.length > 0 ? (
       <>
       <Typography sx={styles.title}>Movies</Typography>
