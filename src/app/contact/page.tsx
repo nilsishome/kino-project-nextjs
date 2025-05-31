@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Box, Typography, Stack } from "@mui/material";
-import FormField from "@/components/FormField";
+import FormField from "@/components/ui/FormField";
 
 export default function contact() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
