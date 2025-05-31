@@ -83,6 +83,17 @@ const ReviewDialog: React.FC<Props> = ({
         >
           <CustomTextField
             variant="outlined"
+            label="Namn"
+            onChange={handleReviewerName}
+            slotProps={{
+              inputLabel: { shrink: true },
+            }}
+            sx={{
+              marginBottom: "1rem",
+            }}
+          ></CustomTextField>
+          <CustomTextField
+            variant="outlined"
             label="Kommentar"
             onChange={handleCommentChange}
             slotProps={{
@@ -104,6 +115,7 @@ const ReviewDialog: React.FC<Props> = ({
           >
             Välj ett betyg 1-5
           </Typography>
+
           <Rating
             value={ratingValue}
             sx={{
@@ -114,18 +126,6 @@ const ReviewDialog: React.FC<Props> = ({
               setRatingValue(newValue);
             }}
           ></Rating>
-
-          <CustomTextField
-            variant="outlined"
-            label="Namn"
-            onChange={handleReviewerName}
-            slotProps={{
-              inputLabel: { shrink: true },
-            }}
-            sx={{
-              marginBottom: "1rem",
-            }}
-          ></CustomTextField>
         </DialogContent>
         <DialogActions>
           <Button
