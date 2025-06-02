@@ -23,7 +23,7 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
         sx={{
           display: "grid",
           gridTemplateColumns: {
-            xs: "1fr 1fr",
+            xs: "1fr",
             sm: "2fr 1fr 1fr",
           },
           gridAutoRows: "auto",
@@ -34,30 +34,39 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
       >
         <Box
           sx={{
-            gridColumn: { xs: "1", sm: "1" },
+            gridColumn: { xs: "1", sm: "1 / span 2" },
+            display: "flex",
+            alignItems: "start",
+            gap: 2,
           }}
         >
-          <Typography variant="h2">{movie.title}</Typography>
-          <Typography variant="body1">{movie.story}</Typography>
-        </Box>
+          <Box
+            sx={{
+              gridColumn: { xs: "1", sm: "1" },
+            }}
+          >
+            <Typography variant="h2">{movie.title}</Typography>
+            <Typography variant="body1">{movie.story}</Typography>
+          </Box>
 
-        <Box
-          component="img"
-          src={movie.coverImage}
-          alt="Filmomslag"
-          sx={{
-            width: {
-              xs: "50%",
-              sm: "80%",
-            },
-            justifySelf: {
-              xs: "start",
-              sm: "end",
-            },
-            height: "auto",
-            gridColumn: { xs: "1", sm: "2" },
-          }}
-        />
+          <Box
+            component="img"
+            src={movie.coverImage}
+            alt="Filmomslag"
+            sx={{
+              width: {
+                xs: "50%",
+                sm: "70%",
+              },
+              justifySelf: {
+                xs: "start",
+                sm: "end",
+              },
+
+              gridColumn: { xs: "1", sm: "2" },
+            }}
+          />
+        </Box>
 
         <Box
           sx={{
@@ -77,10 +86,7 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            alignItems: {
-              xs: "flex-start",
-              sm: "flex-start",
-            },
+            alignItems: "flex-start",
           }}
         >
           <Box
