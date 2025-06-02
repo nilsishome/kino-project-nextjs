@@ -1,9 +1,13 @@
 import mongoose from "mongoose";
 
 export async function connectToDatabase() {
-  const USERNAME = process.env.MONGO_USER;
-  const PASSWORD = process.env.MONGO_PASS;
+  // Återanvänder anslutning för testning
+  if (mongoose.connection.readyState === 1) return;
 
-  const uri = `mongodb+srv://${USERNAME}:${PASSWORD}@kinocluster.dtam1oe.mongodb.net/Kino?retryWrites=true&w=majority&appName=KinoCluster`;
+  // Använder testdatabas om MONGODB_URI är satt, annars produktionsdatabas
+  const uri =
+    process.env.MONGODB_URI ||
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@kinocluster.dtam1oe.mongodb.net/Kino?retryWrites=true&w=majority&appName=KinoCluster`;
+
   return await mongoose.connect(uri);
 }
