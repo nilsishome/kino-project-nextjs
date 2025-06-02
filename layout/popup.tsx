@@ -4,9 +4,11 @@ import React from "react";
 
 import { Box, Fade, Typography, Stepper, StepLabel, Step } from "@mui/material";
 
+import Seating from "../src/app/booking/seating";
+
 const steps = ["Biljettbokning", "Platsbokning", "Inloggning"];
 
-export default function popup() {
+export default function () {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -71,6 +73,8 @@ export default function popup() {
         </Stepper>
 
         {/* Booking components under here */}
+
+        <Seating />
       </Box>
     </Fade>
   );

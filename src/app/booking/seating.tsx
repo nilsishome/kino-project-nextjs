@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
+import Popup from "../../../layout/popup";
 
 
 type Seat = {
