@@ -1,10 +1,13 @@
 import { describe, test } from "@jest/globals";
 
-import * as db from "@/tests/db";
+import * as db from "@/utils/db";
 import { Movie, MovieScreening } from "@/types";
 
 import { Movies } from "@/database/models";
-import { GET, getHomePageScreenings } from "./route";
+import {
+  GET,
+  getHomePageScreenings,
+} from "../src/app/api/movies/showing/route";
 
 jest.mock("@/database/connect");
 
@@ -25,9 +28,8 @@ describe("GET /api/movies/showing", () => {
 
   test("default retrieval of movie screenings from database", async () => {
     await insertMovies(movieLength);
-    const screenings: MovieScreening[] = await getHomePageScreenings(
-      numberOfScreenings
-    );
+    const screenings: MovieScreening[] =
+      await getHomePageScreenings(numberOfScreenings);
     const parsedScreenings = JSON.parse(JSON.stringify(screenings));
 
     const res = await GET();
@@ -51,9 +53,8 @@ describe("GET /api/movies/showing", () => {
   test("retrieval of 1 movie screening from database", async () => {
     await insertMovies(movieLength);
     numberOfScreenings = 1;
-    const screenings: MovieScreening[] = await getHomePageScreenings(
-      numberOfScreenings
-    );
+    const screenings: MovieScreening[] =
+      await getHomePageScreenings(numberOfScreenings);
     const parsedScreenings = JSON.parse(JSON.stringify(screenings));
 
     const res = await GET();
@@ -71,9 +72,8 @@ describe("GET /api/movies/showing", () => {
   test("retrieval of 11 movie screenings from database", async () => {
     await insertMovies(movieLength);
     numberOfScreenings = 11;
-    const screenings: MovieScreening[] = await getHomePageScreenings(
-      numberOfScreenings
-    );
+    const screenings: MovieScreening[] =
+      await getHomePageScreenings(numberOfScreenings);
     const parsedScreenings = JSON.parse(JSON.stringify(screenings));
 
     const res = await GET();
@@ -90,9 +90,8 @@ describe("GET /api/movies/showing", () => {
   test("insufficient number of screenings", async () => {
     movieLength = 1;
     await insertMovies(movieLength);
-    const screenings: MovieScreening[] = await getHomePageScreenings(
-      numberOfScreenings
-    );
+    const screenings: MovieScreening[] =
+      await getHomePageScreenings(numberOfScreenings);
     const parsedScreenings = JSON.parse(JSON.stringify(screenings));
 
     const res = await GET();
