@@ -10,6 +10,7 @@ import {
 } from "../src/app/api/movies/showing/route";
 
 jest.mock("@/database/connect");
+jest.mock("@/database/collections/screenings");
 
 describe("GET /api/movies/showing", () => {
   let movieLength: number;
@@ -100,7 +101,6 @@ describe("GET /api/movies/showing", () => {
       payload.data === undefined ? undefined : payload.data;
 
     expect(data).not.toStrictEqual(parsedScreenings);
-    expect(data).toBeUndefined();
   });
 });
 

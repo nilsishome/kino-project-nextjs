@@ -1,18 +1,42 @@
+"use client";
 import { Box, Divider, List, ListItem, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
 import { MovieScreening } from "@/types";
 
-// This is a server component for rendering movie screenings on the home page.
+const CurrentScreenings: React.FC = () => {
+  const [movieData, setMovieData] = React.useState<MovieScreening[]>([]);
+  const [fetchingScreenings, setFetchingScreenings] =
+    React.useState<boolean>(true); // This state is for fetching screenings only once
+  const [noScreenings, setNoScreenings] = React.useState<boolean>(false); // Re-render the screenings if there are less than 10 of them
 
-const CurrentScreenings: React.FC = async () => {
-  const response = await fetch("http://localhost:3000/api/movies/showing");
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/movies/showing"
+        );
+        if (!response.ok) throw new Error("Failed to retrieve data!");
 
-  if (!response.ok) throw new Error("Failed to retrieve data!");
+        if (fetchingScreenings) {
+          const payload = await response.json();
+          const movies: MovieScreening[] = payload.data;
 
-  const payload = await response.json();
-  const movieData: MovieScreening[] = payload.data;
+          if (movies.length === 10) {
+            setMovieData(movies);
+          } else {
+            setNoScreenings(true);
+          }
+        }
+        setFetchingScreenings(false);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  }, [noScreenings]);
 
   const dates: string[] = [];
   const movieScreenings: MovieScreening[][] = [];

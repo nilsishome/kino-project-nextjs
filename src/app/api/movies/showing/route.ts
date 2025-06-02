@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { connectToDatabase } from "@/database/connect";
+import { resetScreenings } from "@/database/collections/screenings";
 import { Movies } from "@/database/models";
 import { MovieScreening } from "@/types";
 
@@ -8,17 +9,21 @@ export async function GET() {
   try {
     await connectToDatabase();
     const limit = 10;
-    const currentScreenings: MovieScreening[] = await getHomePageScreenings(
-      limit
-    );
+    const currentScreenings: MovieScreening[] =
+      await getHomePageScreenings(limit);
 
-    if (currentScreenings.length !== 10) {
-      return NextResponse.json(
-        {
-          error: "Too many or too few screenings retrieved!",
-        },
-        { status: 404 }
-      );
+    if (currentScreenings.length < 10) {
+      try {
+        resetScreenings();
+        // Resets and updates all screenings in our database
+      } catch (error) {
+        return NextResponse.json(
+          {
+            error: "Too many or too few screenings retrieved!",
+          },
+          { status: 404 }
+        );
+      }
     }
 
     return NextResponse.json(
