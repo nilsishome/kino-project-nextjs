@@ -5,7 +5,7 @@ import Image from "next/image";
 import { CircularProgress } from "@mui/material";
 
 interface PaymentPopupProps {
-  onNextStep: () => void;
+  onNextStep: (method: "Kort" | "Swish" | "På plats") => void;
 }
 
 export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
@@ -26,7 +26,8 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
         setCardLoading(false);
       }
       alert(`Betalningen med ${type === "swish" ? "Swish" : "Kort"} lyckades!`);
-      onNextStep();
+      // Payment method is sent to confirmationPopup
+      onNextStep(type === "swish" ? "Swish" : "Kort");
     }, 2000);
   };
 
@@ -132,7 +133,7 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
       <Button
         variant="outlined"
         color="secondary"
-        onClick={onNextStep}
+        onClick={() => onNextStep("På plats")}
         sx={{ mt: 1 }}
       >
         Betala på plats

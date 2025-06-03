@@ -4,11 +4,18 @@ import React from "react";
 
 import { Box, Fade, Typography, Stepper, StepLabel, Step, Button } from "@mui/material";
 import PaymentPopup from "./PaymentPopup";
+import ConfirmationPopup from "./ConfirmationPopup";
 
-const steps = ["Biljettbokning", "Platsbokning", "Inloggning", "Betalning"];
+const steps = ["Biljettbokning", "Platsbokning", "Inloggning", "Betalning", "Bokningsbekräftelse"];
 
 export default function popup() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<"Kort" | "Swish" | "På plats" | null>(null);
+
+  const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => { 
+    setSelectedPaymentMethod(method);
+    setActiveStep(4);
+  };
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -72,7 +79,10 @@ export default function popup() {
         </Stepper>
          {/* Navigation buttons */}
         <Box sx={{ marginTop: "2rem", flexGrow: 1, height: "60%", borderRadius: "10px" }}>
-          {activeStep === 3 && <PaymentPopup onNextStep={() => setActiveStep(4)} />}
+          {activeStep === 3 && <PaymentPopup onNextStep={handlePaymentComplete} />}
+            {activeStep === 4 && selectedPaymentMethod && (
+            <ConfirmationPopup paymentMethod={selectedPaymentMethod}/>
+            )}
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", position: "relative", padding: "3rem"}}>
           {/* Back */}
