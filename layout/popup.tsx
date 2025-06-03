@@ -3,6 +3,7 @@
 import React from "react";
 
 import { Box, Fade, Typography, Stepper, StepLabel, Step } from "@mui/material";
+import Disability from "../components/popup/disability";
 
 const steps = ["Biljettbokning", "Platsbokning", "Inloggning"];
 
@@ -71,6 +72,7 @@ export default function popup() {
         </Stepper>
 
         {/* Booking components under here */}
+        <Disability />
       </Box>
     </Fade>
   );
