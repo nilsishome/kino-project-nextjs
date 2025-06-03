@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { Box, Fade, Typography, Stepper, StepLabel, Step } from "@mui/material";
+import { Box, Fade, Typography, Stepper, StepLabel, Step, Button } from "@mui/material";
 
 import Seating from "../src/app/booking/seating";
 
@@ -75,6 +75,8 @@ export default function () {
         {/* Booking components under here */}
 
         <Seating />
+
+
       </Box>
     </Fade>
   );

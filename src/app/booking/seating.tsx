@@ -1,8 +1,10 @@
 "use client";
 
+
 import React, { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
-import Popup from "../../../layout/popup";
+import "@fortawesome/fontawesome-free/css/all.min.css"; //rullstol ikonen.
+
 
 
 type Seat = {
@@ -13,12 +15,13 @@ type Seat = {
   isWheelchair?: boolean;
 };
 
+//48 sittplatser
 const rows = 6;
 const cols = 8;
 
 export default function Seating() {
   const [seats, setSeats] = useState<Seat[]>(
-    Array.from({ length: rows * cols }, (_, index) => ({
+    Array.from({ length: rows * cols }, (_, index) => ({   //En array för alla sittplatser.
       row: Math.floor(index / cols),
       col: index % cols,
       isTaken: false,
@@ -71,7 +74,7 @@ export default function Seating() {
             width: 25,
             height: 25,
             minWidth: 25,
-            backgroundColor: seat.isTaken
+            backgroundColor: seat.isTaken   //olika färger utifrån status på sittplats.
               ? "grey"
               : seat.isSelected
               ? "lightgreen"
@@ -91,22 +94,28 @@ export default function Seating() {
 
           }}
         >
-          {seat.isWheelchair ? "♿" : ""}
+        
+        {seat.isWheelchair ? <i className="fa fa-wheelchair" style={{ fontSize: 14 }}></i> : null}
+
         </Button>
       ))}
     </Box>
 
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        marginTop: 3,
-        maxWidth: "400px",
-        marginX: "auto",
-      }}
-    >
 
-    </Box>
+    <Box sx={{ display: "flex", justifyContent: "center", gap: 4, mt: 3 }}>
+  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+    <Box sx={{ width: 16, height: 16, borderRadius: "50%", backgroundColor: "lightgreen" }} />
+    <Typography variant="body2">Vald plats</Typography>
+  </Box>
+  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+    <Box sx={{ width: 16, height: 16, borderRadius: "50%", backgroundColor: "lightgray" }} />
+    <Typography variant="body2">Ledig plats</Typography>
+  </Box>
+  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+    <Box sx={{ width: 16, height: 16, borderRadius: "50%", backgroundColor: "gray" }} />
+    <Typography variant="body2">Upptagen plats</Typography>
+  </Box>
+</Box>
   
   </Box>
 
