@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Button, ButtonGroup } from "@mui/material";
 
@@ -17,30 +19,28 @@ export default function Nav() {
       }}
     >
       <Button
+        href="/"
         variant="text"
         sx={{ margin: "1rem", fontSize: { sm: "1rem", md: "1.5rem" } }}
       >
         START
       </Button>
       <Button
+        href="/movies"
         variant="text"
         sx={{ margin: "1rem", fontSize: { sm: "1rem", md: "1.5rem" } }}
       >
         FILMER
       </Button>
       <Button
-        variant="text"
-        sx={{ margin: "1rem", fontSize: { sm: "1rem", md: "1.5rem" } }}
-      >
-        SERVERING
-      </Button>
-      <Button
+        href="/about"
         variant="text"
         sx={{ margin: "1rem", fontSize: { sm: "1rem", md: "1.5rem" } }}
       >
         OM OSS
       </Button>
       <Button
+        href="/contact"
         variant="text"
         sx={{ margin: "1rem", fontSize: { sm: "1rem", md: "1.5rem" } }}
       >

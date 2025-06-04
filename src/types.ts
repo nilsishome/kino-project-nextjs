@@ -1,5 +1,5 @@
 export type Movie = {
-  _id: string;
+  _id?: string;
   title: string;
   story: string;
   genre: string;
@@ -27,4 +27,12 @@ export type Movie = {
       saloon: String;
     }
   ];
+};
+
+// This type is only used for home page current screenings
+export type MovieScreening = {
+  title: string;
+  coverImage: string;
+  date?: string;
+  time: string;
 };
