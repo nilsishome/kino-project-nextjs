@@ -60,7 +60,7 @@ sx={{
   gap: 2,
 }}
 >
-  <Box sx={{ flex: 1, textAlign: "left" }}>
+  <Box sx={{ flex: 1, textAlign: "center" }}>
         <Typography variant="h6" color="#f1ddc5" gutterBottom>
           {data.filmTitle}
         </Typography>
