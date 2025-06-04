@@ -5,9 +5,10 @@ import TicketCounter from "./components/TicketCounter";
 
 type Props = {
   movie: Movie;
+  getTotalTickets: (totalSum: number) => void;
 };
 
-const BookTickets: React.FC<Props> = ({ movie }) => {
+const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
   const [adultCount, setAdultCount] = useState(0);
   const [childCount, setChildCount] = useState(0);
   const [seniorCount, setSeniorCount] = useState(0);
@@ -16,6 +17,16 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
   const [seniorPrice, setSeniorPrice] = useState(0);
 
   const ticketPrice = 120;
+
+  const sumOfTickets = () => {
+    let totalSum = adultCount + childCount + seniorCount;
+
+    if (totalSum <= 0) {
+      return;
+    }
+
+    getTotalTickets(totalSum);
+  };
 
   return (
     <>
@@ -167,10 +178,12 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
               onIncrement={() => {
                 setAdultCount((prev) => prev + 1);
                 setAdultPrice((prev) => prev + ticketPrice);
+                sumOfTickets();
               }}
               onDecrement={() => {
                 setAdultCount((prev) => Math.max(prev - 1, 0));
                 setAdultPrice((prev) => Math.max(prev - ticketPrice, 0));
+                sumOfTickets();
               }}
             />
             <TicketCounter
@@ -179,10 +192,12 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
               onIncrement={() => {
                 setChildCount((prev) => prev + 1);
                 setChildPrice((prev) => prev + ticketPrice / 2);
+                sumOfTickets();
               }}
               onDecrement={() => {
                 setChildCount((prev) => Math.max(prev - 1, 0));
                 setChildPrice((prev) => Math.max(prev - ticketPrice / 2, 0));
+                sumOfTickets();
               }}
             />
             <TicketCounter
@@ -191,10 +206,12 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
               onIncrement={() => {
                 setSeniorCount((prev) => prev + 1);
                 setSeniorPrice((prev) => prev + ticketPrice * 0.8);
+                sumOfTickets();
               }}
               onDecrement={() => {
                 setSeniorCount((prev) => Math.max(prev - 1, 0));
                 setSeniorPrice((prev) => Math.max(prev - ticketPrice * 0.8, 0));
+                sumOfTickets();
               }}
             />
           </Box>

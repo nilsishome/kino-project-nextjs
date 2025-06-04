@@ -18,9 +18,15 @@ const cols = 8;
 
 type Props = {
   totalTickets: number;
+  setSelectedSeats: React.Dispatch<React.SetStateAction<number[]>>;
+  selectedSeats: number[];
 };
 
-export default function Seating({ totalTickets }: Props) {
+export default function Seating({
+  totalTickets,
+  setSelectedSeats,
+  selectedSeats,
+}: Props) {
   const [seats, setSeats] = useState<Seat[]>(
     Array.from({ length: rows * cols }, (_, index) => ({
       //En array för alla sittplatser.
@@ -42,7 +48,8 @@ export default function Seating({ totalTickets }: Props) {
         if (seat.isSelected) {
           // Avmarkera plats
           return { ...seat, isSelected: false };
-        } else if (selectedCount < totalTickets) {
+        } else if (selectedCount <= totalTickets) {
+          setSelectedSeats([...selectedSeats, i]);
           return { ...seat, isSelected: true };
         } else {
           return seat;

@@ -7,11 +7,11 @@ import {
   Divider,
   Grid,
 } from "@mui/material";
-import { Movie } from "@/types";
+import { Movie, BookingScreening } from "@/types";
 
 type Props = {
   movie: Movie;
-  onScreeningClick: (screening: Object) => void;
+  onScreeningClick: (screening: BookingScreening) => void;
 };
 
 const Screenings: React.FC<Props> = ({ movie, onScreeningClick }) => {

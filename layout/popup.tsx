@@ -14,12 +14,9 @@ import PaymentPopup from "../components/popup/PaymentPopup";
 import ConfirmationPopup from "../components/popup/ConfirmationPopup";
 import Seating from "../components/popup/seating";
 import Login from "@/app/login/page";
-import { Movie } from "@/types";
+import { BookingScreening, Movie } from "@/types";
 import BookTickets from "../components/popup/bookTickets";
-
-type Props = {
-  movie: Movie;
-};
+import bookingCreated from "../src/database/collections/booking";
 
 const steps = [
   "Biljettbokning",
@@ -31,16 +28,24 @@ const steps = [
 type PopupProps = {
   handlePopupState: (state: boolean) => void;
   movie: Movie;
+  screeningData: BookingScreening;
 };
 
-const Popup: React.FC<PopupProps> = ({ handlePopupState, movie }) => {
+const Popup: React.FC<PopupProps> = ({
+  handlePopupState,
+  movie,
+  screeningData,
+}) => {
+  const [totalTickets, setTotalTickets] = React.useState(0);
   const [activeStep, setActiveStep] = React.useState(0);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<
     "Kort" | "Swish" | "På plats" | null
   >(null);
+  const [selectedSeats, setSelectedSeats] = React.useState<number[]>([]);
 
   const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => {
     setSelectedPaymentMethod(method);
+    sendToDatabase();
     setActiveStep(3);
   };
 
@@ -58,6 +63,28 @@ const Popup: React.FC<PopupProps> = ({ handlePopupState, movie }) => {
 
   const handleReset = () => {
     setActiveStep(0);
+  };
+
+  const getTotalTickets = (totalSum: number) => {
+    setTotalTickets(totalSum);
+  };
+
+  const sendToDatabase = async () => {
+    let sendingData = {
+      selectedSeats: selectedSeats,
+      totalTickets: totalTickets,
+      screeningData: screeningData,
+    };
+
+    await fetch(`/api/movies/${movie._id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sendingData,
+      }),
+    });
   };
 
   return (
@@ -122,13 +149,26 @@ const Popup: React.FC<PopupProps> = ({ handlePopupState, movie }) => {
             borderRadius: "20px",
           }}
         >
-          {activeStep === 0 && <BookTickets movie={movie} />}
-          {activeStep === 1 && <Seating totalTickets={3} />}
+          {activeStep === 0 && (
+            <BookTickets getTotalTickets={getTotalTickets} movie={movie} />
+          )}
+          {activeStep === 1 && (
+            <Seating
+              selectedSeats={selectedSeats}
+              setSelectedSeats={setSelectedSeats}
+              totalTickets={totalTickets}
+            />
+          )}
           {activeStep === 2 && (
             <PaymentPopup onNextStep={handlePaymentComplete} />
           )}
           {activeStep === 3 && selectedPaymentMethod && (
-            <ConfirmationPopup paymentMethod={selectedPaymentMethod} />
+            <ConfirmationPopup
+              screeningData={screeningData}
+              totalTickets={totalTickets}
+              selectedSeats={selectedSeats}
+              paymentMethod={selectedPaymentMethod}
+            />
           )}
         </Box>
         <Box

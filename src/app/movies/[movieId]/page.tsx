@@ -3,7 +3,7 @@
 import { Box, Rating, Typography } from "@mui/material";
 import Image from "next/image";
 
-import { Movie } from "@/types";
+import { Movie, BookingScreening } from "@/types";
 import Text from "../../../../components/movies/[movieId]/text";
 import Popup from "../../../../layout/popup";
 import Screenings from "../../../../components/movies/[movieId]/screenings";
@@ -18,6 +18,7 @@ export default function Page({
   const [popupState, setPopupState] = useState<boolean>(false);
   const [movieState, setMovieState] = useState<Movie>();
   const [movieRating, setMovieRating] = useState<number>(0);
+  const [screeningData, setScreeningData] = useState<BookingScreening>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +45,18 @@ export default function Page({
     setPopupState(state);
   };
 
-  const onScreeningClick = (screening: Object) => {
+  const onScreeningClick = (screening: BookingScreening) => {
+    let screeningArray = {
+      title: movieState!.title,
+      time: screening.time,
+      date: screening.date,
+      saloon: screening.saloon,
+      id: screening._id,
+      image: movieState?.coverImage,
+    };
+
+    setScreeningData(screeningArray);
+
     handlePopupState(true);
   };
 
@@ -124,7 +136,11 @@ export default function Page({
             </Box>
           </>
         ) : (
-          <Popup movie={movieState} handlePopupState={handlePopupState} />
+          <Popup
+            movie={movieState}
+            screeningData={screeningData!}
+            handlePopupState={handlePopupState}
+          />
         )}
       </>
     );
