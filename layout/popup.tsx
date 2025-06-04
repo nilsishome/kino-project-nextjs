@@ -12,18 +12,10 @@ import {
 } from "@mui/material";
 import PaymentPopup from "../components/popup/PaymentPopup";
 import ConfirmationPopup from "../components/popup/ConfirmationPopup";
-
-const steps = [
-  "Biljettbokning",
-  "Platsbokning",
-  "Betalning",
-  "Bokningsbekräftelse",
-];
-
 import Seating from "../components/popup/seating";
 import Login from "@/app/login/page";
 import { Movie } from "@/types";
-import BookTickets from "../components/booking/bookTickets";
+import BookTickets from "../components/popup/bookTickets";
 
 type Props = {
   movie: Movie;
@@ -32,7 +24,6 @@ type Props = {
 const steps = [
   "Biljettbokning",
   "Platsbokning",
-  "Inloggning",
   "Betalning",
   "Bokningsbekräftelse",
 ];
@@ -147,6 +138,7 @@ const Popup: React.FC<PopupProps> = ({ handlePopupState, movie }) => {
             alignItems: "center",
             position: "relative",
             padding: "3rem",
+            marginBottom: "2rem",
           }}
         >
           {/* Back */}

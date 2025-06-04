@@ -198,27 +198,6 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
             />
           </Box>
         </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            gridColumn: "1 / -1",
-          }}
-        >
-          <Button sx={{ border: "1px solid white", borderRadius: "16px" }}>
-            Tillbaka
-          </Button>
-          <Button
-            sx={{
-              border: "1px solid white",
-              borderRadius: "16px",
-              width: "90px",
-            }}
-          >
-            Fortsätt
-          </Button>
-        </Box>
       </Box>
     </>
   );
