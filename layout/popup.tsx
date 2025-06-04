@@ -78,7 +78,7 @@ export default function popup() {
           ))}
         </Stepper>
          {/* Navigation buttons */}
-        <Box sx={{ marginTop: "2rem", flexGrow: 1, height: "60%", borderRadius: "10px" }}>
+        <Box sx={{ marginTop: "2rem", flexGrow: 1, height: "60%", borderRadius: "20px" }}>
           {activeStep === 3 && <PaymentPopup onNextStep={handlePaymentComplete} />}
             {activeStep === 4 && selectedPaymentMethod && (
             <ConfirmationPopup paymentMethod={selectedPaymentMethod}/>
@@ -92,14 +92,13 @@ export default function popup() {
             </Button>
           )}
             {/* Continue */}
-            {activeStep < steps.length - 1 && ( 
-              <Button variant="outlined" color="secondary" onClick={handleNext} sx={{  position: "absolute", bottom: 0, right: "10rem" }}>
+            {activeStep < steps.length - 1 && activeStep !== 3 && ( 
+              <Button variant="outlined" color="secondary" onClick={handleNext} sx={{  position: "absolute", bottom: 0, right: "10rem"}}>
                 Fortsätt
               </Button>
             )}
         </Box>
         {/* Booking components under here */}
-       
       </Box>
     </Fade>
   );

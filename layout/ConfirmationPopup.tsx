@@ -17,6 +17,12 @@ const mockedData = {
 
 };
 
+const filmDetails = { 
+  image: "/swish.png", // Temporary 
+  time: "19:30", 
+  salon: "Salong 3", 
+}
+
 export default function ConfirmationPopup( {paymentMethod }: ConfirmationPopupProps) { 
   const data = mockedData;
 return ( 
@@ -41,8 +47,40 @@ return (
    Namn: {data.firstName} {data.lastName} <br />
    Antal biljetter: {data.tickets} <br />
    Betalningsätt: {paymentMethod} <br />
-   Film: {data.filmTitle}
   </Typography>
+{/* Film details */}
+<Box 
+sx={{ 
+  display: "flex", 
+  justifyContent: "space-between", 
+  alignItems: "flex-start", 
+  width: "100%",
+  maxWidth: "500px", 
+  mt: 4, 
+  gap: 2,
+}}
+>
+  <Box sx={{ flex: 1, textAlign: "left" }}>
+        <Typography variant="h6" color="#f1ddc5" gutterBottom>
+          {data.filmTitle}
+        </Typography>
+        <Typography variant="body2" color="#f1ddc5">
+          Tid: {filmDetails.time} <br />
+          Salong: {filmDetails.salon}
+        </Typography>
+      </Box>
+      <Box
+        component="img"
+        src={filmDetails.image}
+        alt={data.filmTitle}
+        sx={{
+          width: "100px",
+          height: "auto",
+          borderRadius: "8px",
+          objectFit: "cover",
+        }}
+      />
+    </Box>
   </Box>
 );
 

@@ -38,8 +38,9 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
         flexDirection: "column",
         justifyContent: "center",
         height: "100%",
-        padding: "7rem",
-        width: "50%",
+        widht: "100%",
+        padding: { xs:"2rem", sm: "4rem", md: "7rem" }, 
+        maxWidth: "500px",
         mx: "auto",
       }}
     >
@@ -54,11 +55,14 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
         disabled={swishLoading}
         sx={{
           mt: 1,
+          width: { xs: "100%", sm: "300px" },
+          height: "60px",
           display: "flex",
           textAlign: "center",
           justifyContent: "space-between",
           alignItems: "center",
-          width: "100%",
+          padding: "0 1rem",
+          // width: "100%",
           color: "#f1ddc5",
           "&.Mui-disabled": {
             color: "#f1ddc5",
@@ -96,11 +100,13 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
         disabled={cardLoading}
         sx={{
           mt: 1,
+          width: { xs: "100%", sm: "300px" },
+          height: "60px",
           display: "flex",
           textAlign: "center",
           justifyContent: "space-between",
           alignItems: "center",
-          width: "100%",
+          padding: "0 1rem",
           color: "#f1ddc5",
           "&.Mui-disabled": {
             color: "#f1ddc5",
@@ -134,7 +140,8 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
         variant="outlined"
         color="secondary"
         onClick={() => onNextStep("På plats")}
-        sx={{ mt: 1 }}
+        sx={{ mt: 1, width: { xs: "100%", sm: "300px" },
+          height: "60px", }}
       >
         Betala på plats
       </Button>
