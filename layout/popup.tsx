@@ -2,15 +2,24 @@
 
 import React from "react";
 
-import { Box, Fade, Typography, Stepper, StepLabel, Step, Button, Button } from "@mui/material";
+import { Box, Fade, Typography, Stepper, StepLabel, Step, Button} from "@mui/material";
 import PaymentPopup from "./PaymentPopup";
+import ConfirmationPopup from "./ConfirmationPopup";
+
+
+const steps = ["Biljettbokning", "Platsbokning", "Inloggning", "Betalning", "Bokningsbekräftelse"];
 
 import Seating from "../src/app/booking/seating";
 
-const steps = ["Biljettbokning", "Platsbokning", "Inloggning", "Betalning"];
 
 export default function () {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<"Kort" | "Swish" | "På plats" | null>(null);
+
+  const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => { 
+    setSelectedPaymentMethod(method);
+    setActiveStep(4);
+  };
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -73,8 +82,11 @@ export default function () {
           ))}
         </Stepper>
          {/* Navigation buttons */}
-        <Box sx={{ marginTop: "2rem", flexGrow: 1, height: "60%", borderRadius: "10px" }}>
-          {activeStep === 3 && <PaymentPopup onNextStep={() => setActiveStep(4)} />}
+        <Box sx={{ marginTop: "2rem", flexGrow: 1, height: "60%", borderRadius: "20px" }}>
+          {activeStep === 3 && <PaymentPopup onNextStep={handlePaymentComplete} />}
+            {activeStep === 4 && selectedPaymentMethod && (
+            <ConfirmationPopup paymentMethod={selectedPaymentMethod}/>
+            )}
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", position: "relative", padding: "3rem"}}>
           {/* Back */}
@@ -84,16 +96,15 @@ export default function () {
             </Button>
           )}
             {/* Continue */}
-            {activeStep < steps.length - 1 && ( 
-              <Button variant="outlined" color="secondary" onClick={handleNext} sx={{  position: "absolute", bottom: 0, right: "10rem" }}>
+            {activeStep < steps.length - 1 && activeStep !== 3 && ( 
+              <Button variant="outlined" color="secondary" onClick={handleNext} sx={{  position: "absolute", bottom: 0, right: "10rem"}}>
                 Fortsätt
               </Button>
             )}
         </Box>
         {/* Booking components under here */}
 
-        <Seating />
-
+        <Seating totalTickets={3} /> 
 
       </Box>
     </Fade>

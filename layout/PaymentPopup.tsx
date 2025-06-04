@@ -2,10 +2,11 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import Image from "next/image";
+import { toast } from "sonner";
 import { CircularProgress } from "@mui/material";
 
 interface PaymentPopupProps {
-  onNextStep: () => void;
+  onNextStep: (method: "Kort" | "Swish" | "På plats") => void;
 }
 
 export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
@@ -25,8 +26,9 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
       } else {
         setCardLoading(false);
       }
-      alert(`Betalningen med ${type === "swish" ? "Swish" : "Kort"} lyckades!`);
-      onNextStep();
+      toast.success(`Betalningen med ${type === "swish" ? "Swish" : "Kort"} lyckades!`);
+      // Payment method is sent to confirmationPopup
+      onNextStep(type === "swish" ? "Swish" : "Kort");
     }, 2000);
   };
 
@@ -37,8 +39,9 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
         flexDirection: "column",
         justifyContent: "center",
         height: "100%",
-        padding: "7rem",
-        width: "50%",
+        widht: "100%",
+        padding: { xs:"2rem", sm: "4rem", md: "7rem" }, 
+        maxWidth: "500px",
         mx: "auto",
       }}
     >
@@ -53,11 +56,14 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
         disabled={swishLoading}
         sx={{
           mt: 1,
+          width: { xs: "100%", sm: "300px" },
+          height: "60px",
           display: "flex",
           textAlign: "center",
           justifyContent: "space-between",
           alignItems: "center",
-          width: "100%",
+          padding: "0 1rem",
+          // width: "100%",
           color: "#f1ddc5",
           "&.Mui-disabled": {
             color: "#f1ddc5",
@@ -95,11 +101,13 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
         disabled={cardLoading}
         sx={{
           mt: 1,
+          width: { xs: "100%", sm: "300px" },
+          height: "60px",
           display: "flex",
           textAlign: "center",
           justifyContent: "space-between",
           alignItems: "center",
-          width: "100%",
+          padding: "0 1rem",
           color: "#f1ddc5",
           "&.Mui-disabled": {
             color: "#f1ddc5",
@@ -132,8 +140,9 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
       <Button
         variant="outlined"
         color="secondary"
-        onClick={onNextStep}
-        sx={{ mt: 1 }}
+        onClick={() => onNextStep("På plats")}
+        sx={{ mt: 1, width: { xs: "100%", sm: "300px" },
+          height: "60px", }}
       >
         Betala på plats
       </Button>
