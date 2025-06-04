@@ -2,13 +2,17 @@
 
 import React from "react";
 
-import { Box, Fade, Typography, Stepper, StepLabel, Step, Button } from "@mui/material";
+import { Box, Fade, Typography, Stepper, StepLabel, Step, Button, Button } from "@mui/material";
 import PaymentPopup from "./PaymentPopup";
 import ConfirmationPopup from "./ConfirmationPopup";
 
+
 const steps = ["Biljettbokning", "Platsbokning", "Inloggning", "Betalning", "Bokningsbekräftelse"];
 
-export default function popup() {
+import Seating from "../src/app/booking/seating";
+
+
+export default function () {
   const [activeStep, setActiveStep] = React.useState(0);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<"Kort" | "Swish" | "På plats" | null>(null);
 
@@ -99,6 +103,9 @@ export default function popup() {
             )}
         </Box>
         {/* Booking components under here */}
+
+        <Seating />
+
       </Box>
     </Fade>
   );
