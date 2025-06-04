@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { Box, Fade, Typography, Stepper, StepLabel, Step, Button, Button } from "@mui/material";
+import { Box, Fade, Typography, Stepper, StepLabel, Step, Button } from "@mui/material";
 import PaymentPopup from "./PaymentPopup";
 
 import Seating from "../src/app/booking/seating";
