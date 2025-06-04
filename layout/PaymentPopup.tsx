@@ -2,6 +2,7 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import Image from "next/image";
+import { toast } from "sonner";
 import { CircularProgress } from "@mui/material";
 
 interface PaymentPopupProps {
@@ -25,7 +26,7 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
       } else {
         setCardLoading(false);
       }
-      alert(`Betalningen med ${type === "swish" ? "Swish" : "Kort"} lyckades!`);
+      toast.success(`Betalningen med ${type === "swish" ? "Swish" : "Kort"} lyckades!`);
       // Payment method is sent to confirmationPopup
       onNextStep(type === "swish" ? "Swish" : "Kort");
     }, 2000);
