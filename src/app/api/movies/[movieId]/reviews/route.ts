@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/database/connect";
 import { Movies } from "@/database/models";
 
-export async function GET(
+export async function POST(
   req: NextRequest,
   {
     params,
@@ -14,7 +14,8 @@ export async function GET(
 
   try {
     await connectToDatabase();
-    const movie = await Movies.findById(movieId);
+
+    let movie = await Movies.findById(movieId);
 
     if (!movie) {
       return NextResponse.json(
@@ -25,10 +26,22 @@ export async function GET(
       );
     }
 
+    let body = await req.json();
+
+    let newDate = new Date(body.sendingData.date);
+
+    body.sendingData.date = newDate;
+
+    await Movies.updateOne(
+      { _id: movieId },
+      { $push: { reviews: body.sendingData } }
+    );
+
+    movie = await Movies.findById(movieId);
+
     return NextResponse.json(
       {
-        data: movie,
-        rating: 3.5,
+        data: movie!.reviews,
       },
       { status: 200 }
     );
