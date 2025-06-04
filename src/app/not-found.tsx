@@ -9,13 +9,11 @@ export default function Custom404() {
     <Container
       maxWidth="md"
       sx={{
-        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
-        py: 6,
       }}
     >
       <Animation404 />
