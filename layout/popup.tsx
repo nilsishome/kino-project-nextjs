@@ -2,12 +2,14 @@
 
 import React from "react";
 
-import { Box, Fade, Typography, Stepper, StepLabel, Step, Button } from "@mui/material";
+import { Box, Fade, Typography, Stepper, StepLabel, Step, Button, Button } from "@mui/material";
 import PaymentPopup from "./PaymentPopup";
+
+import Seating from "../src/app/booking/seating";
 
 const steps = ["Biljettbokning", "Platsbokning", "Inloggning", "Betalning"];
 
-export default function popup() {
+export default function () {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -89,7 +91,10 @@ export default function popup() {
             )}
         </Box>
         {/* Booking components under here */}
-       
+
+        <Seating />
+
+
       </Box>
     </Fade>
   );
