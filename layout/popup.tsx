@@ -7,8 +7,7 @@ import BookTickets from "../components/booking/bookTickets";
 
 type Props = {
   movie: Movie;
-}
-
+};
 
 const steps = ["Biljettbokning", "Platsbokning", "Inloggning"];
 
@@ -32,9 +31,10 @@ const Popup: React.FC<Props> = ({ movie }) => {
       <Box
         sx={{
           backgroundColor: "#1A323C",
-          border: { //ingen border på liten skärm
-            md: "2px solid white"
-          } ,
+          border: {
+            //ingen border på liten skärm
+            md: "2px solid white",
+          },
           width: "80vw",
           height: "auto",
           margin: "auto",
@@ -79,11 +79,10 @@ const Popup: React.FC<Props> = ({ movie }) => {
         </Stepper>
 
         {/* Booking components under here */}
-          <BookTickets movie={movie}/>
-        
+        <BookTickets movie={movie} />
       </Box>
     </Fade>
   );
-}
+};
 
 export default Popup;

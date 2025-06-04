@@ -34,7 +34,7 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
       >
         <Box
           sx={{
-            gridColumn: { xs: "1", sm: "1 / span 2" },
+            gridColumn: { xs: "1", sm: "1 / span 1" },
             display: "flex",
             alignItems: "start",
             gap: 2,
@@ -48,25 +48,30 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
             <Typography variant="h2">{movie.title}</Typography>
             <Typography variant="body1">{movie.story}</Typography>
           </Box>
-
-          <Box
-            component="img"
-            src={movie.coverImage}
-            alt="Filmomslag"
-            sx={{
-              width: {
-                xs: "50%",
-                sm: "70%",
-              },
-              justifySelf: {
-                xs: "start",
-                sm: "end",
-              },
-
-              gridColumn: { xs: "1", sm: "2" },
-            }}
-          />
         </Box>
+        <Box
+          component="img"
+          src={movie.coverImage}
+          alt="Filmomslag"
+          sx={{
+            // width: {
+            // xs: "50%",
+            // sm: "70%",
+            // },
+            display: {
+              xs: "none",
+              sm: "block",
+            },
+            width: "auto",
+            height: { xs: "40%", sm: "100%" },
+            justifySelf: {
+              xs: "start",
+              sm: "end",
+            },
+
+            gridColumn: { xs: "1", sm: "2" },
+          }}
+        />
 
         <Box
           sx={{
