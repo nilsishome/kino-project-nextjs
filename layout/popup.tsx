@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-
 import {
   Box,
   Fade,
@@ -23,12 +22,27 @@ const steps = [
 
 import Seating from "../components/popup/seating";
 import Login from "@/app/login/page";
+import { Movie } from "@/types";
+import BookTickets from "../components/booking/bookTickets";
+
+type Props = {
+  movie: Movie;
+};
+
+const steps = [
+  "Biljettbokning",
+  "Platsbokning",
+  "Inloggning",
+  "Betalning",
+  "Bokningsbekräftelse",
+];
 
 type PopupProps = {
   handlePopupState: (state: boolean) => void;
+  movie: Movie;
 };
 
-const Popup: React.FC<PopupProps> = ({ handlePopupState }) => {
+const Popup: React.FC<PopupProps> = ({ handlePopupState, movie }) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<
     "Kort" | "Swish" | "På plats" | null
@@ -60,9 +74,12 @@ const Popup: React.FC<PopupProps> = ({ handlePopupState }) => {
       <Box
         sx={{
           backgroundColor: "#1A323C",
-          border: "2px solid white",
+          border: {
+            //ingen border på liten skärm
+            md: "2px solid white",
+          },
           width: "80vw",
-          height: "80vh",
+          height: "auto",
           margin: "auto",
           borderRadius: "3px",
         }}
@@ -114,6 +131,7 @@ const Popup: React.FC<PopupProps> = ({ handlePopupState }) => {
             borderRadius: "20px",
           }}
         >
+          {activeStep === 0 && <BookTickets movie={movie} />}
           {activeStep === 1 && <Seating totalTickets={3} />}
           {activeStep === 2 && (
             <PaymentPopup onNextStep={handlePaymentComplete} />

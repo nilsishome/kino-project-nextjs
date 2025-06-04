@@ -5,9 +5,9 @@ import Image from "next/image";
 
 import { Movie } from "@/types";
 import Text from "../../../../components/movies/[movieId]/text";
+import Popup from "../../../../layout/popup";
 import Screenings from "../../../../components/movies/[movieId]/screenings";
 import Reviews from "../../../../components/movies/[movieId]/reviews";
-import Popup from "../../../../layout/popup";
 import { useEffect, useState } from "react";
 
 export default function Page({
@@ -30,9 +30,7 @@ export default function Page({
         if (!response.ok) throw new Error("Failed to retrieve data!");
 
         const payload = await response.json();
-        console.log(payload.data);
         setMovieState(payload.data);
-        console.log(movieState);
         setMovieRating(payload.rating);
       } catch (err) {
         console.log(err);
@@ -126,7 +124,7 @@ export default function Page({
             </Box>
           </>
         ) : (
-          <Popup handlePopupState={handlePopupState} />
+          <Popup movie={movieState} handlePopupState={handlePopupState} />
         )}
       </>
     );
