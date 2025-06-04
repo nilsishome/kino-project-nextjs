@@ -104,7 +104,7 @@ export default function () {
         </Box>
         {/* Booking components under here */}
 
-        <Seating totalTickets={3} /> // Had to hardcode 3 because TS gave error
+        <Seating totalTickets={3} /> 
 
       </Box>
     </Fade>
