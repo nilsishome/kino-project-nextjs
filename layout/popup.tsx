@@ -1,22 +1,41 @@
 "use client";
 
 import React from "react";
-
-import { Box, Fade, Typography, Stepper, StepLabel, Step, Button} from "@mui/material";
+import {
+  Box,
+  Fade,
+  Typography,
+  Stepper,
+  StepLabel,
+  Step,
+  Button,
+} from "@mui/material";
+import { Movie } from "@/types";
+import BookTickets from "../components/booking/bookTickets";
 import PaymentPopup from "./PaymentPopup";
 import ConfirmationPopup from "./ConfirmationPopup";
 
+type Props = {
+  movie: Movie;
+};
 
-const steps = ["Biljettbokning", "Platsbokning", "Inloggning", "Betalning", "Bokningsbekräftelse"];
+const steps = [
+  "Biljettbokning",
+  "Platsbokning",
+  "Inloggning",
+  "Betalning",
+  "Bokningsbekräftelse",
+];
 
 import Seating from "../src/app/booking/seating";
 
-
-export default function () {
+const Popup: React.FC<Props> = ({ movie }) => {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<"Kort" | "Swish" | "På plats" | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<
+    "Kort" | "Swish" | "På plats" | null
+  >(null);
 
-  const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => { 
+  const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => {
     setSelectedPaymentMethod(method);
     setActiveStep(4);
   };
@@ -38,9 +57,12 @@ export default function () {
       <Box
         sx={{
           backgroundColor: "#1A323C",
-          border: "2px solid white",
+          border: {
+            //ingen border på liten skärm
+            md: "2px solid white",
+          },
           width: "80vw",
-          height: "80vh",
+          height: "auto",
           margin: "auto",
           borderRadius: "3px",
         }}
@@ -81,32 +103,60 @@ export default function () {
             </Step>
           ))}
         </Stepper>
-         {/* Navigation buttons */}
-        <Box sx={{ marginTop: "2rem", flexGrow: 1, height: "60%", borderRadius: "20px" }}>
-          {activeStep === 3 && <PaymentPopup onNextStep={handlePaymentComplete} />}
-            {activeStep === 4 && selectedPaymentMethod && (
-            <ConfirmationPopup paymentMethod={selectedPaymentMethod}/>
-            )}
+        {/* Navigation buttons */}
+        <Box
+          sx={{
+            marginTop: "2rem",
+            flexGrow: 1,
+            height: "60%",
+            borderRadius: "20px",
+          }}
+        >
+          {activeStep === 3 && (
+            <PaymentPopup onNextStep={handlePaymentComplete} />
+          )}
+          {activeStep === 4 && selectedPaymentMethod && (
+            <ConfirmationPopup paymentMethod={selectedPaymentMethod} />
+          )}
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", position: "relative", padding: "3rem"}}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+            padding: "3rem",
+          }}
+        >
           {/* Back */}
-          {activeStep > 0 && ( 
-            <Button variant="outlined" color="secondary" onClick={handleBack} sx={{ position: "absolute", bottom: 0, left: "10rem"}}>
+          {activeStep > 0 && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleBack}
+              sx={{ position: "absolute", bottom: 0, left: "10rem" }}
+            >
               Tillbaka
             </Button>
           )}
-            {/* Continue */}
-            {activeStep < steps.length - 1 && activeStep !== 3 && ( 
-              <Button variant="outlined" color="secondary" onClick={handleNext} sx={{  position: "absolute", bottom: 0, right: "10rem"}}>
-                Fortsätt
-              </Button>
-            )}
+          {/* Continue */}
+          {activeStep < steps.length - 1 && activeStep !== 3 && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleNext}
+              sx={{ position: "absolute", bottom: 0, right: "10rem" }}
+            >
+              Fortsätt
+            </Button>
+          )}
         </Box>
         {/* Booking components under here */}
-
-        <Seating totalTickets={3} /> 
-
+        <BookTickets movie={movie} />
+        <Seating totalTickets={3} />
       </Box>
     </Fade>
   );
-}
+};
+
+export default Popup;
