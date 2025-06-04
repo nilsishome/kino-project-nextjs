@@ -54,10 +54,6 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
           src={movie.coverImage}
           alt="Filmomslag"
           sx={{
-            // width: {
-            // xs: "50%",
-            // sm: "70%",
-            // },
             display: {
               xs: "none",
               sm: "block",
