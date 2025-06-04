@@ -1,9 +1,11 @@
-import { Box, Rating } from "@mui/material";
+import { Box, Rating, Typography } from "@mui/material";
 import Image from "next/image";
 
 import { Movie } from "@/types";
 import Text from "../../../../components/movies/[movieId]/text";
 import Popup from "../../../../layout/popup";
+import Screenings from "../../../../components/movies/[movieId]/screenings";
+import Reviews from "../../../../components/movies/[movieId]/reviews";
 
 export default async function Page({
   params,
@@ -23,7 +25,7 @@ export default async function Page({
 
   return (
     <>
-    <Popup movie={movie}/>
+      <Popup movie={movie} />
       <Box
         sx={{
           width: "100vw",
@@ -72,6 +74,22 @@ export default async function Page({
           precision={0.1}
           readOnly
         />
+
+        <Box sx={{ maxWidth: { xs: "100%", sm: "45%" } }}>
+          <Typography variant="h2" sx={{ margin: "2vh 0 0 4.5vw" }}>
+            Visningar
+          </Typography>
+
+          <Screenings movie={movie} />
+        </Box>
+
+        <Box>
+          <Typography variant="h2" sx={{ margin: "2vh 0 0 4.5vw" }}>
+            Recensioner
+          </Typography>
+
+          <Reviews movie={movie} />
+        </Box>
       </Box>
     </>
   );

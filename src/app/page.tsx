@@ -1,13 +1,20 @@
-import CarouselComponent from "../../components/index/carousel";
-import { Typography, Box, Button } from "@mui/material";
+"use client";
 
+import { Typography, Box, Button } from "@mui/material";
+import { SessionProvider } from "next-auth/react";
+import CarouselComponent from "../../components/index/carousel";
+import UserButton from "@/components/ui/userButton";
+import FilteringSection from "../../components/index/FilteringSection";
 import GiftSection from "../../components/index/giftSection";
+import CurrentScreenings from "../../components/index/currentScreenings";
 
 export default function Home() {
   return (
     <>
-        <CarouselComponent /> 
-      <GiftSection/>
+      <FilteringSection />
+      <CarouselComponent />
+      <CurrentScreenings />
+      <GiftSection />
     </>
   );
 }

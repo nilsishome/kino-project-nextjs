@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { retrieveMovies } from "@/database/collections/movies";
+import { connectToDatabase } from "@/database/connect";
 import { Movies } from "@/database/models";
 
 export async function GET() {
   try {
-    await retrieveMovies();
+    await connectToDatabase();
     const movies = await Movies.find();
 
     if (movies.length === 0) {

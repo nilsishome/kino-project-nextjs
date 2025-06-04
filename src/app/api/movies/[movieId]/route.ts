@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { retrieveMovies } from "@/database/collections/movies";
+import { connectToDatabase } from "@/database/connect";
 import { Movies } from "@/database/models";
 
 export async function GET(
@@ -13,7 +13,7 @@ export async function GET(
   const { movieId } = await params;
 
   try {
-    await retrieveMovies();
+    await connectToDatabase();
     const movie = await Movies.findById(movieId);
 
     if (!movie) {
