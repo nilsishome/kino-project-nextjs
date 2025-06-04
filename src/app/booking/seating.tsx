@@ -19,7 +19,11 @@ type Seat = {
 const rows = 6;
 const cols = 8;
 
-export default function Seating() {
+type Props = {
+  totalTickets: number;
+};
+
+export default function Seating({ totalTickets }: Props) {
   const [seats, setSeats] = useState<Seat[]>(
     Array.from({ length: rows * cols }, (_, index) => ({   //En array för alla sittplatser.
       row: Math.floor(index / cols),
@@ -31,17 +35,28 @@ export default function Seating() {
 
   );
 
+
   const handleSeatClick = (index: number) => {
-    setSeats((prev) =>
-      prev.map((seat, i) =>
-        i === index && !seat.isTaken
-          ? { ...seat, isSelected: !seat.isSelected }
-          : seat
-      )
-    );
+    setSeats((prevSeats) => {
+      const selectedCount = prevSeats.filter((seat) => seat.isSelected).length;
+  
+      return prevSeats.map((seat, i) => {
+        if (i !== index || seat.isTaken) return seat;
+  
+        if (seat.isSelected) {
+          // Avmarkera plats
+          return { ...seat, isSelected: false };
+        } else if (selectedCount < totalTickets) {
+  
+          return { ...seat, isSelected: true };
+        } else {
+       
+          return seat;
+        }
+      });
+    });
   };
-
-
+  
 
   return (
    
