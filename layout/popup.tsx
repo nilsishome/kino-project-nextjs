@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { Box, Fade, Typography, Stepper, StepLabel, Step, Button, Button } from "@mui/material";
+import { Box, Fade, Typography, Stepper, StepLabel, Step, Button} from "@mui/material";
 import PaymentPopup from "./PaymentPopup";
 import ConfirmationPopup from "./ConfirmationPopup";
 
@@ -104,7 +104,7 @@ export default function () {
         </Box>
         {/* Booking components under here */}
 
-        <Seating />
+        <Seating totalTickets={3} /> // Had to hardcode 3 because TS gave error
 
       </Box>
     </Fade>
