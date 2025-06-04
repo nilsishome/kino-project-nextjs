@@ -2,9 +2,10 @@
 
 import React from "react";
 
-import { Box, Fade, Typography, Stepper, StepLabel, Step } from "@mui/material";
+import { Box, Fade, Typography, Stepper, StepLabel, Step, Button } from "@mui/material";
+import PaymentPopup from "./PaymentPopup";
 
-const steps = ["Biljettbokning", "Platsbokning", "Inloggning"];
+const steps = ["Biljettbokning", "Platsbokning", "Inloggning", "Betalning"];
 
 export default function popup() {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -69,8 +70,26 @@ export default function popup() {
             </Step>
           ))}
         </Stepper>
-
+         {/* Navigation buttons */}
+        <Box sx={{ marginTop: "2rem", flexGrow: 1, height: "60%", borderRadius: "10px" }}>
+          {activeStep === 3 && <PaymentPopup onNextStep={() => setActiveStep(4)} />}
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", position: "relative", padding: "3rem"}}>
+          {/* Back */}
+          {activeStep > 0 && ( 
+            <Button variant="outlined" color="secondary" onClick={handleBack} sx={{ position: "absolute", bottom: 0, left: "10rem"}}>
+              Tillbaka
+            </Button>
+          )}
+            {/* Continue */}
+            {activeStep < steps.length - 1 && ( 
+              <Button variant="outlined" color="secondary" onClick={handleNext} sx={{  position: "absolute", bottom: 0, right: "10rem" }}>
+                Fortsätt
+              </Button>
+            )}
+        </Box>
         {/* Booking components under here */}
+       
       </Box>
     </Fade>
   );
