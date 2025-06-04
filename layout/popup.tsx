@@ -2,23 +2,41 @@
 
 import React from "react";
 
-import { Box, Fade, Typography, Stepper, StepLabel, Step, Button} from "@mui/material";
-import PaymentPopup from "./PaymentPopup";
-import ConfirmationPopup from "./ConfirmationPopup";
+import {
+  Box,
+  Fade,
+  Typography,
+  Stepper,
+  StepLabel,
+  Step,
+  Button,
+} from "@mui/material";
+import PaymentPopup from "../components/popup/PaymentPopup";
+import ConfirmationPopup from "../components/popup/ConfirmationPopup";
 
+const steps = [
+  "Biljettbokning",
+  "Platsbokning",
+  "Betalning",
+  "Bokningsbekräftelse",
+];
 
-const steps = ["Biljettbokning", "Platsbokning", "Inloggning", "Betalning", "Bokningsbekräftelse"];
+import Seating from "../components/popup/seating";
+import Login from "@/app/login/page";
 
-import Seating from "../src/app/booking/seating";
+type PopupProps = {
+  handlePopupState: (state: boolean) => void;
+};
 
-
-export default function () {
+const Popup: React.FC<PopupProps> = ({ handlePopupState }) => {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<"Kort" | "Swish" | "På plats" | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<
+    "Kort" | "Swish" | "På plats" | null
+  >(null);
 
-  const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => { 
+  const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => {
     setSelectedPaymentMethod(method);
-    setActiveStep(4);
+    setActiveStep(3);
   };
 
   const handleNext = () => {
@@ -26,6 +44,10 @@ export default function () {
   };
 
   const handleBack = () => {
+    if (activeStep === 0) {
+      handlePopupState(false);
+    }
+
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -52,6 +74,7 @@ export default function () {
             height: "7vh",
             borderRadius: "2rem",
             margin: "2vh auto 0 auto",
+            display: "flex",
           }}
         >
           <Typography
@@ -62,6 +85,7 @@ export default function () {
               paddingLeft: "3rem",
               paddingTop: "0.5%",
               height: "100%",
+              justifyContent: "flex-start",
             }}
           >
             Retro
@@ -81,32 +105,57 @@ export default function () {
             </Step>
           ))}
         </Stepper>
-         {/* Navigation buttons */}
-        <Box sx={{ marginTop: "2rem", flexGrow: 1, height: "60%", borderRadius: "20px" }}>
-          {activeStep === 3 && <PaymentPopup onNextStep={handlePaymentComplete} />}
-            {activeStep === 4 && selectedPaymentMethod && (
-            <ConfirmationPopup paymentMethod={selectedPaymentMethod}/>
-            )}
+        {/* Navigation buttons */}
+        <Box
+          sx={{
+            marginTop: "2rem",
+            flexGrow: 1,
+            height: "60%",
+            borderRadius: "20px",
+          }}
+        >
+          {activeStep === 1 && <Seating totalTickets={3} />}
+          {activeStep === 2 && (
+            <PaymentPopup onNextStep={handlePaymentComplete} />
+          )}
+          {activeStep === 3 && selectedPaymentMethod && (
+            <ConfirmationPopup paymentMethod={selectedPaymentMethod} />
+          )}
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", position: "relative", padding: "3rem"}}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+            padding: "3rem",
+          }}
+        >
           {/* Back */}
-          {activeStep > 0 && ( 
-            <Button variant="outlined" color="secondary" onClick={handleBack} sx={{ position: "absolute", bottom: 0, left: "10rem"}}>
-              Tillbaka
+
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleBack}
+            sx={{ position: "absolute", bottom: 0, left: "10rem" }}
+          >
+            Tillbaka
+          </Button>
+          {/* Continue */}
+          {activeStep < steps.length - 1 && activeStep !== 2 && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleNext}
+              sx={{ position: "absolute", bottom: 0, right: "10rem" }}
+            >
+              Fortsätt
             </Button>
           )}
-            {/* Continue */}
-            {activeStep < steps.length - 1 && activeStep !== 3 && ( 
-              <Button variant="outlined" color="secondary" onClick={handleNext} sx={{  position: "absolute", bottom: 0, right: "10rem"}}>
-                Fortsätt
-              </Button>
-            )}
         </Box>
-        {/* Booking components under here */}
-
-        <Seating totalTickets={3} /> 
-
       </Box>
     </Fade>
   );
-}
+};
+
+export default Popup;
