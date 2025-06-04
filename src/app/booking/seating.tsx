@@ -66,7 +66,6 @@ export default function Seating({ totalTickets }: Props) {
         borderRadius: "8px",
         padding: 2,
         maxWidth: "fit-content",
-        maxWidth: "fit-content",
         mx: "auto", 
         mt: -55,       
       }}
