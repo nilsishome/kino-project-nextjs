@@ -70,7 +70,7 @@ const Popup: React.FC<PopupProps> = ({ handlePopupState, movie }) => {
             md: "2px solid white",
           },
           width: "80vw",
-          height: "auto",
+          height: "90vh",
           margin: "auto",
           borderRadius: "3px",
         }}

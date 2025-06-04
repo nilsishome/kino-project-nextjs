@@ -37,6 +37,7 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
             gridColumn: { xs: "1", sm: "1 / span 1" },
             display: "flex",
             alignItems: "start",
+            maxHeight: "20vh",
             gap: 2,
           }}
         >
@@ -59,7 +60,7 @@ const BookTickets: React.FC<Props> = ({ movie }) => {
               sm: "block",
             },
             width: "auto",
-            height: { xs: "40%", sm: "100%" },
+            height: { xs: "40%", sm: "70%" },
             justifySelf: {
               xs: "start",
               sm: "end",
