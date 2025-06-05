@@ -16,6 +16,16 @@ export async function GET(
     await connectToDatabase();
     const movie = await Movies.findById(movieId);
 
+    let totalRating: number = 0;
+
+    if (movie?.reviews.length! > 0) {
+      movie?.reviews.forEach((review) => {
+        totalRating = totalRating + review.rating;
+      });
+
+      totalRating = totalRating / movie?.reviews.length!;
+    }
+
     if (!movie) {
       return NextResponse.json(
         {
@@ -28,7 +38,7 @@ export async function GET(
     return NextResponse.json(
       {
         data: movie,
-        rating: 3.5,
+        rating: totalRating,
       },
       { status: 200 }
     );
