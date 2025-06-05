@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/database/connect";
-import { Booking, Movies } from "@/database/models";
+import { Movies } from "@/database/models";
 
 export async function GET(
   req: NextRequest,
@@ -32,49 +32,6 @@ export async function GET(
       },
       { status: 200 }
     );
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function POST(
-  req: NextRequest,
-  {
-    params,
-  }: {
-    params: Promise<{ movieId: string }>;
-  }
-) {
-  try {
-    await connectToDatabase();
-
-    let body = await req.json();
-
-    const data = body.data;
-
-    /* if (body.sendingData._id) {
-      await Booking.insertOne(body.sendingData);
-    } */
-
-    //   sendingData: {
-    //   selectedSeats: [ 3, 11, 19 ],
-    //   totalTickets: 2,
-    //   screeningData: {
-    //     title: 'E.T.',
-    //     time: '20',
-    //     date: '2025-06-08T18:00:40.310Z',
-    //     saloon: 'Serif',
-    //     id: '683dea10513b456d30aed98a',
-    //     image: 'https://m.media-amazon.com/images/M/MV5BYTNhNmY0YWMtMTczYi00MTA0LThhMmUtMTIxYzE0Y2QwMzRlXkEyXkFqcGc@._V1_SX300.jpg'
-    //   }
-    // }
-
-    console.log(data);
-
-    return NextResponse.json({}, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },

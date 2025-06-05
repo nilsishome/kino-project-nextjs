@@ -44,6 +44,6 @@ export type BookingScreening = {
   time: string;
   date: Date;
   saloon: string;
-  _id?: string;
+  id: string;
   image?: string;
 };
