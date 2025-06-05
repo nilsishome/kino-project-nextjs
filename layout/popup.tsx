@@ -36,7 +36,7 @@ const Popup: React.FC<PopupProps> = ({
   movie,
   screeningData,
 }) => {
-  const [totalTickets, setTotalTickets] = useState(0);
+  const [totalTickets, setTotalTickets] = useState<number>(0);
   const [activeStep, setActiveStep] = useState(0);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     "Kort" | "Swish" | "På plats" | null

@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Movie } from "@/types";
 import TicketCounter from "./components/TicketCounter";
 import LoginForm from "./LoginForm";
@@ -40,6 +40,10 @@ const BookTickets: React.FC<Props> = ({
   const totalPrice = adultPrice + childPrice + seniorPrice;
   const discount = isLoggedIn ? Math.round(totalPrice * 0.2) : 0;
   const totalAfterDiscount = totalPrice - discount;
+
+  useEffect(() => {
+  getTotalTickets(adultCount + childCount + seniorCount);
+}, [adultCount, childCount, seniorCount]);
 
   console.log("adultCount:", adultCount, "childCount:", childCount, "seniorCount:", seniorCount, "totalPrice:", totalPrice);
   
