@@ -96,10 +96,6 @@ const Popup: React.FC<PopupProps> = ({
             //ingen border på liten skärm
             md: "2px solid white",
           },
-          // width: "80vw",
-          // height: "90vh",
-          // margin: "auto",
-          // borderRadius: "3px",
           width: { 
             xs: "95vw",
             sm: "90vw", 
@@ -111,7 +107,6 @@ const Popup: React.FC<PopupProps> = ({
           margin: "auto", 
           borderRadius: "3px",
           overflowY: "auto",
-          // overflow: "auto", 
         }}
       >
         <Box
