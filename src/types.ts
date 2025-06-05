@@ -27,6 +27,7 @@ export type Movie = {
       saloon: string;
       title?: string;
       image?: string;
+      id: string;
     },
   ];
 };
