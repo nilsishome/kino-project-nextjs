@@ -40,15 +40,17 @@ export default function Seating({
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
 
   useEffect(() => {
-    seats.forEach((seat, index) => {
-      occupiedSeats.map((value) => {
-        if (index === value - 1) {
-          seat.isTaken = true;
-        }
+    if (occupiedSeats) {
+      seats.forEach((seat, index) => {
+        occupiedSeats.map((value) => {
+          if (index === value - 1) {
+            seat.isTaken = true;
+          }
+        });
       });
-    });
 
-    setSeats(seats);
+      setSeats(seats);
+    }
   });
 
   const handleSeatClick = (index: number) => {
