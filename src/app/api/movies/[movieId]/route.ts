@@ -53,11 +53,11 @@ export async function POST(
 
     let body = await req.json();
 
-    body.sendingData;
+    const data = body.data;
 
-    if (body.sendingData._id) {
+    /* if (body.sendingData._id) {
       await Booking.insertOne(body.sendingData);
-    }
+    } */
 
     //   sendingData: {
     //   selectedSeats: [ 3, 11, 19 ],
@@ -72,7 +72,7 @@ export async function POST(
     //   }
     // }
 
-    console.log(body);
+    console.log(data);
 
     return NextResponse.json({}, { status: 200 });
   } catch (error) {

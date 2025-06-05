@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import "@fortawesome/fontawesome-free/css/all.min.css"; //rullstol ikonen.
 
@@ -18,15 +18,10 @@ const cols = 8;
 
 type Props = {
   totalTickets: number;
-  setSelectedSeats: React.Dispatch<React.SetStateAction<number[]>>;
-  selectedSeats: number[];
+  getSeatingData: (data: number[]) => void;
 };
 
-export default function Seating({
-  totalTickets,
-  setSelectedSeats,
-  selectedSeats,
-}: Props) {
+export default function Seating({ totalTickets, getSeatingData }: Props) {
   const [seats, setSeats] = useState<Seat[]>(
     Array.from({ length: rows * cols }, (_, index) => ({
       //En array för alla sittplatser.
@@ -37,6 +32,7 @@ export default function Seating({
       isWheelchair: index === 8 || index === 9,
     }))
   );
+  const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
 
   const handleSeatClick = (index: number) => {
     setSeats((prevSeats) => {
@@ -47,9 +43,16 @@ export default function Seating({
 
         if (seat.isSelected) {
           // Avmarkera plats
+          const newSeats = [...selectedSeats];
+          const seatClicked = newSeats.indexOf(i + 1);
+
+          newSeats.splice(seatClicked, 1);
+
+          setSelectedSeats(newSeats);
           return { ...seat, isSelected: false };
-        } else if (selectedCount <= totalTickets) {
-          setSelectedSeats([...selectedSeats, i]);
+        } else if (selectedCount < totalTickets) {
+          const newSeats = [...selectedSeats, i + 1];
+          setSelectedSeats(newSeats);
           return { ...seat, isSelected: true };
         } else {
           return seat;
@@ -57,6 +60,12 @@ export default function Seating({
       });
     });
   };
+
+  // Skickar stoldatan vidare i popupen
+  useEffect(() => {
+    selectedSeats.sort(); // Sortera arrayen i numerisk ordning.
+    getSeatingData(selectedSeats);
+  }, [selectedSeats]);
 
   return (
     <Box

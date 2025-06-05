@@ -16,7 +16,6 @@ import Seating from "../components/popup/seating";
 import Login from "@/app/login/page";
 import { BookingScreening, Movie } from "@/types";
 import BookTickets from "../components/popup/bookTickets";
-import bookingCreated from "../src/database/collections/booking";
 
 const steps = [
   "Biljettbokning",
@@ -69,8 +68,12 @@ const Popup: React.FC<PopupProps> = ({
     setTotalTickets(totalSum);
   };
 
+  const getSeatingData = (data: any) => {
+    setSelectedSeats(data);
+  };
+
   const sendToDatabase = async () => {
-    let sendingData = {
+    const data = {
       selectedSeats: selectedSeats,
       totalTickets: totalTickets,
       screeningData: screeningData,
@@ -82,7 +85,7 @@ const Popup: React.FC<PopupProps> = ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        sendingData,
+        data,
       }),
     });
   };
@@ -154,8 +157,7 @@ const Popup: React.FC<PopupProps> = ({
           )}
           {activeStep === 1 && (
             <Seating
-              selectedSeats={selectedSeats}
-              setSelectedSeats={setSelectedSeats}
+              getSeatingData={getSeatingData}
               totalTickets={totalTickets}
             />
           )}

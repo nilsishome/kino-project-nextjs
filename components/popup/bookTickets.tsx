@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Movie } from "@/types";
 import TicketCounter from "./components/TicketCounter";
 
@@ -17,16 +17,11 @@ const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
   const [seniorPrice, setSeniorPrice] = useState(0);
 
   const ticketPrice = 120;
+  const totalSum = adultCount + childCount + seniorCount;
 
-  const sumOfTickets = () => {
-    let totalSum = adultCount + childCount + seniorCount;
-
-    if (totalSum <= 0) {
-      return;
-    }
-
+  useEffect(() => {
     getTotalTickets(totalSum);
-  };
+  }, [totalSum]);
 
   return (
     <>
@@ -178,12 +173,10 @@ const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
               onIncrement={() => {
                 setAdultCount((prev) => prev + 1);
                 setAdultPrice((prev) => prev + ticketPrice);
-                sumOfTickets();
               }}
               onDecrement={() => {
                 setAdultCount((prev) => Math.max(prev - 1, 0));
                 setAdultPrice((prev) => Math.max(prev - ticketPrice, 0));
-                sumOfTickets();
               }}
             />
             <TicketCounter
@@ -192,12 +185,10 @@ const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
               onIncrement={() => {
                 setChildCount((prev) => prev + 1);
                 setChildPrice((prev) => prev + ticketPrice / 2);
-                sumOfTickets();
               }}
               onDecrement={() => {
                 setChildCount((prev) => Math.max(prev - 1, 0));
                 setChildPrice((prev) => Math.max(prev - ticketPrice / 2, 0));
-                sumOfTickets();
               }}
             />
             <TicketCounter
@@ -206,12 +197,10 @@ const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
               onIncrement={() => {
                 setSeniorCount((prev) => prev + 1);
                 setSeniorPrice((prev) => prev + ticketPrice * 0.8);
-                sumOfTickets();
               }}
               onDecrement={() => {
                 setSeniorCount((prev) => Math.max(prev - 1, 0));
                 setSeniorPrice((prev) => Math.max(prev - ticketPrice * 0.8, 0));
-                sumOfTickets();
               }}
             />
           </Box>
