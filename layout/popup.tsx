@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Fade,
@@ -16,6 +16,7 @@ import Seating from "../components/popup/seating";
 import Login from "@/app/login/page";
 import { BookingScreening, Movie } from "@/types";
 import BookTickets from "../components/popup/bookTickets";
+import { useRouter } from "next/navigation";
 
 const steps = [
   "Biljettbokning",
@@ -37,10 +38,17 @@ const Popup: React.FC<PopupProps> = ({
 }) => {
   const [totalTickets, setTotalTickets] = React.useState(0);
   const [activeStep, setActiveStep] = React.useState(0);
+  const [occupiedSeats, setOccupiedSeats] = React.useState<number[]>([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<
     "Kort" | "Swish" | "På plats" | null
   >(null);
   const [selectedSeats, setSelectedSeats] = React.useState<number[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push(`${movie._id}?movie=${movie.title}&id=${screeningData.id}`);
+    retrieveBookedSeats();
+  }, []);
 
   const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => {
     setSelectedPaymentMethod(method);
@@ -68,7 +76,7 @@ const Popup: React.FC<PopupProps> = ({
     setTotalTickets(totalSum);
   };
 
-  const getSeatingData = (data: any) => {
+  const getSeatingData = (data: number[]) => {
     setSelectedSeats(data);
   };
 
@@ -79,7 +87,7 @@ const Popup: React.FC<PopupProps> = ({
       screeningData: screeningData,
     };
 
-    await fetch(`/api/movies/${movie._id}`, {
+    await fetch(`/api/movies/${movie._id}/bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,6 +96,21 @@ const Popup: React.FC<PopupProps> = ({
         data,
       }),
     });
+  };
+
+  const retrieveBookedSeats = async () => {
+    const response = await fetch(
+      `/api/movies/${movie._id}/bookings?movie=${movie.title}&id=${screeningData.id}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Response is not okey!");
+    }
+
+    const payLoad = await response.json();
+    const seats = payLoad.seats;
+
+    setOccupiedSeats(seats);
   };
 
   return (
@@ -157,6 +180,7 @@ const Popup: React.FC<PopupProps> = ({
           )}
           {activeStep === 1 && (
             <Seating
+              occupiedSeats={occupiedSeats}
               getSeatingData={getSeatingData}
               totalTickets={totalTickets}
             />

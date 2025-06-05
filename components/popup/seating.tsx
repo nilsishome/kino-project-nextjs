@@ -19,9 +19,14 @@ const cols = 8;
 type Props = {
   totalTickets: number;
   getSeatingData: (data: number[]) => void;
+  occupiedSeats: number[];
 };
 
-export default function Seating({ totalTickets, getSeatingData }: Props) {
+export default function Seating({
+  totalTickets,
+  getSeatingData,
+  occupiedSeats,
+}: Props) {
   const [seats, setSeats] = useState<Seat[]>(
     Array.from({ length: rows * cols }, (_, index) => ({
       //En array för alla sittplatser.
@@ -33,6 +38,18 @@ export default function Seating({ totalTickets, getSeatingData }: Props) {
     }))
   );
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+
+  useEffect(() => {
+    seats.forEach((seat, index) => {
+      occupiedSeats.map((value) => {
+        if (index === value - 1) {
+          seat.isTaken = true;
+        }
+      });
+    });
+
+    setSeats(seats);
+  });
 
   const handleSeatClick = (index: number) => {
     setSeats((prevSeats) => {
