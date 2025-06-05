@@ -16,7 +16,7 @@ import Seating from "../components/popup/seating";
 import Login from "@/app/login/page";
 import { BookingScreening, Movie } from "@/types";
 import BookTickets from "../components/popup/bookTickets";
-import bookingCreated from "../src/database/collections/booking";
+// import bookingCreated from "../src/database/collections/booking";
 
 const steps = [
   "Biljettbokning",

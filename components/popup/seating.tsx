@@ -1,5 +1,5 @@
 "use client";
-
+// import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import "@fortawesome/fontawesome-free/css/all.min.css"; //rullstol ikonen.
@@ -27,6 +27,7 @@ export default function Seating({
   setSelectedSeats,
   selectedSeats,
 }: Props) {
+  // const { data: session, status } = useSession();
   const [seats, setSeats] = useState<Seat[]>(
     Array.from({ length: rows * cols }, (_, index) => ({
       //En array för alla sittplatser.
