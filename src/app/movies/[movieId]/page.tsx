@@ -19,6 +19,7 @@ export default function Page({
   const [movieState, setMovieState] = useState<Movie>();
   const [movieRating, setMovieRating] = useState<number>(0);
   const [screeningData, setScreeningData] = useState<BookingScreening>();
+  
 
   useEffect(() => {
     const fetchData = async () => {
