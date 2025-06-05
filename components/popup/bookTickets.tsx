@@ -8,37 +8,45 @@ import { toast } from "sonner";
 type Props = {
   movie: Movie;
   getTotalTickets: (totalSum: number) => void;
+  isLoggedIn: boolean;
+  onLoginClick: () => void;
+  onRegisterClick: () => void;
+  adultCount: number;
+  setAdultCount: React.Dispatch<React.SetStateAction<number>>;
+  childCount: number;
+  setChildCount: React.Dispatch<React.SetStateAction<number>>;
+  seniorCount: number;
+  setSeniorCount: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
-  const [adultCount, setAdultCount] = useState(0);
-  const [childCount, setChildCount] = useState(0);
-  const [seniorCount, setSeniorCount] = useState(0);
-  const [adultPrice, setAdultPrice] = useState(0);
-  const [childPrice, setChildPrice] = useState(0);
-  const [seniorPrice, setSeniorPrice] = useState(0);
-  const [showLogin, setShowLogin] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const BookTickets: React.FC<Props> = ({
+  movie,
+  getTotalTickets,
+  isLoggedIn,
+  onLoginClick,
+  onRegisterClick,
+  adultCount,
+  setAdultCount,
+  childCount,
+  setChildCount,
+  seniorCount,
+  setSeniorCount,
+}) => {
+  const ticketPrice = 120;
+  const adultPrice = adultCount * ticketPrice;
+  const childPrice = childCount * (ticketPrice / 2);
+  const seniorPrice = seniorCount * (ticketPrice * 0.8);
+
   const totalPrice = adultPrice + childPrice + seniorPrice;
   const discount = isLoggedIn ? Math.round(totalPrice * 0.2) : 0;
   const totalAfterDiscount = totalPrice - discount;
 
-  const ticketPrice = 120;
-
+  console.log("adultCount:", adultCount, "childCount:", childCount, "seniorCount:", seniorCount, "totalPrice:", totalPrice);
+  
   const sumOfTickets = () => {
     let totalSum = adultCount + childCount + seniorCount;
-
-    if (totalSum <= 0) {
-      return;
-    }
-
+    if (totalSum <= 0) return;
     getTotalTickets(totalSum);
-  };
-
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
-    setShowLogin(false);
-    toast.success("Du är inloggad! Du får 20% rabatt på biljettpriset.");
   };
 
   return (
@@ -89,7 +97,6 @@ const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
               xs: "start",
               sm: "end",
             },
-
             gridColumn: { xs: "1", sm: "2" },
           }}
         />
@@ -141,13 +148,13 @@ const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
                 <Typography variant='body1'>{seniorPrice} kr</Typography>
               </Box>
             )}
-          {/* Visar rabatt om inloggad */}
-          {isLoggedIn && discount > 0 && (
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Typography variant='body1'>rabatt:(20%)</Typography>
-              <Typography variant='body1'> -{discount} kr</Typography>
-            </Box>
-          )}
+            {/* Visar rabatt om inloggad */}
+            {isLoggedIn && discount > 0 && (
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography variant='body1'>Rabatt (20%)</Typography>
+                <Typography variant='body1'> -{discount} kr</Typography>
+              </Box>
+            )}
           </Box>
 
           <Box
@@ -163,24 +170,41 @@ const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
           </Box>
         </Box>
 
-        {!showLogin ? (
-          <Button
-            sx={{
-              border: "1px solid white",
-              borderRadius: "16px",
-              width: "100%",
-              height: "5vh",
-              gridColumn: {
-                xs: "1",
-                sm: "1 / 3",
-              },
-            }}
-            onClick={() => setShowLogin(true)}
-          >
-            Logga in
-          </Button>
-        ) : (
-          <LoginForm onLoginSuccess={handleLoginSuccess} />
+        {/* Logga in-knapp endast om man inte är inloggad */}
+        {!isLoggedIn && (
+          <>
+            <Button
+              sx={{
+                width: "100%",
+                height: "5vh",
+                gridColumn: {
+                  xs: "1",
+                  sm: "1 / 3",
+                },
+                mb: 1,
+              }}
+              onClick={onLoginClick}
+              variant='outlined'
+            >
+              Logga in
+            </Button>
+            <Button
+              sx={{
+                border: "1px solid white",
+                borderRadius: "7px",
+                width: "100%",
+                height: "5vh",
+                gridColumn: {
+                  xs: "1",
+                  sm: "1 / 3",
+                },
+              }}
+              onClick={onRegisterClick}
+              variant='outlined'
+            >
+              Registrera
+            </Button>
+          </>
         )}
 
         <Box
@@ -204,12 +228,12 @@ const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
               count={adultCount}
               onIncrement={() => {
                 setAdultCount((prev) => prev + 1);
-                setAdultPrice((prev) => prev + ticketPrice);
+                //setAdultPrice((prev) => prev + ticketPrice);
                 sumOfTickets();
               }}
               onDecrement={() => {
                 setAdultCount((prev) => Math.max(prev - 1, 0));
-                setAdultPrice((prev) => Math.max(prev - ticketPrice, 0));
+                //setAdultPrice((prev) => Math.max(prev - ticketPrice, 0));
                 sumOfTickets();
               }}
             />
@@ -218,12 +242,12 @@ const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
               count={childCount}
               onIncrement={() => {
                 setChildCount((prev) => prev + 1);
-                setChildPrice((prev) => prev + ticketPrice / 2);
+                //setChildPrice((prev) => prev + ticketPrice / 2);
                 sumOfTickets();
               }}
               onDecrement={() => {
                 setChildCount((prev) => Math.max(prev - 1, 0));
-                setChildPrice((prev) => Math.max(prev - ticketPrice / 2, 0));
+                //setChildPrice((prev) => Math.max(prev - ticketPrice / 2, 0));
                 sumOfTickets();
               }}
             />
@@ -232,12 +256,12 @@ const BookTickets: React.FC<Props> = ({ movie, getTotalTickets }) => {
               count={seniorCount}
               onIncrement={() => {
                 setSeniorCount((prev) => prev + 1);
-                setSeniorPrice((prev) => prev + ticketPrice * 0.8);
+                //setSeniorPrice((prev) => prev + ticketPrice * 0.8);
                 sumOfTickets();
               }}
               onDecrement={() => {
                 setSeniorCount((prev) => Math.max(prev - 1, 0));
-                setSeniorPrice((prev) => Math.max(prev - ticketPrice * 0.8, 0));
+                //setSeniorPrice((prev) => Math.max(prev - ticketPrice * 0.8, 0));
                 sumOfTickets();
               }}
             />

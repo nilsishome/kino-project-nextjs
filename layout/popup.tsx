@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Fade,
@@ -13,10 +13,10 @@ import {
 import PaymentPopup from "../components/popup/PaymentPopup";
 import ConfirmationPopup from "../components/popup/ConfirmationPopup";
 import Seating from "../components/popup/seating";
-import Login from "@/app/login/page";
+import LoginForm from "../components/popup/LoginForm";
+import RegisterForm from "../components/popup/RegisterForm";
 import { BookingScreening, Movie } from "@/types";
 import BookTickets from "../components/popup/bookTickets";
-// import bookingCreated from "../src/database/collections/booking";
 
 const steps = [
   "Biljettbokning",
@@ -36,12 +36,19 @@ const Popup: React.FC<PopupProps> = ({
   movie,
   screeningData,
 }) => {
-  const [totalTickets, setTotalTickets] = React.useState(0);
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<
+  const [totalTickets, setTotalTickets] = useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     "Kort" | "Swish" | "På plats" | null
   >(null);
-  const [selectedSeats, setSelectedSeats] = React.useState<number[]>([]);
+  const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const [adultCount, setAdultCount] = useState(0);
+  const [childCount, setChildCount] = useState(0);
+  const [seniorCount, setSeniorCount] = useState(0);
+
+  // Hantera auth-vy och inloggningsstatus
+  const [authView, setAuthView] = useState<"login" | "register" | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => {
     setSelectedPaymentMethod(method);
@@ -57,12 +64,7 @@ const Popup: React.FC<PopupProps> = ({
     if (activeStep === 0) {
       handlePopupState(false);
     }
-
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   const getTotalTickets = (totalSum: number) => {
@@ -92,10 +94,7 @@ const Popup: React.FC<PopupProps> = ({
       <Box
         sx={{
           backgroundColor: "#1A323C",
-          border: {
-            //ingen border på liten skärm
-            md: "2px solid white",
-          },
+          border: { md: "2px solid white" },
           width: "80vw",
           height: "90vh",
           margin: "auto",
@@ -128,19 +127,18 @@ const Popup: React.FC<PopupProps> = ({
         </Box>
         <Stepper
           activeStep={activeStep}
-          orientation="horizontal"
+          orientation='horizontal'
           sx={{
             width: "60vw",
             margin: "2rem auto auto auto",
           }}
         >
-          {steps.map((step, index) => (
+          {steps.map((step) => (
             <Step key={step}>
               <StepLabel>{step}</StepLabel>
             </Step>
           ))}
         </Stepper>
-        {/* Navigation buttons */}
         <Box
           sx={{
             marginTop: "2rem",
@@ -149,9 +147,38 @@ const Popup: React.FC<PopupProps> = ({
             borderRadius: "20px",
           }}
         >
-          {activeStep === 0 && (
-            <BookTickets getTotalTickets={getTotalTickets} movie={movie} />
+          {/* Steg 0: Visa BookTickets, LoginForm eller RegisterForm */}
+          {activeStep === 0 && authView === null && (
+            <BookTickets
+              getTotalTickets={getTotalTickets}
+              movie={movie}
+              isLoggedIn={isLoggedIn}
+              onLoginClick={() => setAuthView("login")}
+              onRegisterClick={() => setAuthView("register")}
+              adultCount={adultCount}
+              setAdultCount={setAdultCount}
+              childCount={childCount}
+              setChildCount={setChildCount}
+              seniorCount={seniorCount}
+              setSeniorCount={setSeniorCount}
+            />
           )}
+          {activeStep === 0 && authView === "login" && (
+            <LoginForm
+              onLoginSuccess={() => {
+                setIsLoggedIn(true);
+                setAuthView(null);
+              }}
+              onRegisterClick={() => setAuthView("register")}
+            />
+          )}
+          {activeStep === 0 && authView === "register" && (
+            <RegisterForm
+              onRegisterSuccess={() => setAuthView("login")}
+              onBackToLogin={() => setAuthView("login")}
+            />
+          )}
+          {/* Steg 1: Platsbokning */}
           {activeStep === 1 && (
             <Seating
               selectedSeats={selectedSeats}
@@ -159,9 +186,11 @@ const Popup: React.FC<PopupProps> = ({
               totalTickets={totalTickets}
             />
           )}
+          {/* Steg 2: Betalning */}
           {activeStep === 2 && (
             <PaymentPopup onNextStep={handlePaymentComplete} />
           )}
+          {/* Steg 3: Bekräftelse */}
           {activeStep === 3 && selectedPaymentMethod && (
             <ConfirmationPopup
               screeningData={screeningData}
@@ -181,21 +210,18 @@ const Popup: React.FC<PopupProps> = ({
             marginBottom: "2rem",
           }}
         >
-          {/* Back */}
-
           <Button
-            variant="outlined"
-            color="secondary"
+            variant='outlined'
+            color='secondary'
             onClick={handleBack}
             sx={{ position: "absolute", bottom: 0, left: "10rem" }}
           >
             Tillbaka
           </Button>
-          {/* Continue */}
           {activeStep < steps.length - 1 && activeStep !== 2 && (
             <Button
-              variant="outlined"
-              color="secondary"
+              variant='outlined'
+              color='secondary'
               onClick={handleNext}
               sx={{ position: "absolute", bottom: 0, right: "10rem" }}
             >
