@@ -96,8 +96,12 @@ const BookTickets: React.FC<Props> = ({
               xs: "none",
               sm: "block",
             },
-            width: "auto",
-            height: { xs: "40%", sm: "70%" },
+            maxWidth: "100%",
+            height: { 
+              sm: "150px",
+              md: "200px",
+              lg: "250px",
+            },
             justifySelf: {
               xs: "start",
               sm: "end",
