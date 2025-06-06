@@ -15,7 +15,7 @@ const CurrentScreenings: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/movies/showing"
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/movies/showing`
         );
         if (!response.ok) throw new Error("Failed to retrieve data!");
 

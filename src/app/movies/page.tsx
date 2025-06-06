@@ -5,7 +5,9 @@ import { Box } from "@mui/material";
 import * as styles from "../styles/moviesPage.style";
 
 export default async function Page() {
-  const response = await fetch("http://localhost:3000/api/movies");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/movies`
+  );
 
   if (!response.ok) {
     throw new Error("Failed to retrieve data!");
