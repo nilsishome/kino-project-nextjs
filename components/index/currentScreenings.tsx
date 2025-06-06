@@ -14,9 +14,7 @@ const CurrentScreenings: React.FC = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/movies/showing`
-        );
+        const response = await fetch(`/api/movies/showing`);
         if (!response.ok) throw new Error("Failed to retrieve data!");
 
         if (fetchingScreenings) {
