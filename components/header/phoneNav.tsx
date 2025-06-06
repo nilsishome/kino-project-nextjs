@@ -74,6 +74,11 @@ const PhoneNav: React.FC<navProps> = ({ navToggle, onNavToggle }) => {
               <Button href="" sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
                 ÖPPETTIDER
               </Button>
+
+               <Button href="/login" sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
+                MINA-SIDOR
+              </Button>
+
             </ButtonGroup>
           </Box>
         </Zoom>

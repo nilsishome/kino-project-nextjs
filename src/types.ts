@@ -13,7 +13,7 @@ export type Movie = {
       comment: String;
       author: String;
       rating: Number;
-    }
+    },
   ];
   color: boolean;
   decade: string;
@@ -22,10 +22,12 @@ export type Movie = {
   release: number;
   screenings: [
     {
-      time: String;
+      time: string;
       date: Date;
-      saloon: String;
-    }
+      saloon: string;
+      title?: string;
+      image?: string;
+    },
   ];
 };
 
@@ -35,4 +37,13 @@ export type MovieScreening = {
   coverImage: string;
   date?: string;
   time: string;
+};
+
+export type BookingScreening = {
+  title?: string;
+  time: string;
+  date: Date;
+  saloon: string;
+  _id?: string;
+  image?: string;
 };

@@ -7,13 +7,14 @@ import {
   Divider,
   Grid,
 } from "@mui/material";
-import { Movie } from "@/types";
+import { Movie, BookingScreening } from "@/types";
 
 type Props = {
   movie: Movie;
+  onScreeningClick: (screening: BookingScreening) => void;
 };
 
-const Screenings: React.FC<Props> = ({ movie }) => {
+const Screenings: React.FC<Props> = ({ movie, onScreeningClick }) => {
   function retrieveDayFromDate(date: Date) {
     const fixedDate = new Date(date);
     const dayOfWeek = fixedDate.toLocaleString("sv-SV", { weekday: "long" });
@@ -60,7 +61,12 @@ const Screenings: React.FC<Props> = ({ movie }) => {
                   <Typography variant="body1">{screening.saloon}</Typography>
                 </Grid>
                 <Grid size={3}>
-                  <Button variant="text">Boka</Button>
+                  <Button
+                    onClick={() => onScreeningClick(screening)}
+                    variant="text"
+                  >
+                    Boka
+                  </Button>
                 </Grid>
               </Grid>
             </ListItem>

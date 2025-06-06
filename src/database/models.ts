@@ -25,3 +25,11 @@ const moviesSchema = new mongoose.Schema({
 });
 
 export const Movies = mongoose.model("Movies", moviesSchema);
+
+const bookingSchema = new mongoose.Schema({
+  tickets: Number,
+  seats: Array,
+  screeningData: Object,
+});
+
+export const Booking = mongoose.model("Booking", bookingSchema);
