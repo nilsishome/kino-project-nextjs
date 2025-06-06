@@ -138,7 +138,7 @@ const fakeMovieData: Movie = {
       time: "12",
       date: new Date(Date.now() + 60 * 60 * 1000),
       saloon: "Serif",
-      _id: "",
+      _id: "683dea10513b456d30aed972",
     },
   ],
 };
