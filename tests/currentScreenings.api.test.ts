@@ -4,10 +4,7 @@ import * as db from "@/utils/db";
 import { Movie, MovieScreening } from "@/types";
 
 import { Movies } from "@/database/models";
-import {
-  GET,
-  getHomePageScreenings,
-} from "../src/app/api/movies/showing/route";
+import { GET } from "../src/app/api/movies/showing/route";
 
 jest.mock("@/database/connect");
 jest.mock("@/database/collections/screenings");
@@ -123,7 +120,14 @@ const fakeMovieData: Movie = {
   minute: 49,
   coverImage: "Tom Cruise-bild",
   sliderImage: "slider-bild",
-  reviews: [],
+  reviews: [
+    {
+      date: new Date(),
+      comment: "Oerhört bra film!",
+      author: "Fredrik",
+      rating: 4,
+    },
+  ],
   color: true,
   decade: "90",
   upcoming: false,
@@ -134,6 +138,33 @@ const fakeMovieData: Movie = {
       time: "12",
       date: new Date(Date.now() + 60 * 60 * 1000),
       saloon: "Serif",
+      _id: "",
     },
   ],
 };
+
+async function getHomePageScreenings(limit: number) {
+  return Movies.aggregate([
+    { $unwind: "$screenings" },
+    {
+      $match: {
+        "screenings.date": {
+          $gt: new Date(),
+          $lte: new Date(Date.now() + 120 * 60 * 60 * 1000),
+          // 120: hours, 60: minutes, 60: seconds, 1000: milliseconds
+        },
+      },
+    },
+    { $sort: { "screenings.date": 1 } },
+    { $limit: limit },
+    {
+      $project: {
+        _id: 0,
+        title: 1,
+        coverImage: 1,
+        date: "$screenings.date",
+        time: "$screenings.time",
+      },
+    },
+  ]);
+}

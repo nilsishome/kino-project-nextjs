@@ -40,7 +40,7 @@ export async function GET() {
   }
 }
 
-export async function getHomePageScreenings(limit: number) {
+async function getHomePageScreenings(limit: number) {
   return Movies.aggregate([
     { $unwind: "$screenings" },
     {
