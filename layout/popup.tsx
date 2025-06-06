@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Fade,
@@ -13,10 +13,11 @@ import {
 import PaymentPopup from "../components/popup/PaymentPopup";
 import ConfirmationPopup from "../components/popup/ConfirmationPopup";
 import Seating from "../components/popup/seating";
-import Login from "@/app/login/page";
+import LoginForm from "../components/popup/LoginForm";
+import RegisterForm from "../components/popup/RegisterForm";
 import { BookingScreening, Movie } from "@/types";
 import BookTickets from "../components/popup/bookTickets";
-import bookingCreated from "../src/database/collections/booking";
+import { useRouter } from "next/navigation";
 
 const steps = [
   "Biljettbokning",
@@ -36,12 +37,26 @@ const Popup: React.FC<PopupProps> = ({
   movie,
   screeningData,
 }) => {
-  const [totalTickets, setTotalTickets] = React.useState(0);
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<
+  const [totalTickets, setTotalTickets] = useState<number>(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     "Kort" | "Swish" | "På plats" | null
   >(null);
-  const [selectedSeats, setSelectedSeats] = React.useState<number[]>([]);
+  const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const [adultCount, setAdultCount] = useState(0);
+  const [childCount, setChildCount] = useState(0);
+  const [seniorCount, setSeniorCount] = useState(0);
+
+  // Hantera auth-vy och inloggningsstatus
+  const [authView, setAuthView] = useState<"login" | "register" | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [occupiedSeats, setOccupiedSeats] = React.useState<number[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push(`${movie._id}?movie=${movie.title}&id=${screeningData._id}`);
+    retrieveBookedSeats();
+  }, []);
 
   const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => {
     setSelectedPaymentMethod(method);
@@ -57,34 +72,48 @@ const Popup: React.FC<PopupProps> = ({
     if (activeStep === 0) {
       handlePopupState(false);
     }
-
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   const getTotalTickets = (totalSum: number) => {
     setTotalTickets(totalSum);
   };
 
+  const getSeatingData = (data: number[]) => {
+    setSelectedSeats(data);
+  };
+
   const sendToDatabase = async () => {
-    let sendingData = {
+    const data = {
       selectedSeats: selectedSeats,
       totalTickets: totalTickets,
       screeningData: screeningData,
     };
 
-    await fetch(`/api/movies/${movie._id}`, {
+    await fetch(`/api/movies/${movie._id}/bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        sendingData,
+        data,
       }),
     });
+  };
+
+  const retrieveBookedSeats = async () => {
+    const response = await fetch(
+      `/api/movies/${movie._id}/bookings?movie=${movie.title}&id=${screeningData._id}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Response is not okey!");
+    }
+
+    const payLoad = await response.json();
+    const seats = payLoad.seats;
+
+    setOccupiedSeats(seats);
   };
 
   return (
@@ -92,6 +121,7 @@ const Popup: React.FC<PopupProps> = ({
       <Box
         sx={{
           backgroundColor: "#1A323C",
+
           border: {
             //ingen border på liten skärm
             md: "2px solid white",
@@ -105,6 +135,7 @@ const Popup: React.FC<PopupProps> = ({
           height: "auto", 
           maxHeight: "90vh", 
           margin: "auto", 
+
           borderRadius: "3px",
           overflowY: "auto",
         }}
@@ -141,13 +172,12 @@ const Popup: React.FC<PopupProps> = ({
             margin: "2rem auto auto auto",
           }}
         >
-          {steps.map((step, index) => (
+          {steps.map((step) => (
             <Step key={step}>
               <StepLabel>{step}</StepLabel>
             </Step>
           ))}
         </Stepper>
-        {/* Navigation buttons */}
         <Box
           sx={{
             marginTop: "2rem",
@@ -156,19 +186,50 @@ const Popup: React.FC<PopupProps> = ({
             borderRadius: "20px",
           }}
         >
-          {activeStep === 0 && (
-            <BookTickets getTotalTickets={getTotalTickets} movie={movie} />
+          {/* Steg 0: Visa BookTickets, LoginForm eller RegisterForm */}
+          {activeStep === 0 && authView === null && (
+            <BookTickets
+              getTotalTickets={getTotalTickets}
+              movie={movie}
+              isLoggedIn={isLoggedIn}
+              onLoginClick={() => setAuthView("login")}
+              onRegisterClick={() => setAuthView("register")}
+              adultCount={adultCount}
+              setAdultCount={setAdultCount}
+              childCount={childCount}
+              setChildCount={setChildCount}
+              seniorCount={seniorCount}
+              setSeniorCount={setSeniorCount}
+            />
           )}
+          {activeStep === 0 && authView === "login" && (
+            <LoginForm
+              onLoginSuccess={() => {
+                setIsLoggedIn(true);
+                setAuthView(null);
+              }}
+              onRegisterClick={() => setAuthView("register")}
+            />
+          )}
+          {activeStep === 0 && authView === "register" && (
+            <RegisterForm
+              onRegisterSuccess={() => setAuthView("login")}
+              onBackToLogin={() => setAuthView("login")}
+            />
+          )}
+          {/* Steg 1: Platsbokning */}
           {activeStep === 1 && (
             <Seating
-              selectedSeats={selectedSeats}
-              setSelectedSeats={setSelectedSeats}
+              occupiedSeats={occupiedSeats}
+              getSeatingData={getSeatingData}
               totalTickets={totalTickets}
             />
           )}
+          {/* Steg 2: Betalning */}
           {activeStep === 2 && (
             <PaymentPopup onNextStep={handlePaymentComplete} />
           )}
+          {/* Steg 3: Bekräftelse */}
           {activeStep === 3 && selectedPaymentMethod && (
             <ConfirmationPopup
               screeningData={screeningData}
@@ -188,8 +249,6 @@ const Popup: React.FC<PopupProps> = ({
             marginBottom: "2rem",
           }}
         >
-          {/* Back */}
-
           <Button
             variant="outlined"
             color="secondary"
@@ -198,7 +257,6 @@ const Popup: React.FC<PopupProps> = ({
           >
             Tillbaka
           </Button>
-          {/* Continue */}
           {activeStep < steps.length - 1 && activeStep !== 2 && (
             <Button
               variant="outlined"

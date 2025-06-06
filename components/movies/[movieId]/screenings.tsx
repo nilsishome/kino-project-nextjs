@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   List,
@@ -15,6 +17,9 @@ type Props = {
 };
 
 const Screenings: React.FC<Props> = ({ movie, onScreeningClick }) => {
+  const [availableScreenings, setAvailableScreenings] = useState<
+    BookingScreening[]
+  >([]);
   function retrieveDayFromDate(date: Date) {
     const fixedDate = new Date(date);
     const dayOfWeek = fixedDate.toLocaleString("sv-SV", { weekday: "long" });
@@ -25,10 +30,24 @@ const Screenings: React.FC<Props> = ({ movie, onScreeningClick }) => {
     return dayOfWeek.substring(0, 3) + " " + dayOfMonth + "/" + month;
   }
 
+  useEffect(() => {
+    const screeningArray: BookingScreening[] = [];
+    const date = new Date();
+    movie.screenings.forEach((screening) => {
+      let screeningDate = new Date(screening.date);
+
+      if (date.getTime() < screeningDate.getTime()) {
+        screeningArray.push(screening);
+      }
+    });
+
+    setAvailableScreenings(screeningArray);
+  }, []);
+
   return (
     <>
       <List sx={{ marginLeft: "4vw" }}>
-        {movie.screenings.map((screening, index) => (
+        {availableScreenings.map((screening, index) => (
           <React.Fragment key={index}>
             <ListItem>
               <Grid

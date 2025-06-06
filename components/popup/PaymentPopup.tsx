@@ -13,6 +13,7 @@ export default function PaymentPopup({ onNextStep }: PaymentPopupProps) {
   const [swishLoading, setSwishLoading] = React.useState(false);
   const [cardLoading, setCardLoading] = React.useState(false);
 
+  
   const handleMockPayment = (type: "swish" | "card") => {
     if (type === "swish") {
       setSwishLoading(true);
