@@ -11,11 +11,11 @@ import CurrentScreenings from "../../components/index/currentScreenings";
 export default function Home() {
   return (
     <>
-    <ThemeProvider theme={theme}>
-      <FilteringSection />
-      <CarouselComponent />
-      <CurrentScreenings />
-      <GiftSection />
+      <ThemeProvider theme={theme}>
+        <FilteringSection />
+        <CarouselComponent />
+        <CurrentScreenings />
+        <GiftSection />
       </ThemeProvider>
     </>
   );
