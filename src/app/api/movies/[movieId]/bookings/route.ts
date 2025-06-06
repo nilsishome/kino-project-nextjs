@@ -5,9 +5,7 @@ import mongoose from "mongoose";
 
 export async function GET(
   req: NextRequest,
-  {
-    params,
-  }: {
+  {}: {
     params: Promise<{ movieId: string }>;
   }
 ) {

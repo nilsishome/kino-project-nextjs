@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { Movie } from "@/types";
 import ReviewDialog from "./reviewDialog";
-import AlertSnackbar from "../../snackbar";
 import { toast } from "sonner";
 
 type Props = {

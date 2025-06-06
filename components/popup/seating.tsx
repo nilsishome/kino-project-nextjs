@@ -52,7 +52,7 @@ export default function Seating({
 
       setSeats(seats);
     }
-  }, [selectedSeats, getSeatingData]);
+  }, [selectedSeats, getSeatingData, occupiedSeats, seats]);
 
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 

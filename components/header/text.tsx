@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { Yesteryear } from "next/font/google";
 
 export const yesteryear = Yesteryear({ subsets: ["latin"], weight: "400" });
