@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Zoom, Box, IconButton, ButtonGroup, Button } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -32,7 +34,8 @@ const PhoneNav: React.FC<navProps> = ({ navToggle, onNavToggle }) => {
               width: "100%",
               height: "100%",
               backgroundColor: "primary.main",
-              opacity: 0.8,
+              opacity: 0.95,
+              zIndex: 1,
             }}
           >
             <ButtonGroup
@@ -47,24 +50,35 @@ const PhoneNav: React.FC<navProps> = ({ navToggle, onNavToggle }) => {
                 },
               }}
             >
-              <Button sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
+              <Button href="/" sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
                 START
               </Button>
-              <Button sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
+              <Button
+                href="/movies"
+                sx={{ fontSize: "1rem", marginBottom: "1rem" }}
+              >
                 FILMER
               </Button>
-              <Button sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
-                SERVERING
-              </Button>
-              <Button sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
+              <Button
+                href="/about"
+                sx={{ fontSize: "1rem", marginBottom: "1rem" }}
+              >
                 OM OSS
               </Button>
-              <Button sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
+              <Button
+                href="/contact"
+                sx={{ fontSize: "1rem", marginBottom: "1rem" }}
+              >
                 KONTAKT
               </Button>
-              <Button sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
+              <Button href="" sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
                 ÖPPETTIDER
               </Button>
+
+               <Button href="/login" sx={{ fontSize: "1rem", marginBottom: "1rem" }}>
+                MINA-SIDOR
+              </Button>
+
             </ButtonGroup>
           </Box>
         </Zoom>

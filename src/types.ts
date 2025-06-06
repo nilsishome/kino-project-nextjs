@@ -1,5 +1,5 @@
 export type Movie = {
-  _id: string;
+  _id?: string;
   title: string;
   story: string;
   genre: string;
@@ -10,10 +10,10 @@ export type Movie = {
   reviews: [
     {
       date: Date;
-      comment: String;
-      author: String;
-      rating: Number;
-    }
+      comment: string;
+      author: string;
+      rating: number;
+    },
   ];
   color: boolean;
   decade: string;
@@ -22,9 +22,29 @@ export type Movie = {
   release: number;
   screenings: [
     {
-      time: String;
+      time: string;
       date: Date;
-      saloon: String;
-    }
+      saloon: string;
+      title?: string;
+      image?: string;
+      _id: string;
+    },
   ];
+};
+
+// This type is only used for home page current screenings
+export type MovieScreening = {
+  title: string;
+  coverImage: string;
+  date?: string;
+  time: string;
+};
+
+export type BookingScreening = {
+  title?: string;
+  time: string;
+  date: Date;
+  saloon: string;
+  _id: string;
+  image?: string;
 };

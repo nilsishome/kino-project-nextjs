@@ -1,9 +1,8 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { Paper, Container } from "@mui/material";
+import { authOptions } from "@/utils/auth";
 import React from "react";
-import MinaSidorClient from "./MinaSidorClient";
+import MinaSidorClient from "../../../components/mina-sidor/MinaSidorClient";
 
 export default async function MinaSidorPage() {
   const session = await getServerSession(authOptions);
@@ -15,7 +14,6 @@ export default async function MinaSidorPage() {
   return (
     <>
       <MinaSidorClient session={session} />
-      
     </>
   );
 }

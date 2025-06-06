@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Alert,
   IconButton,
@@ -14,16 +13,18 @@ import {
   InputAdornment,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import NextLink from "next/link";
-import { toast } from "sonner";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import outlinedTextField from "@/styles/outlinedTextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { toast } from "sonner";
+import { useState, useEffect } from "react";
+import outlinedTextField from "@/styles/outlinedTextField";
 
-const Register = () => {
+type Props = {
+  onRegisterSuccess?: () => void;
+  onBackToLogin?: () => void;
+};
+
+const RegisterForm = ({ onRegisterSuccess, onBackToLogin }: Props) => {
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -32,22 +33,18 @@ const Register = () => {
     confirmPassword: "",
   });
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [showAlert, setShowAlert] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
   useEffect(() => {
     if (error) {
       setShowAlert(true);
-      const timer = setTimeout(() => {
-        setShowAlert(false);
-      }, 3000);
+      const timer = setTimeout(() => setShowAlert(false), 3000);
       return () => clearTimeout(timer);
     }
   }, [error]);
@@ -55,7 +52,7 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPending(true);
-    setError(null); // Rensar error vid varje inlämning
+    setError(null);
 
     const res = await fetch("/api/register", {
       method: "POST",
@@ -67,11 +64,8 @@ const Register = () => {
     if (res.ok) {
       setPending(false);
       toast.success(data.message);
-      router.push("/login");
-    } else if (res.status === 400) {
-      setError(data.message);
-      setPending(false);
-    } else if (res.status === 500) {
+      if (onRegisterSuccess) onRegisterSuccess();
+    } else {
       setError(data.message);
       setPending(false);
     }
@@ -82,7 +76,6 @@ const Register = () => {
       <Typography component='h1' variant='h5'>
         Skapa ett konto
       </Typography>
-
       {mounted && !!error && (
         <Collapse in={showAlert}>
           <Alert
@@ -109,7 +102,6 @@ const Register = () => {
           </Alert>
         </Collapse>
       )}
-
       <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         <Box display='flex' gap={2}>
           <TextField
@@ -124,7 +116,6 @@ const Register = () => {
             autoFocus
             sx={outlinedTextField}
           />
-
           <TextField
             type='text'
             variant='outlined'
@@ -134,7 +125,6 @@ const Register = () => {
             onChange={(e) => setForm({ ...form, lastName: e.target.value })}
             fullWidth
             required
-            autoFocus
             sx={outlinedTextField}
           />
         </Box>
@@ -149,9 +139,8 @@ const Register = () => {
           required
           sx={outlinedTextField}
         />
-
         <TextField
-          type={showPassword ? "text" : "password"}
+          type='password'
           variant='outlined'
           placeholder='lösenord'
           disabled={pending}
@@ -168,17 +157,18 @@ const Register = () => {
                   onClick={() => setShowPassword((show) => !show)}
                   edge='end'
                 >
-                  {showPassword ? 
-                  <VisibilityOff sx={{ color: "#F1DDC5" }}/>
-                  : <Visibility sx={{ color: "#F1DDC5" }}/>}
+                  {showPassword ? (
+                    <VisibilityOff sx={{ color: "#F1DDC5" }} />
+                  ) : (
+                    <Visibility sx={{ color: "#F1DDC5" }} />
+                  )}
                 </IconButton>
               </InputAdornment>
-            ),
+            )
           }}
         />
-
         <TextField
-          type={showPassword ? "text" : "password"}
+          type='password'
           variant='outlined'
           placeholder='bekräfta lösenord'
           disabled={pending}
@@ -189,7 +179,7 @@ const Register = () => {
           sx={outlinedTextField}
           fullWidth
           required
-           InputProps={{
+          InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
                 <IconButton
@@ -197,47 +187,30 @@ const Register = () => {
                   onClick={() => setShowPassword((show) => !show)}
                   edge='end'
                 >
-                  {showPassword ? 
-                  <VisibilityOff sx={{ color: "#F1DDC5" }}/>
-                  : <Visibility sx={{ color: "#F1DDC5" }}/>}
+                  {showPassword ? (
+                    <VisibilityOff sx={{ color: "#F1DDC5" }} />
+                  ) : (
+                    <Visibility sx={{ color: "#F1DDC5" }} />
+                  )}
                 </IconButton>
               </InputAdornment>
             ),
           }}
         />
-
-        <Box display='flex' gap={1}>
-          <Button
-            type='button'
-            fullWidth
-            variant='contained'
-            sx={{ mt: 3, mb: 2, flex: 1 }}
-            onClick={() => router.back()}
-          >
-            Tillbaka
-          </Button>
-
-          <Button
-            type='submit'
-            disabled={pending}
-            fullWidth
-            variant='contained'
-            sx={{ mt: 3, mb: 2, flex: 1 }}
-          >
-            Skapa konto
-          </Button>
-        </Box>
+        <Button
+          type='submit'
+          disabled={pending}
+          fullWidth
+          variant='outlined'
+          sx={{ mt: 3, mb: 2, flex: 1 }}
+        >
+          Skapa konto
+        </Button>
       </Box>
-
       <Grid container justifyContent='space-between' sx={{ mt: 1 }}>
         <Grid>
-          <Link component={NextLink} href='/login' variant='body2'>
+          <Link component='button' variant='body2' onClick={onBackToLogin}>
             Har du redan ett konto? Logga in
-          </Link>
-        </Grid>
-        <Grid>
-          <Link component={NextLink} href='/forgot' variant='body2'>
-            Glömt lösenord?
           </Link>
         </Grid>
       </Grid>
@@ -245,4 +218,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterForm;

@@ -3,16 +3,16 @@ import { Movies } from "../models";
 
 export function createScreenings() {
   const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  let currentMovieScreening = [];
+  const currentMovieScreening = [];
 
   for (
     let currentScreeningIndex = 0;
     currentScreeningIndex < 10;
     currentScreeningIndex++
   ) {
-    let date = new Date();
+    const date = new Date();
 
-    let daysLeft = monthDays[date.getMonth()] - date.getDate();
+    const daysLeft = monthDays[date.getMonth()] - date.getDate();
 
     const saloons = ["Metropol", "Saga", "Serif"];
 
@@ -31,14 +31,15 @@ export function createScreenings() {
       "23:00",
     ];
 
-    let calculatedDays = date.getDate() + Math.floor(Math.random() * daysLeft);
-    let calculatedTime = times[Math.floor(Math.random() * times.length)];
+    const calculatedDays =
+      date.getDate() + Math.floor(Math.random() * daysLeft);
+    const calculatedTime = times[Math.floor(Math.random() * times.length)];
 
     date.setDate(calculatedDays);
     date.setHours(Number(calculatedTime.substring(0, 2)));
     date.setMinutes(0);
 
-    let newScreening = {
+    const newScreening = {
       time: date.getHours(),
       date,
       saloon: saloons[Math.floor(Math.random() * saloons.length)],
@@ -66,7 +67,7 @@ export async function resetScreenings() {
 
   for (let currentIndex = 0; currentIndex < movies.length; currentIndex++) {
     const currentMovie = movies[currentIndex];
-    let movieScreenings = createScreenings();
+    const movieScreenings = createScreenings();
 
     currentMovie.screenings.push(movieScreenings);
 

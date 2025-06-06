@@ -16,10 +16,17 @@ import {
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
+type creationProp = {
+  author: string;
+  comment: string;
+  date: Date;
+  rating: number;
+};
+
 type Props = {
   reviewState: boolean;
   reviewStateHandle: (state: boolean) => void;
-  handleReviewCreation: (data: object) => void;
+  handleReviewCreation: (data: creationProp) => void;
 };
 
 const CustomTextField = styled(TextField)`
@@ -47,11 +54,11 @@ const ReviewDialog: React.FC<Props> = ({
   const [comment, setComment] = React.useState<string>("");
   const [reviewerName, setReviewerName] = React.useState<string>("");
 
-  const handleCommentChange = (event: any) => {
+  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setComment(event.target.value);
   };
 
-  const handleReviewerName = (event: any) => {
+  const handleReviewerName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReviewerName(event.target.value);
   };
 
@@ -131,7 +138,7 @@ const ReviewDialog: React.FC<Props> = ({
           <Button
             onClick={() =>
               handleReviewCreation({
-                rating: ratingValue,
+                rating: ratingValue!,
                 comment: comment,
                 author: reviewerName,
                 date: new Date(),
