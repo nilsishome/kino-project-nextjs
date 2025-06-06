@@ -52,6 +52,14 @@ export default function Nav() {
       >
         ÖPPETTIDER
       </Button>
+
+       <Button
+       href="/login"
+        variant="text"
+        sx={{ margin: "1rem", fontSize: { sm: "1rem", md: "1.5rem" } }}
+      >
+        MINA-SIDOR
+      </Button>
     </ButtonGroup>
   );
 }
