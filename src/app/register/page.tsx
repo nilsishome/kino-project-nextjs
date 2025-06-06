@@ -11,6 +11,7 @@ import {
   Link,
   Grid,
   Container,
+  InputAdornment,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import NextLink from "next/link";
@@ -19,6 +20,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import outlinedTextField from "@/styles/outlinedTextField";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -32,6 +35,7 @@ const Register = () => {
   const [error, setError] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -147,7 +151,7 @@ const Register = () => {
         />
 
         <TextField
-          type='password'
+          type={showPassword ? "text" : "password"}
           variant='outlined'
           placeholder='lösenord'
           disabled={pending}
@@ -156,10 +160,25 @@ const Register = () => {
           fullWidth
           required
           sx={outlinedTextField}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label={showPassword ? "Dölj lösenord" : "Visa lösenord"}
+                  onClick={() => setShowPassword((show) => !show)}
+                  edge='end'
+                >
+                  {showPassword ? 
+                  <VisibilityOff sx={{ color: "#F1DDC5" }}/>
+                  : <Visibility sx={{ color: "#F1DDC5" }}/>}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <TextField
-          type='password'
+          type={showPassword ? "text" : "password"}
           variant='outlined'
           placeholder='bekräfta lösenord'
           disabled={pending}
@@ -170,6 +189,21 @@ const Register = () => {
           sx={outlinedTextField}
           fullWidth
           required
+           InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label={showPassword ? "Dölj lösenord" : "Visa lösenord"}
+                  onClick={() => setShowPassword((show) => !show)}
+                  edge='end'
+                >
+                  {showPassword ? 
+                  <VisibilityOff sx={{ color: "#F1DDC5" }}/>
+                  : <Visibility sx={{ color: "#F1DDC5" }}/>}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <Box display='flex' gap={1}>
