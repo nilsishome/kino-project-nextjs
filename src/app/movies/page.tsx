@@ -2,7 +2,7 @@ import { Movie } from "@/types";
 import MovieFilter from "../../../components/movies/MovieFilter";
 
 import { Box } from "@mui/material";
-import * as styles from "./moviesPage.style";
+import * as styles from "../styles/moviesPage.style";
 
 export default async function Page() {
   const response = await fetch("http://localhost:3000/api/movies");

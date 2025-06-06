@@ -3,9 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import { Movie } from "@/types";
 import Link from "@mui/material/Link";
-import * as styles from "@/app/movies/moviesPage.style";
+import * as styles from "@/app/styles/moviesPage.style";
 import { Box, Typography, CardMedia, Button } from "@mui/material";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
 const MovieFilter = ({ movies }: { movies: Movie[] }) => {
   const searchParams = useSearchParams();
@@ -16,7 +16,7 @@ const MovieFilter = ({ movies }: { movies: Movie[] }) => {
   const filmType = searchParams.get("filmType") || "";
   const search = searchParams.get("search") || "";
 
-  const filteredMovies = movies.filter((movie) => { 
+  const filteredMovies = movies.filter((movie) => {
     const matches =
       (!genre || movie.genre.toLowerCase() === genre.toLowerCase()) &&
       (!decade || movie.decade.toString() === decade) &&
@@ -27,7 +27,7 @@ const MovieFilter = ({ movies }: { movies: Movie[] }) => {
       (!search ||
         movie.title.toLowerCase().includes((search as string).toLowerCase()));
 
-return matches; 
+    return matches;
   });
 
   const moviesToRender = filteredMovies;
@@ -35,32 +35,31 @@ return matches;
   return (
     <Box sx={styles.container}>
       <Button
-      variant="outlined"
-      sx={{ mb: 2 }}
-      onClick={() => router.push("/")}
+        variant="outlined"
+        sx={{ mb: 2 }}
+        onClick={() => router.push("/")}
       >
-      Tillbaka 
+        Tillbaka
       </Button>
 
       {moviesToRender.length > 0 ? (
-      <>
-      <Typography sx={styles.title}>Movies</Typography>
-      <Box sx={styles.list}>
-      
-        {moviesToRender.map((movie) => (
-          <Box key={movie._id} sx={styles.listItem}>
-            <Link href={`/movies/${movie._id}`}>
-            <CardMedia
-              component="img"
-              image={movie.coverImage}
-              alt={movie.title}
-              style={styles.image}
-            />
-  <Typography sx={styles.titleText}>{movie.title}</Typography>
+        <>
+          <Typography sx={styles.title}>Movies</Typography>
+          <Box sx={styles.list}>
+            {moviesToRender.map((movie) => (
+              <Box key={movie._id} sx={styles.listItem}>
+                <Link href={`/movies/${movie._id}`}>
+                  <CardMedia
+                    component="img"
+                    image={movie.coverImage}
+                    alt={movie.title}
+                    style={styles.image}
+                  />
+                  <Typography sx={styles.titleText}>{movie.title}</Typography>
                 </Link>
               </Box>
-        ))}
-        </Box>
+            ))}
+          </Box>
         </>
       ) : (
         <Typography variant="h6">Inga filmer matchar din filtrering</Typography>

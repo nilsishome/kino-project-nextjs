@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import VerifyRedirect from "./VerifyRedirect";
+import VerifyRedirect from "../../../components/verify/VerifyRedirect";
 import { Box, Paper, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 
