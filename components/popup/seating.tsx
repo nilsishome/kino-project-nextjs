@@ -1,8 +1,7 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
-import "@fortawesome/fontawesome-free/css/all.min.css"; //rullstol ikonen.
+import "@fortawesome/fontawesome-free/css/all.min.css"; // rullstol ikonen.
 
 type Seat = {
   row: number;
@@ -12,7 +11,6 @@ type Seat = {
   isWheelchair?: boolean;
 };
 
-//48 sittplatser
 const rows = 6;
 const cols = 8;
 
@@ -29,7 +27,6 @@ export default function Seating({
 }: Props) {
   const [seats, setSeats] = useState<Seat[]>(
     Array.from({ length: rows * cols }, (_, index) => ({
-      //En array för alla sittplatser.
       row: Math.floor(index / cols),
       col: index % cols,
       isTaken: false,
@@ -53,38 +50,39 @@ export default function Seating({
     }
   });
 
-  const handleSeatClick = (index: number) => {
-    setSeats((prevSeats) => {
-      const selectedCount = prevSeats.filter((seat) => seat.isSelected).length;
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
-      return prevSeats.map((seat, i) => {
-        if (i !== index || seat.isTaken) return seat;
-
-        if (seat.isSelected) {
-          // Avmarkera plats
-          const newSeats = [...selectedSeats];
-          const seatClicked = newSeats.indexOf(i + 1);
-
-          newSeats.splice(seatClicked, 1);
-
-          setSelectedSeats(newSeats);
-          return { ...seat, isSelected: false };
-        } else if (selectedCount < totalTickets) {
-          const newSeats = [...selectedSeats, i + 1];
-          setSelectedSeats(newSeats);
-          return { ...seat, isSelected: true };
-        } else {
-          return seat;
-        }
-      });
-    });
+  // Hjälpfunktion för att hämta en rad med platser
+  const getRowSeats = (startIndex: number) => {
+    const row = Math.floor(startIndex / cols);
+    const startCol = startIndex % cols;
+    if (startCol + totalTickets > cols) return [];
+    const indices = [];
+    for (let i = 0; i < totalTickets; i++) {
+      const idx = row * cols + startCol + i;
+      if (idx >= seats.length || seats[idx].row !== row || seats[idx].isTaken)
+        return [];
+      indices.push(idx);
+    }
+    return indices;
   };
 
-  // Skickar stoldatan vidare i popupen
-  useEffect(() => {
-    selectedSeats.sort(); // Sortera arrayen i numerisk ordning.
-    getSeatingData(selectedSeats);
-  }, [selectedSeats]);
+  // När man klickar på en plats, välj hela raden om möjligt
+  const handleSeatClick = (index: number) => {
+    const indices = getRowSeats(index);
+    if (indices.length !== totalTickets) return;
+    setSeats((prevSeats) =>
+      prevSeats.map((seat, i) =>
+        indices.includes(i)
+          ? { ...seat, isSelected: true }
+          : { ...seat, isSelected: false }
+      )
+    );
+    setSelectedSeats(indices);
+  };
+
+  // Förhandsvisa rad på hover
+  const hoverRow = hoverIndex !== null ? getRowSeats(hoverIndex) : [];
 
   return (
     <Box
@@ -114,38 +112,47 @@ export default function Seating({
           alignItems: "center",
         }}
       >
-        {seats.map((seat, index) => (
-          <Button
-            key={index}
-            onClick={() => handleSeatClick(index)}
-            sx={{
-              width: 25,
-              height: 25,
-              minWidth: 25,
-              backgroundColor: seat.isTaken //olika färger utifrån status på sittplats.
-                ? "grey"
-                : seat.isSelected
-                  ? "lightgreen"
-                  : seat.isWheelchair
-                    ? "white"
-                    : "lightgray",
-              color: seat.isWheelchair ? "black" : "inherit",
-              border: seat.isWheelchair ? "2px solid black" : "none",
-              fontSize: 14,
-              borderRadius: "50%",
-              cursor: seat.isTaken ? "not-allowed" : "pointer", //grön markör för lediga platser
-              "&:hover": seat.isTaken
-                ? {} // Ingen grön hover på upptagna platser
-                : {
-                    backgroundColor: "lightgreen",
-                  },
-            }}
-          >
-            {seat.isWheelchair ? (
-              <i className="fa fa-wheelchair" style={{ fontSize: 14 }}></i>
-            ) : null}
-          </Button>
-        ))}
+        {seats.map((seat, index) => {
+          const isHover = hoverIndex !== null && hoverRow.includes(index);
+
+          return (
+            <Button
+              key={index}
+              onMouseEnter={() => setHoverIndex(index)}
+              onMouseLeave={() => setHoverIndex(null)}
+              onClick={() => handleSeatClick(index)}
+              sx={{
+                width: 25,
+                height: 25,
+                minWidth: 25,
+                backgroundColor: seat.isTaken
+                  ? "grey"
+                  : seat.isSelected
+                    ? "lightgreen"
+                    : isHover
+                      ? "#ffe082"
+                      : seat.isWheelchair
+                        ? "white"
+                        : "lightgray",
+                color: seat.isWheelchair ? "black" : "inherit",
+                border: seat.isWheelchair ? "2px solid black" : "none",
+                fontSize: 14,
+                borderRadius: "50%",
+                cursor: seat.isTaken ? "not-allowed" : "pointer",
+                "&:hover": seat.isTaken
+                  ? {}
+                  : {
+                      backgroundColor: "#ffe082",
+                    },
+              }}
+              disabled={seat.isTaken}
+            >
+              {seat.isWheelchair ? (
+                <i className="fa fa-wheelchair" style={{ fontSize: 14 }}></i>
+              ) : null}
+            </Button>
+          );
+        })}
       </Box>
 
       <Box sx={{ display: "flex", justifyContent: "center", gap: 4, mt: 3 }}>
@@ -159,6 +166,17 @@ export default function Seating({
             }}
           />
           <Typography variant="body2">Vald plats</Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box
+            sx={{
+              width: 16,
+              height: 16,
+              borderRadius: "50%",
+              backgroundColor: "#ffe082",
+            }}
+          />
+          <Typography variant="body2">Förhandsvisning rad</Typography>
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Box
