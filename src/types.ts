@@ -27,7 +27,7 @@ export type Movie = {
       saloon: string;
       title?: string;
       image?: string;
-      id: string;
+      _id: string;
     },
   ];
 };
@@ -45,6 +45,6 @@ export type BookingScreening = {
   time: string;
   date: Date;
   saloon: string;
-  id: string;
+  _id: string;
   image?: string;
 };

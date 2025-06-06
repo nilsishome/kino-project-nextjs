@@ -69,7 +69,7 @@ export async function POST(
       if (screeningFound) {
         data.selectedSeats.map(async (seat: number) => {
           await Booking.updateOne(
-            { _id: booking[0]._id, "screenings._id": screeningFound?.id },
+            { _id: booking[0]._id, "screenings._id": screeningFound?._id },
             { $push: { "screenings.$.seats": seat } }
           );
         });
@@ -83,7 +83,7 @@ export async function POST(
                 saloon: data.screeningData.saloon,
                 seats: data.selectedSeats,
                 time: data.screeningData.time,
-                _id: data.screeningData.id,
+                _id: data.screeningData._id,
               },
             },
           }
@@ -97,7 +97,7 @@ export async function POST(
           saloon: data.screeningData.saloon,
           seats: data.selectedSeats,
           time: data.screeningData.time,
-          _id: data.screeningData.id,
+          _id: data.screeningData._id,
         },
       });
     }

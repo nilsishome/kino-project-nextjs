@@ -46,8 +46,6 @@ const BookTickets: React.FC<Props> = ({
     getTotalTickets(adultCount + childCount + seniorCount);
   }, [adultCount, childCount, seniorCount]);
 
-  // console.log("adultCount:", adultCount, "childCount:", childCount, "seniorCount:", seniorCount, "totalPrice:", totalPrice);
-
   const sumOfTickets = () => {
     let totalSum = adultCount + childCount + seniorCount;
 

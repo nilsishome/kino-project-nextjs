@@ -37,6 +37,10 @@ export default function Seating({
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
 
   useEffect(() => {
+    selectedSeats.sort();
+
+    getSeatingData(selectedSeats);
+
     if (occupiedSeats) {
       seats.forEach((seat, index) => {
         occupiedSeats.map((value) => {
@@ -48,7 +52,7 @@ export default function Seating({
 
       setSeats(seats);
     }
-  });
+  }, [selectedSeats]);
 
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 

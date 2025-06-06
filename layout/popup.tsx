@@ -54,7 +54,7 @@ const Popup: React.FC<PopupProps> = ({
   const router = useRouter();
 
   useEffect(() => {
-    router.push(`${movie._id}?movie=${movie.title}&id=${screeningData.id}`);
+    router.push(`${movie._id}?movie=${movie.title}&id=${screeningData._id}`);
     retrieveBookedSeats();
   }, []);
 
@@ -103,7 +103,7 @@ const Popup: React.FC<PopupProps> = ({
 
   const retrieveBookedSeats = async () => {
     const response = await fetch(
-      `/api/movies/${movie._id}/bookings?movie=${movie.title}&id=${screeningData.id}`
+      `/api/movies/${movie._id}/bookings?movie=${movie.title}&id=${screeningData._id}`
     );
 
     if (!response.ok) {
