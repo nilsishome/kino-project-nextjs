@@ -18,17 +18,26 @@ export async function GET(
 
     const booking = await Booking.find({ title: movieTitle });
 
-    const objectId = new mongoose.Types.ObjectId(screeningId!);
-    const screening = booking[0].screenings.find((element) =>
-      element._id.equals(objectId)
-    );
+    if (booking.length !== 0) {
+      const objectId = new mongoose.Types.ObjectId(screeningId!);
+      const screening = booking[0].screenings.find((element) =>
+        element._id.equals(objectId)
+      );
 
-    return NextResponse.json(
-      {
-        seats: screening?.seats,
-      },
-      { status: 200 }
-    );
+      return NextResponse.json(
+        {
+          seats: screening?.seats,
+        },
+        { status: 200 }
+      );
+    } else {
+      return NextResponse.json(
+        {
+          seats: "All seats are available!",
+        },
+        { status: 200 }
+      );
+    }
   } catch (error) {
     return NextResponse.json(
       { error: `Internal Server Error ${error}` },

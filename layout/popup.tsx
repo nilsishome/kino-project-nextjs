@@ -18,8 +18,8 @@ import RegisterForm from "../components/popup/RegisterForm";
 import { BookingScreening, Movie } from "@/types";
 import BookTickets from "../components/popup/bookTickets";
 import { useRouter } from "next/navigation";
-
 import Disability from "../components/popup/disability";
+
 const steps = [
   "Biljettbokning",
   "Platsbokning",
@@ -113,6 +113,11 @@ const Popup: React.FC<PopupProps> = ({
 
     const payLoad = await response.json();
     const seats = payLoad.seats;
+
+    if (isNaN(seats)) {
+      console.log(seats);
+      return;
+    }
 
     setOccupiedSeats(seats);
   };
