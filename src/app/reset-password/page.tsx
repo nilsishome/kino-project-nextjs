@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Link,
@@ -62,80 +62,82 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ mt: 8, mb: 4 }}>
-      <Typography component="h1" variant="h5" mb={2}>
-        Återställ lösenord
-      </Typography>
+    <Suspense>
+      <Container maxWidth="xs" sx={{ mt: 8, mb: 4 }}>
+        <Typography component="h1" variant="h5" mb={2}>
+          Återställ lösenord
+        </Typography>
 
-      <Collapse in={showAlert}>
-        {success && (
-          <Alert
-            severity="success"
-            sx={{ mb: 2, borderRadius: 2 }}
-            action={
-              <IconButton
-                aria-label="stäng"
-                size="small"
-                onClick={() => setShowAlert(false)}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-          >
-            Lösenordet är återställt! Du kan nu logga in.
-          </Alert>
-        )}
-        {error && (
-          <Alert
-            severity="error"
-            sx={{ mb: 2, borderRadius: 2 }}
-            action={
-              <IconButton
-                aria-label="stäng"
-                size="small"
-                onClick={() => setShowAlert(false)}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-          >
-            {error}
-          </Alert>
-        )}
-      </Collapse>
+        <Collapse in={showAlert}>
+          {success && (
+            <Alert
+              severity="success"
+              sx={{ mb: 2, borderRadius: 2 }}
+              action={
+                <IconButton
+                  aria-label="stäng"
+                  size="small"
+                  onClick={() => setShowAlert(false)}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+            >
+              Lösenordet är återställt! Du kan nu logga in.
+            </Alert>
+          )}
+          {error && (
+            <Alert
+              severity="error"
+              sx={{ mb: 2, borderRadius: 2 }}
+              action={
+                <IconButton
+                  aria-label="stäng"
+                  size="small"
+                  onClick={() => setShowAlert(false)}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+            >
+              {error}
+            </Alert>
+          )}
+        </Collapse>
 
-      <form onSubmit={handleSubmit}>
-        <TextField
-          placeholder="Nytt lösenord"
-          type="password"
-          fullWidth
-          required
-          value={password}
-          sx={outlinedTextField}
-          onChange={(e) => setPassword(e.target.value)}
-          margin="normal"
-        />
-        <TextField
-          placeholder="Bekräfta nytt lösenord"
-          type="password"
-          fullWidth
-          required
-          value={confirmPassword}
-          sx={outlinedTextField}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          margin="normal"
-        />
-        <Button type="submit" variant="contained" fullWidth>
-          Spara nytt lösenord
-        </Button>
-      </form>
-      <Grid container justifyContent="center" sx={{ mt: 1 }}>
-        <Grid>
-          <Link component={NextLink} href="/login" variant="body2">
-            Logga in
-          </Link>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            placeholder="Nytt lösenord"
+            type="password"
+            fullWidth
+            required
+            value={password}
+            sx={outlinedTextField}
+            onChange={(e) => setPassword(e.target.value)}
+            margin="normal"
+          />
+          <TextField
+            placeholder="Bekräfta nytt lösenord"
+            type="password"
+            fullWidth
+            required
+            value={confirmPassword}
+            sx={outlinedTextField}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            margin="normal"
+          />
+          <Button type="submit" variant="contained" fullWidth>
+            Spara nytt lösenord
+          </Button>
+        </form>
+        <Grid container justifyContent="center" sx={{ mt: 1 }}>
+          <Grid>
+            <Link component={NextLink} href="/login" variant="body2">
+              Logga in
+            </Link>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </Suspense>
   );
 }
