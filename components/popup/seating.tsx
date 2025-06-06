@@ -95,7 +95,8 @@ export default function Seating({
         borderRadius: "8px",
         padding: 2,
         maxWidth: "fit-content",
-        margin: "2rem auto",
+        mx: "auto",
+        mt: -55,
       }}
     >
       <Typography
