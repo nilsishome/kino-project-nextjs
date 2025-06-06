@@ -45,11 +45,7 @@ export default function Seating({
     const indices = [];
     for (let i = 0; i < totalTickets; i++) {
       const idx = row * cols + startCol + i;
-      if (
-        idx >= seats.length ||
-        seats[idx].row !== row ||
-        seats[idx].isTaken
-      )
+      if (idx >= seats.length || seats[idx].row !== row || seats[idx].isTaken)
         return [];
       indices.push(idx);
     }
@@ -71,8 +67,7 @@ export default function Seating({
   };
 
   // Förhandsvisa rad på hover
-  const hoverRow =
-    hoverIndex !== null ? getRowSeats(hoverIndex) : [];
+  const hoverRow = hoverIndex !== null ? getRowSeats(hoverIndex) : [];
 
   return (
     <Box
@@ -81,7 +76,8 @@ export default function Seating({
         borderRadius: "8px",
         padding: 2,
         maxWidth: "fit-content",
-        margin: "2rem auto",
+        mx: "auto",
+        mt: -55,
       }}
     >
       <Typography
@@ -103,8 +99,7 @@ export default function Seating({
         }}
       >
         {seats.map((seat, index) => {
-          const isHover =
-            hoverIndex !== null && hoverRow.includes(index);
+          const isHover = hoverIndex !== null && hoverRow.includes(index);
 
           return (
             <Button
@@ -119,12 +114,12 @@ export default function Seating({
                 backgroundColor: seat.isTaken
                   ? "grey"
                   : seat.isSelected
-                  ? "lightgreen"
-                  : isHover
-                  ? "#ffe082"
-                  : seat.isWheelchair
-                  ? "white"
-                  : "lightgray",
+                    ? "lightgreen"
+                    : isHover
+                      ? "#ffe082"
+                      : seat.isWheelchair
+                        ? "white"
+                        : "lightgray",
                 color: seat.isWheelchair ? "black" : "inherit",
                 border: seat.isWheelchair ? "2px solid black" : "none",
                 fontSize: 14,
