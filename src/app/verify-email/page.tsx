@@ -2,14 +2,12 @@
 import { useEffect, useState } from "react";
 import VerifyRedirect from "./VerifyRedirect";
 import { Box, Paper, Typography } from "@mui/material";
+import { useSearchParams } from "next/navigation";
 
-export default function VerifyEmailPage({
-  searchParams,
-}: {
-  searchParams: { token?: Promise<string> };
-}) {
+export default function VerifyEmailPage() {
   const [message, setMessage] = useState("Verifierar...");
-  const token = searchParams.token;
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
   useEffect(() => {
     const verify = async () => {
