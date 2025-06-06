@@ -25,9 +25,7 @@ export default function Page({
       const { movieId } = await params;
 
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/movies/${movieId}`
-        );
+        const response = await fetch(`/api/movies/${movieId}`);
         if (!response.ok) throw new Error("Failed to retrieve data!");
 
         const payload = await response.json();

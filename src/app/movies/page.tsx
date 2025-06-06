@@ -2,7 +2,7 @@
 import { Movie } from "@/types";
 import MovieFilter from "../../../components/movies/MovieFilter";
 
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import * as styles from "../styles/moviesPage.style";
 import { Suspense, useEffect, useState } from "react";
 
@@ -12,9 +12,7 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/movies`
-        );
+        const response = await fetch("/api/movies");
 
         if (!response.ok) {
           throw new Error("Failed to retrieve data!");
@@ -32,7 +30,7 @@ export default function Page() {
   }, []);
 
   return (
-    <Suspense>
+    <Suspense fallback={<Typography>Laddar filmer...</Typography>}>
       <Box sx={styles.container}>
         <MovieFilter movies={movies} />
       </Box>
