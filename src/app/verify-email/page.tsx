@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import VerifyRedirect from "./VerifyRedirect";
 import { Box, Paper, Typography } from "@mui/material";
 
-export default function VerifyEmailPage({ searchParams }: { searchParams: { token?: string } }) {
+export default function VerifyEmailPage({
+  searchParams,
+}: {
+  searchParams: { token?: Promise<string> };
+}) {
   const [message, setMessage] = useState("Verifierar...");
   const token = searchParams.token;
 
@@ -54,8 +58,8 @@ export default function VerifyEmailPage({ searchParams }: { searchParams: { toke
           }}
         >
           <Typography
-            variant='h6'
-            align='center'
+            variant="h6"
+            align="center"
             sx={{ fontSize: "1.5rem", fontWeight: 600, color: "#22c55e" }}
           >
             {message}
