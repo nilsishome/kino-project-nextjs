@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Button, Container, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import Animation404 from "../../components/404/animation";
 import Text from "../../components/404/text";
 import Btns from "../../components/404/btns";

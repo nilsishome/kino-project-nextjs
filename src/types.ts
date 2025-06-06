@@ -10,9 +10,9 @@ export type Movie = {
   reviews: [
     {
       date: Date;
-      comment: String;
-      author: String;
-      rating: Number;
+      comment: string;
+      author: string;
+      rating: number;
     },
   ];
   color: boolean;

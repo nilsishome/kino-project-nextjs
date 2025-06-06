@@ -36,7 +36,7 @@ const CurrentScreenings: React.FC = () => {
     };
 
     fetchData();
-  }, [noScreenings]);
+  }, [noScreenings, fetchingScreenings]);
 
   const dates: string[] = [];
   const movieScreenings: MovieScreening[][] = [];

@@ -34,7 +34,7 @@ const Screenings: React.FC<Props> = ({ movie, onScreeningClick }) => {
     const screeningArray: BookingScreening[] = [];
     const date = new Date();
     movie.screenings.forEach((screening) => {
-      let screeningDate = new Date(screening.date);
+      const screeningDate = new Date(screening.date);
 
       if (date.getTime() < screeningDate.getTime()) {
         screeningArray.push(screening);
@@ -42,7 +42,7 @@ const Screenings: React.FC<Props> = ({ movie, onScreeningClick }) => {
     });
 
     setAvailableScreenings(screeningArray);
-  }, []);
+  }, [movie.screenings]);
 
   return (
     <>

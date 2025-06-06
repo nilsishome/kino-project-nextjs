@@ -4,8 +4,7 @@ import { connectToDatabase } from "@/database/connect";
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import type { NextAuthOptions, Session, User as NextAuthUser } from "next-auth";
-import type { JWT } from "next-auth/jwt";
+import type { NextAuthOptions } from "next-auth";
 
 // Typförlängning för NextAuth
 declare module "next-auth" {
@@ -97,7 +96,7 @@ export const authOptions: NextAuthOptions = {
           image: token.picture,
         };
         // Sätt sessionstid beroende på remember
-       session.maxAge = token.remember ? 60 * 60 * 24 : 60 * 60; // 1 dag eller 1 timme
+        session.maxAge = token.remember ? 60 * 60 * 24 : 60 * 60; // 1 dag eller 1 timme
       }
       return session;
     },

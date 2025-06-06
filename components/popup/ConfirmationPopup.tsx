@@ -7,7 +7,6 @@ type ConfirmationPopupProps = {
   paymentMethod: "Kort" | "Swish" | "På plats";
   screeningData: BookingScreening;
   totalTickets: number;
-  selectedSeats: number[];
 };
 
 const mockedData = {
@@ -18,17 +17,10 @@ const mockedData = {
   filmTitle: "Star Wars: Retro saga",
 };
 
-const filmDetails = {
-  image: "/swish.png", // Temporary
-  time: "19:30",
-  salon: "Salong 3",
-};
-
 export default function ConfirmationPopup({
   paymentMethod,
   screeningData,
   totalTickets,
-  selectedSeats,
 }: ConfirmationPopupProps) {
   const data = mockedData;
   return (

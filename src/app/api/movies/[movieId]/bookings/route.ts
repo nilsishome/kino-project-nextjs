@@ -11,8 +11,6 @@ export async function GET(
     params: Promise<{ movieId: string }>;
   }
 ) {
-  const { movieId } = await params;
-
   try {
     await connectToDatabase();
 
@@ -35,7 +33,7 @@ export async function GET(
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: `Internal Server Error ${error}` },
       { status: 500 }
     );
   }
@@ -43,16 +41,14 @@ export async function GET(
 
 export async function POST(
   req: NextRequest,
-  {
-    params,
-  }: {
+  {}: {
     params: Promise<{ movieId: string }>;
   }
 ) {
   try {
     await connectToDatabase();
 
-    let body = await req.json();
+    const body = await req.json();
 
     const data = body.data;
 
@@ -105,7 +101,7 @@ export async function POST(
     return NextResponse.json({}, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: `Internal Server Error ${error}` },
       { status: 500 }
     );
   }

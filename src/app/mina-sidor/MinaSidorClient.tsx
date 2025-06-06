@@ -3,8 +3,9 @@
 import { SessionProvider } from "next-auth/react";
 import UserButton from "@/components/ui/userButton";
 import { Box, Paper, Typography } from "@mui/material";
+import { Session } from "next-auth";
 
-export default function MinaSidorClient({ session }: { session: any }) {
+export default function MinaSidorClient({ session }: { session: Session }) {
   const { firstName, lastName, email } = session?.user || {};
 
   return (
@@ -14,7 +15,14 @@ export default function MinaSidorClient({ session }: { session: any }) {
           <UserButton />
         </SessionProvider>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "60vh",
+        }}
+      >
         <Paper
           elevation={3}
           sx={{
@@ -29,9 +37,16 @@ export default function MinaSidorClient({ session }: { session: any }) {
             mt: 4,
           }}
         >
-          <Typography variant="h6" align="center"
-  sx={{ fontSize: "1.5rem", fontWeight: 600, color: "#22c55e" }}>Välkommen!</Typography>
-          <Typography>{firstName} {lastName}</Typography>
+          <Typography
+            variant="h6"
+            align="center"
+            sx={{ fontSize: "1.5rem", fontWeight: 600, color: "#22c55e" }}
+          >
+            Välkommen!
+          </Typography>
+          <Typography>
+            {firstName} {lastName}
+          </Typography>
           <Typography>E-post: {email}</Typography>
         </Paper>
       </Box>

@@ -44,7 +44,7 @@ export default function Seating({
     if (occupiedSeats) {
       seats.forEach((seat, index) => {
         occupiedSeats.map((value) => {
-          if (index === value - 1) {
+          if (index === value) {
             seat.isTaken = true;
           }
         });
@@ -52,7 +52,7 @@ export default function Seating({
 
       setSeats(seats);
     }
-  }, [selectedSeats]);
+  }, [selectedSeats, getSeatingData]);
 
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 

@@ -1,13 +1,6 @@
 "use client";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import {
-  Box,
-  Select,
-  MenuItem,
-  Button,
-  TextField,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Button, TextField, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import FilterButtons from "../index/FilterButtons";
@@ -65,8 +58,8 @@ export default function FilteringSection() {
           placeholder="Sök"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={(e) => { 
-            if (e.key === "Enter") { 
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
               applyFilters();
             }
           }}
@@ -80,16 +73,16 @@ export default function FilteringSection() {
           }}
         />
 
-          <FilterButtons
-            isMobile={isMobile}
-            genre={genre}
-            setGenre={setGenre}
-            decade={decade}
-            setDecade={setDecade}
-            filmType={filmType}
-            setFilmType={setFilmType}
-          />
-      
+        <FilterButtons
+          isMobile={isMobile}
+          genre={genre}
+          setGenre={setGenre}
+          decade={decade}
+          setDecade={setDecade}
+          filmType={filmType}
+          setFilmType={setFilmType}
+        />
+
         <Button
           sx={{ color: "#f1ddc5" }}
           onClick={applyFilters}

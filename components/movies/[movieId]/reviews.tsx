@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Typography,
   List,
@@ -13,36 +13,32 @@ import {
 import { Movie } from "@/types";
 import ReviewDialog from "./reviewDialog";
 import AlertSnackbar from "../../snackbar";
+import { toast } from "sonner";
 
 type Props = {
   movie: Movie;
 };
 
+type creationProp = {
+  author: string;
+  comment: string;
+  date: Date;
+  rating: number;
+};
+
 const Reviews: React.FC<Props> = ({ movie }) => {
   const [reviewState, reviewStateHandle] = useState<boolean>(false);
-  const [snackBarData, setSnackBarData] = useState<any>({
-    open: false,
-    message: "",
-    type: "info",
-  });
 
-  const handleReviewCreation = async function (data: any) {
-    if (data.name === "") {
-      setSnackBarData({
-        open: true,
-        message: "Du måste ange ett namn för att få lämna in din recension.",
-        type: "error",
-      });
+  const handleReviewCreation = async function (data: creationProp) {
+    if (data.author === "") {
+      toast.error("Du måste ange ett namn för att få lämna in din recension.");
       return;
     }
 
     if (data.comment === "") {
-      setSnackBarData({
-        open: true,
-        message:
-          "Du måste ange en kommentar för att få lämna in din recension.",
-        type: "error",
-      });
+      toast.error(
+        "Du måste ange en kommentar för att få lämna in din recension."
+      );
       return;
     }
 
@@ -96,7 +92,7 @@ const Reviews: React.FC<Props> = ({ movie }) => {
           </Typography>
         )}
 
-        {movie.reviews.map((review: any, index: number) => (
+        {movie.reviews.map((review, index) => (
           <React.Fragment key={index}>
             <ListItem>
               <Stack>
@@ -132,15 +128,6 @@ const Reviews: React.FC<Props> = ({ movie }) => {
           handleReviewCreation={handleReviewCreation}
         />
       )}
-
-      <AlertSnackbar
-        open={snackBarData.open}
-        message={snackBarData.message}
-        type={snackBarData.type}
-        closeSnackbar={() =>
-          setSnackBarData({ open: false, message: "", type: "info" })
-        }
-      />
     </>
   );
 };

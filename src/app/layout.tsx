@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
@@ -13,18 +12,18 @@ export const metadata: Metadata = {
   description: "Kino project",
 };
 
-export default function RootLayout(props: { children: any }) {
+export default function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
   return (
     <html lang="en">
       <body>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <ThemeProvider theme={theme}>
-              <Header />
-              <Toaster />
-              {children}
-              <Footer />
-            </ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <Header />
+            <Toaster />
+            {children}
+            <Footer />
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

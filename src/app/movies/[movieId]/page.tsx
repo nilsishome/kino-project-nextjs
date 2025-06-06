@@ -19,7 +19,6 @@ export default function Page({
   const [movieState, setMovieState] = useState<Movie>();
   const [movieRating, setMovieRating] = useState<number>(0);
   const [screeningData, setScreeningData] = useState<BookingScreening>();
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,14 +39,14 @@ export default function Page({
     };
 
     fetchData();
-  }, []);
+  }, [params]);
 
   const handlePopupState = (state: boolean) => {
     setPopupState(state);
   };
 
   const onScreeningClick = (screening: BookingScreening) => {
-    let screeningArray = {
+    const screeningArray = {
       title: movieState!.title,
       time: screening.time,
       date: screening.date,

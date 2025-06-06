@@ -1,7 +1,17 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Box, Link, Grid, Container, Button, TextField, Typography, Alert, IconButton, Collapse } from "@mui/material";
+import {
+  Link,
+  Grid,
+  Container,
+  Button,
+  TextField,
+  Typography,
+  Alert,
+  IconButton,
+  Collapse,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import outlinedTextField from "@/styles/outlinedTextField";
 import NextLink from "next/link";
@@ -52,8 +62,10 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <Container maxWidth='xs' sx={{ mt: 8, mb: 4 }}>
-      <Typography component='h1' variant='h5' mb={2}>Återställ lösenord</Typography>
+    <Container maxWidth="xs" sx={{ mt: 8, mb: 4 }}>
+      <Typography component="h1" variant="h5" mb={2}>
+        Återställ lösenord
+      </Typography>
 
       <Collapse in={showAlert}>
         {success && (
@@ -100,7 +112,7 @@ export default function ResetPasswordPage() {
           required
           value={password}
           sx={outlinedTextField}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           margin="normal"
         />
         <TextField
@@ -110,16 +122,16 @@ export default function ResetPasswordPage() {
           required
           value={confirmPassword}
           sx={outlinedTextField}
-          onChange={e => setConfirmPassword(e.target.value)}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           margin="normal"
         />
         <Button type="submit" variant="contained" fullWidth>
           Spara nytt lösenord
         </Button>
       </form>
-      <Grid container justifyContent='center' sx={{ mt: 1 }}>
+      <Grid container justifyContent="center" sx={{ mt: 1 }}>
         <Grid>
-          <Link component={NextLink} href='/login' variant='body2'>
+          <Link component={NextLink} href="/login" variant="body2">
             Logga in
           </Link>
         </Grid>

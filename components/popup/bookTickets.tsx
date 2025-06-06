@@ -1,9 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Movie } from "@/types";
 import TicketCounter from "./components/TicketCounter";
-import LoginForm from "./LoginForm";
-import { toast } from "sonner";
 
 type Props = {
   movie: Movie;
@@ -44,10 +42,10 @@ const BookTickets: React.FC<Props> = ({
 
   useEffect(() => {
     getTotalTickets(adultCount + childCount + seniorCount);
-  }, [adultCount, childCount, seniorCount]);
+  }, [adultCount, childCount, seniorCount, getTotalTickets]);
 
   const sumOfTickets = () => {
-    let totalSum = adultCount + childCount + seniorCount;
+    const totalSum = adultCount + childCount + seniorCount;
 
     if (totalSum <= 0) return;
 
@@ -97,7 +95,7 @@ const BookTickets: React.FC<Props> = ({
               sm: "block",
             },
             maxWidth: "100%",
-            height: { 
+            height: {
               sm: "150px",
               md: "200px",
               lg: "250px",

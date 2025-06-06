@@ -6,8 +6,6 @@ import { Yesteryear } from "next/font/google";
 export const yesteryear = Yesteryear({ subsets: ["latin"], weight: "400" });
 
 export default function Text() {
-  const theme = useTheme();
-
   return (
     <Box
       sx={{

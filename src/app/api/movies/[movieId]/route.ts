@@ -18,12 +18,14 @@ export async function GET(
 
     let totalRating: number = 0;
 
-    if (movie?.reviews.length! > 0) {
-      movie?.reviews.forEach((review) => {
-        totalRating = totalRating + review.rating;
-      });
+    if (movie) {
+      if (movie.reviews.length > 0) {
+        movie?.reviews.forEach((review) => {
+          totalRating = totalRating + review.rating;
+        });
 
-      totalRating = totalRating / movie?.reviews.length!;
+        totalRating = totalRating / movie.reviews.length;
+      }
     }
 
     if (!movie) {
@@ -44,7 +46,7 @@ export async function GET(
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: `Internal Server Error ${error}` },
       { status: 500 }
     );
   }

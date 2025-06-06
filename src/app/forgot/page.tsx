@@ -1,14 +1,13 @@
 "use client";
 import { useState } from "react";
-import { 
-    Box,
-    Container, 
-    Button, 
-    TextField, 
-    Typography, 
-    Alert, 
-    IconButton,
-    Collapse, 
+import {
+  Container,
+  Button,
+  TextField,
+  Typography,
+  Alert,
+  IconButton,
+  Collapse,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import outlinedTextField from "@/styles/outlinedTextField";
@@ -20,7 +19,7 @@ export default function ForgotPasswordPage() {
   const [success, setSuccess] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-   useEffect(() => {
+  useEffect(() => {
     if (error || success) {
       setShowAlert(true);
       const timer = setTimeout(() => {
@@ -51,8 +50,10 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <Container maxWidth='xs' sx={{ mt: 8, mb: 4 }}>
-      <Typography variant="h5" mb={2}>Glömt lösenord?</Typography>
+    <Container maxWidth="xs" sx={{ mt: 8, mb: 4 }}>
+      <Typography variant="h5" mb={2}>
+        Glömt lösenord?
+      </Typography>
       <Collapse in={showAlert}>
         {success && (
           <Alert
@@ -92,12 +93,12 @@ export default function ForgotPasswordPage() {
 
       <form onSubmit={handleSubmit}>
         <TextField
-          placeholder='e-mail'
+          placeholder="e-mail"
           type="email"
           value={email}
           fullWidth
           required
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           sx={outlinedTextField}
         />
         <Button type="submit" variant="contained" fullWidth>

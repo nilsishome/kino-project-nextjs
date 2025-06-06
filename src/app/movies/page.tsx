@@ -1,8 +1,8 @@
 import { Movie } from "@/types";
 import MovieFilter from "../../../components/movies/MovieFilter";
 
-import { Box, Typography } from '@mui/material';
-import * as styles from './moviesPage.style';
+import { Box } from "@mui/material";
+import * as styles from "./moviesPage.style";
 
 export default async function Page() {
   const response = await fetch("http://localhost:3000/api/movies");
@@ -16,7 +16,7 @@ export default async function Page() {
 
   return (
     <Box sx={styles.container}>
-       <MovieFilter movies={movies} />
+      <MovieFilter movies={movies} />
     </Box>
   );
 }

@@ -126,15 +126,15 @@ const Popup: React.FC<PopupProps> = ({
             //ingen border på liten skärm
             md: "2px solid white",
           },
-          width: { 
+          width: {
             xs: "95vw",
-            sm: "90vw", 
+            sm: "90vw",
             md: "80vw",
-          }, 
+          },
           maxWidth: "100%",
-          height: "auto", 
-          maxHeight: "90vh", 
-          margin: "auto", 
+          height: "auto",
+          maxHeight: "90vh",
+          margin: "auto",
 
           borderRadius: "3px",
           overflowY: "auto",
@@ -234,7 +234,6 @@ const Popup: React.FC<PopupProps> = ({
             <ConfirmationPopup
               screeningData={screeningData}
               totalTickets={totalTickets}
-              selectedSeats={selectedSeats}
               paymentMethod={selectedPaymentMethod}
             />
           )}
@@ -253,7 +252,11 @@ const Popup: React.FC<PopupProps> = ({
             variant="outlined"
             color="secondary"
             onClick={handleBack}
-            sx={{ position: "absolute", bottom: 0, left: { xs: "1rem", sm: "3rem", md: "10rem", },}}
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: { xs: "1rem", sm: "3rem", md: "10rem" },
+            }}
           >
             Tillbaka
           </Button>
@@ -262,7 +265,11 @@ const Popup: React.FC<PopupProps> = ({
               variant="outlined"
               color="secondary"
               onClick={handleNext}
-              sx={{ position: "absolute", bottom: 0, right: {xs: "1rem", sm: "3rem", md: "10rem", }, }}
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                right: { xs: "1rem", sm: "3rem", md: "10rem" },
+              }}
             >
               Fortsätt
             </Button>

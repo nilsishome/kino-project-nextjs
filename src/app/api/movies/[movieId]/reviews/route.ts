@@ -26,9 +26,9 @@ export async function POST(
       );
     }
 
-    let body = await req.json();
+    const body = await req.json();
 
-    let newDate = new Date(body.sendingData.date);
+    const newDate = new Date(body.sendingData.date);
 
     body.sendingData.date = newDate;
 
@@ -47,7 +47,7 @@ export async function POST(
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: `Internal Server Error ${error}` },
       { status: 500 }
     );
   }

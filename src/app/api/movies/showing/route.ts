@@ -19,7 +19,7 @@ export async function GET() {
       } catch (error) {
         return NextResponse.json(
           {
-            error: "Too many or too few screenings retrieved!",
+            error: `Too many or too few screenings retrieved! ${error}`,
           },
           { status: 404 }
         );
@@ -34,7 +34,7 @@ export async function GET() {
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: `Internal Server Error ${error}` },
       { status: 500 }
     );
   }
