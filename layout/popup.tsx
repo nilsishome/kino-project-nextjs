@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Fade,
@@ -17,6 +17,7 @@ import LoginForm from "../components/popup/LoginForm";
 import RegisterForm from "../components/popup/RegisterForm";
 import { BookingScreening, Movie } from "@/types";
 import BookTickets from "../components/popup/bookTickets";
+import { useRouter } from "next/navigation";
 
 const steps = [
   "Biljettbokning",
@@ -49,6 +50,13 @@ const Popup: React.FC<PopupProps> = ({
   // Hantera auth-vy och inloggningsstatus
   const [authView, setAuthView] = useState<"login" | "register" | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [occupiedSeats, setOccupiedSeats] = React.useState<number[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push(`${movie._id}?movie=${movie.title}&id=${screeningData._id}`);
+    retrieveBookedSeats();
+  }, []);
 
   const handlePaymentComplete = (method: "Kort" | "Swish" | "På plats") => {
     setSelectedPaymentMethod(method);
@@ -71,22 +79,41 @@ const Popup: React.FC<PopupProps> = ({
     setTotalTickets(totalSum);
   };
 
+  const getSeatingData = (data: number[]) => {
+    setSelectedSeats(data);
+  };
+
   const sendToDatabase = async () => {
-    let sendingData = {
+    const data = {
       selectedSeats: selectedSeats,
       totalTickets: totalTickets,
       screeningData: screeningData,
     };
 
-    await fetch(`/api/movies/${movie._id}`, {
+    await fetch(`/api/movies/${movie._id}/bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        sendingData,
+        data,
       }),
     });
+  };
+
+  const retrieveBookedSeats = async () => {
+    const response = await fetch(
+      `/api/movies/${movie._id}/bookings?movie=${movie.title}&id=${screeningData._id}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Response is not okey!");
+    }
+
+    const payLoad = await response.json();
+    const seats = payLoad.seats;
+
+    setOccupiedSeats(seats);
   };
 
   return (
@@ -127,7 +154,7 @@ const Popup: React.FC<PopupProps> = ({
         </Box>
         <Stepper
           activeStep={activeStep}
-          orientation='horizontal'
+          orientation="horizontal"
           sx={{
             width: "60vw",
             margin: "2rem auto auto auto",
@@ -181,8 +208,8 @@ const Popup: React.FC<PopupProps> = ({
           {/* Steg 1: Platsbokning */}
           {activeStep === 1 && (
             <Seating
-              selectedSeats={selectedSeats}
-              setSelectedSeats={setSelectedSeats}
+              occupiedSeats={occupiedSeats}
+              getSeatingData={getSeatingData}
               totalTickets={totalTickets}
             />
           )}
@@ -211,8 +238,8 @@ const Popup: React.FC<PopupProps> = ({
           }}
         >
           <Button
-            variant='outlined'
-            color='secondary'
+            variant="outlined"
+            color="secondary"
             onClick={handleBack}
             sx={{ position: "absolute", bottom: 0, left: "10rem" }}
           >
@@ -220,8 +247,8 @@ const Popup: React.FC<PopupProps> = ({
           </Button>
           {activeStep < steps.length - 1 && activeStep !== 2 && (
             <Button
-              variant='outlined'
-              color='secondary'
+              variant="outlined"
+              color="secondary"
               onClick={handleNext}
               sx={{ position: "absolute", bottom: 0, right: "10rem" }}
             >

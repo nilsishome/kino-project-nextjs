@@ -51,7 +51,7 @@ export default function Page({
       time: screening.time,
       date: screening.date,
       saloon: screening.saloon,
-      id: screening._id,
+      _id: screening._id,
       image: movieState?.coverImage,
     };
 
@@ -60,7 +60,7 @@ export default function Page({
     handlePopupState(true);
   };
 
-  if (movieState && movieRating) {
+  if (movieState) {
     return (
       <>
         {!popupState ? (

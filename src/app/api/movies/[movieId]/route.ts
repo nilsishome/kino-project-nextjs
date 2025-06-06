@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/database/connect";
-import { Booking, Movies } from "@/database/models";
+import { Movies } from "@/database/models";
 
 export async function GET(
   req: NextRequest,
@@ -16,6 +16,16 @@ export async function GET(
     await connectToDatabase();
     const movie = await Movies.findById(movieId);
 
+    let totalRating: number = 0;
+
+    if (movie?.reviews.length! > 0) {
+      movie?.reviews.forEach((review) => {
+        totalRating = totalRating + review.rating;
+      });
+
+      totalRating = totalRating / movie?.reviews.length!;
+    }
+
     if (!movie) {
       return NextResponse.json(
         {
@@ -28,53 +38,10 @@ export async function GET(
     return NextResponse.json(
       {
         data: movie,
-        rating: 3.5,
+        rating: totalRating,
       },
       { status: 200 }
     );
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function POST(
-  req: NextRequest,
-  {
-    params,
-  }: {
-    params: Promise<{ movieId: string }>;
-  }
-) {
-  try {
-    await connectToDatabase();
-
-    let body = await req.json();
-
-    body.sendingData;
-
-    if (body.sendingData._id) {
-      await Booking.insertOne(body.sendingData);
-    }
-
-    //   sendingData: {
-    //   selectedSeats: [ 3, 11, 19 ],
-    //   totalTickets: 2,
-    //   screeningData: {
-    //     title: 'E.T.',
-    //     time: '20',
-    //     date: '2025-06-08T18:00:40.310Z',
-    //     saloon: 'Serif',
-    //     id: '683dea10513b456d30aed98a',
-    //     image: 'https://m.media-amazon.com/images/M/MV5BYTNhNmY0YWMtMTczYi00MTA0LThhMmUtMTIxYzE0Y2QwMzRlXkEyXkFqcGc@._V1_SX300.jpg'
-    //   }
-    // }
-
-    console.log(body);
-
-    return NextResponse.json({}, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },

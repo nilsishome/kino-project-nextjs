@@ -27,9 +27,15 @@ const moviesSchema = new mongoose.Schema({
 export const Movies = mongoose.model("Movies", moviesSchema);
 
 const bookingSchema = new mongoose.Schema({
-  tickets: Number,
-  seats: Array,
-  screeningData: Object,
+  title: String,
+  screenings: [
+    {
+      date: Date,
+      saloon: String,
+      time: String,
+      seats: Array,
+    },
+  ],
 });
 
 export const Booking = mongoose.model("Booking", bookingSchema);

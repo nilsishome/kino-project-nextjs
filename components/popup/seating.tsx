@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import "@fortawesome/fontawesome-free/css/all.min.css"; // rullstol ikonen.
 
@@ -16,14 +16,14 @@ const cols = 8;
 
 type Props = {
   totalTickets: number;
-  setSelectedSeats: React.Dispatch<React.SetStateAction<number[]>>;
-  selectedSeats: number[];
+  getSeatingData: (data: number[]) => void;
+  occupiedSeats: number[];
 };
 
 export default function Seating({
   totalTickets,
-  setSelectedSeats,
-  selectedSeats,
+  getSeatingData,
+  occupiedSeats,
 }: Props) {
   const [seats, setSeats] = useState<Seat[]>(
     Array.from({ length: rows * cols }, (_, index) => ({
@@ -34,6 +34,25 @@ export default function Seating({
       isWheelchair: index === 8 || index === 9,
     }))
   );
+  const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+
+  useEffect(() => {
+    selectedSeats.sort();
+
+    getSeatingData(selectedSeats);
+
+    if (occupiedSeats) {
+      seats.forEach((seat, index) => {
+        occupiedSeats.map((value) => {
+          if (index === value - 1) {
+            seat.isTaken = true;
+          }
+        });
+      });
+
+      setSeats(seats);
+    }
+  }, [selectedSeats]);
 
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
@@ -45,11 +64,7 @@ export default function Seating({
     const indices = [];
     for (let i = 0; i < totalTickets; i++) {
       const idx = row * cols + startCol + i;
-      if (
-        idx >= seats.length ||
-        seats[idx].row !== row ||
-        seats[idx].isTaken
-      )
+      if (idx >= seats.length || seats[idx].row !== row || seats[idx].isTaken)
         return [];
       indices.push(idx);
     }
@@ -71,8 +86,7 @@ export default function Seating({
   };
 
   // Förhandsvisa rad på hover
-  const hoverRow =
-    hoverIndex !== null ? getRowSeats(hoverIndex) : [];
+  const hoverRow = hoverIndex !== null ? getRowSeats(hoverIndex) : [];
 
   return (
     <Box
@@ -103,8 +117,7 @@ export default function Seating({
         }}
       >
         {seats.map((seat, index) => {
-          const isHover =
-            hoverIndex !== null && hoverRow.includes(index);
+          const isHover = hoverIndex !== null && hoverRow.includes(index);
 
           return (
             <Button
@@ -119,12 +132,12 @@ export default function Seating({
                 backgroundColor: seat.isTaken
                   ? "grey"
                   : seat.isSelected
-                  ? "lightgreen"
-                  : isHover
-                  ? "#ffe082"
-                  : seat.isWheelchair
-                  ? "white"
-                  : "lightgray",
+                    ? "lightgreen"
+                    : isHover
+                      ? "#ffe082"
+                      : seat.isWheelchair
+                        ? "white"
+                        : "lightgray",
                 color: seat.isWheelchair ? "black" : "inherit",
                 border: seat.isWheelchair ? "2px solid black" : "none",
                 fontSize: 14,

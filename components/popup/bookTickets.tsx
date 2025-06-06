@@ -33,6 +33,7 @@ const BookTickets: React.FC<Props> = ({
   setSeniorCount,
 }) => {
   const ticketPrice = 120;
+
   const adultPrice = adultCount * ticketPrice;
   const childPrice = childCount * (ticketPrice / 2);
   const seniorPrice = seniorCount * (ticketPrice * 0.8);
@@ -42,14 +43,14 @@ const BookTickets: React.FC<Props> = ({
   const totalAfterDiscount = totalPrice - discount;
 
   useEffect(() => {
-  getTotalTickets(adultCount + childCount + seniorCount);
-}, [adultCount, childCount, seniorCount]);
+    getTotalTickets(adultCount + childCount + seniorCount);
+  }, [adultCount, childCount, seniorCount]);
 
-  console.log("adultCount:", adultCount, "childCount:", childCount, "seniorCount:", seniorCount, "totalPrice:", totalPrice);
-  
   const sumOfTickets = () => {
     let totalSum = adultCount + childCount + seniorCount;
+
     if (totalSum <= 0) return;
+
     getTotalTickets(totalSum);
   };
 
@@ -82,14 +83,14 @@ const BookTickets: React.FC<Props> = ({
               gridColumn: { xs: "1", sm: "1" },
             }}
           >
-            <Typography variant='h2'>{movie.title}</Typography>
-            <Typography variant='body1'>{movie.story}</Typography>
+            <Typography variant="h2">{movie.title}</Typography>
+            <Typography variant="body1">{movie.story}</Typography>
           </Box>
         </Box>
         <Box
-          component='img'
+          component="img"
           src={movie.coverImage}
-          alt='Filmomslag'
+          alt="Filmomslag"
           sx={{
             display: {
               xs: "none",
@@ -136,27 +137,27 @@ const BookTickets: React.FC<Props> = ({
           >
             {adultCount !== 0 && (
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant='body1'>Vuxen</Typography>
-                <Typography variant='body1'>{adultPrice} kr</Typography>
+                <Typography variant="body1">Vuxen</Typography>
+                <Typography variant="body1">{adultPrice} kr</Typography>
               </Box>
             )}
             {childCount !== 0 && (
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant='body1'>Barn</Typography>
-                <Typography variant='body1'>{childPrice} kr</Typography>
+                <Typography variant="body1">Barn</Typography>
+                <Typography variant="body1">{childPrice} kr</Typography>
               </Box>
             )}
             {seniorCount !== 0 && (
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant='body1'>Senior / Student</Typography>
-                <Typography variant='body1'>{seniorPrice} kr</Typography>
+                <Typography variant="body1">Senior / Student</Typography>
+                <Typography variant="body1">{seniorPrice} kr</Typography>
               </Box>
             )}
             {/* Visar rabatt om inloggad */}
             {isLoggedIn && discount > 0 && (
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant='body1'>Rabatt (20%)</Typography>
-                <Typography variant='body1'> -{discount} kr</Typography>
+                <Typography variant="body1">Rabatt (20%)</Typography>
+                <Typography variant="body1"> -{discount} kr</Typography>
               </Box>
             )}
           </Box>
@@ -169,7 +170,7 @@ const BookTickets: React.FC<Props> = ({
               mt: 1,
             }}
           >
-            <Typography variant='h3'>Summa:</Typography>
+            <Typography variant="h3">Summa:</Typography>
             <Typography>{totalAfterDiscount} kr</Typography>
           </Box>
         </Box>
@@ -188,7 +189,7 @@ const BookTickets: React.FC<Props> = ({
                 mb: 1,
               }}
               onClick={onLoginClick}
-              variant='outlined'
+              variant="outlined"
             >
               Logga in
             </Button>
@@ -204,7 +205,7 @@ const BookTickets: React.FC<Props> = ({
                 },
               }}
               onClick={onRegisterClick}
-              variant='outlined'
+              variant="outlined"
             >
               Registrera
             </Button>
@@ -222,13 +223,13 @@ const BookTickets: React.FC<Props> = ({
             },
           }}
         >
-          <Typography variant='h3' sx={{ marginBottom: 2 }}>
+          <Typography variant="h3" sx={{ marginBottom: 2 }}>
             Välj antal biljetter
           </Typography>
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <TicketCounter
-              label='Vuxen'
+              label="Vuxen"
               count={adultCount}
               onIncrement={() => {
                 setAdultCount((prev) => prev + 1);
@@ -242,7 +243,7 @@ const BookTickets: React.FC<Props> = ({
               }}
             />
             <TicketCounter
-              label='Barn'
+              label="Barn"
               count={childCount}
               onIncrement={() => {
                 setChildCount((prev) => prev + 1);
@@ -256,7 +257,7 @@ const BookTickets: React.FC<Props> = ({
               }}
             />
             <TicketCounter
-              label='Senior / Student'
+              label="Senior / Student"
               count={seniorCount}
               onIncrement={() => {
                 setSeniorCount((prev) => prev + 1);

@@ -50,7 +50,7 @@ export default function ConfirmationPopup({
         {/* Shows dynamically chosen payment method */}
         Boknings-id: {screeningData._id} <br />
         Namn: {data.firstName} {data.lastName} <br />
-        Antal biljetter: {totalTickets + 1} <br />
+        Antal biljetter: {totalTickets} <br />
         Betalningsätt: {paymentMethod} <br />
       </Typography>
       {/* Film details */}
