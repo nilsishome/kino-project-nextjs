@@ -1,6 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
 
-const Disability: React.FC = () => {
+type Props = {
+  handleDisabilityMessage: (state: boolean) => void;
+};
+
+const Disability: React.FC<Props> = ({ handleDisabilityMessage }) => {
   return (
     <Box
       sx={{
@@ -40,6 +44,7 @@ const Disability: React.FC = () => {
           borderRadius: "1rem",
           fontWeight: "600",
         }}
+        onClick={() => handleDisabilityMessage(false)}
       >
         Tillbaka
       </Button>
