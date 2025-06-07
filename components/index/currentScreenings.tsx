@@ -1,5 +1,5 @@
 "use client";
-import { Box, Divider, List, ListItem, Typography } from "@mui/material";
+import { Box, Divider, Link, List, ListItem, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
@@ -71,29 +71,37 @@ const CurrentScreenings: React.FC = () => {
                     width: "fit-content",
                   }}
                 >
-                  <Image
-                    alt={`Filmposter av ${movie.title}`}
-                    src={movie.coverImage}
-                    width={150}
-                    height={220}
-                  />
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      textAlign: "center",
-                      marginTop: 2,
-                      fontWeight: 600,
-                      width: 150,
-                    }}
+                  <Link
+                    href={`/movies/${movie._id}?movie=${movie.title}&id=${movie.screeningId}`}
                   >
-                    {movie.title}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{ textAlign: "center", marginTop: 1, marginBottom: 4 }}
-                  >
-                    {movie.time}:00
-                  </Typography>
+                    <Image
+                      alt={`Filmposter av ${movie.title}`}
+                      src={movie.coverImage}
+                      width={150}
+                      height={220}
+                    />
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        textAlign: "center",
+                        marginTop: 2,
+                        fontWeight: 600,
+                        width: 150,
+                      }}
+                    >
+                      {movie.title}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        textAlign: "center",
+                        marginTop: 1,
+                        marginBottom: 4,
+                      }}
+                    >
+                      {movie.time}:00
+                    </Typography>
+                  </Link>
                 </ListItem>
               )
             )}
@@ -133,6 +141,8 @@ function sortScreenings(
     }
 
     const movie = {
+      _id: movieData[i]._id,
+      screeningId: movieData[i].screeningId,
       title: movieData[i].title,
       coverImage: movieData[i].coverImage,
       time: movieData[i].time,

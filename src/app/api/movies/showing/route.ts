@@ -56,7 +56,8 @@ async function getHomePageScreenings(limit: number) {
     { $limit: limit },
     {
       $project: {
-        _id: 0,
+        _id: 1,
+        screeningId: "$screenings._id",
         title: 1,
         coverImage: 1,
         date: "$screenings.date",

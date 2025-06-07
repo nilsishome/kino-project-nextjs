@@ -9,6 +9,7 @@ import Popup from "../../../../layout/popup";
 import Screenings from "../../../../components/movies/[movieId]/screenings";
 import Reviews from "../../../../components/movies/[movieId]/reviews";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function Page({
   params,
@@ -35,7 +36,6 @@ export default function Page({
         console.log(err);
       }
     };
-
     fetchData();
   }, [params]);
 
@@ -57,6 +57,33 @@ export default function Page({
 
     handlePopupState(true);
   };
+
+  // Detta sker endast när användaren klickar på en film på startsidan.
+  const queryString = useSearchParams();
+
+  useEffect(() => {
+    const movieTitle = queryString.get("movie");
+    const screeningId = queryString.get("id");
+
+    if (movieTitle === movieState?.title) {
+      const screening = movieState!.screenings.find(
+        (screening) => screening._id === screeningId
+      );
+
+      const screeningArray = {
+        title: movieState!.title,
+        time: screening!.time,
+        date: screening!.date,
+        saloon: screening!.saloon,
+        _id: screening!._id,
+        image: movieState?.coverImage,
+      };
+
+      setScreeningData(screeningArray);
+
+      handlePopupState(true);
+    }
+  }, [movieState, queryString]);
 
   if (movieState) {
     return (

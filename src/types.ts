@@ -34,6 +34,8 @@ export type Movie = {
 
 // This type is only used for home page current screenings
 export type MovieScreening = {
+  _id: string;
+  screeningId: string;
   title: string;
   coverImage: string;
   date?: string;
