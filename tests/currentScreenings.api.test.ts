@@ -5,6 +5,7 @@ import { Movie, MovieScreening } from "@/types";
 
 import { Movies } from "@/database/models";
 import { GET } from "../src/app/api/movies/showing/route";
+import mongoose from "mongoose";
 
 jest.mock("@/database/connect");
 jest.mock("@/database/collections/screenings");
@@ -159,9 +160,10 @@ async function getHomePageScreenings(limit: number) {
     { $limit: limit },
     {
       $project: {
-        _id: 0,
+        _id: 1,
         title: 1,
         coverImage: 1,
+        screeningId: "$screenings._id",
         date: "$screenings.date",
         time: "$screenings.time",
       },
