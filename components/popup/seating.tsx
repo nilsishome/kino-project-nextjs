@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import "@fortawesome/fontawesome-free/css/all.min.css"; // rullstol ikonen.
+import Disability from "./disability";
 
 type Seat = {
   row: number;
@@ -35,6 +36,7 @@ export default function Seating({
     }))
   );
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const [disabilityMessage, setDisabilityMessage] = useState<boolean>(false);
 
   useEffect(() => {
     selectedSeats.sort();
@@ -64,7 +66,12 @@ export default function Seating({
     const indices = [];
     for (let i = 0; i < totalTickets; i++) {
       const idx = row * cols + startCol + i;
-      if (idx >= seats.length || seats[idx].row !== row || seats[idx].isTaken)
+      if (
+        idx >= seats.length ||
+        seats[idx].row !== row ||
+        seats[idx].isTaken ||
+        seats[idx].isWheelchair
+      )
         return [];
       indices.push(idx);
     }
@@ -87,6 +94,13 @@ export default function Seating({
 
   // Förhandsvisa rad på hover
   const hoverRow = hoverIndex !== null ? getRowSeats(hoverIndex) : [];
+
+  const handleDisabilityMessage = (state: boolean) => {
+    setDisabilityMessage(state);
+  };
+
+  if (disabilityMessage)
+    return <Disability handleDisabilityMessage={handleDisabilityMessage} />;
 
   return (
     <Box
@@ -125,7 +139,10 @@ export default function Seating({
               key={index}
               onMouseEnter={() => setHoverIndex(index)}
               onMouseLeave={() => setHoverIndex(null)}
-              onClick={() => handleSeatClick(index)}
+              onClick={() => {
+                if (seat.isWheelchair === true) setDisabilityMessage(true);
+                handleSeatClick(index);
+              }}
               sx={{
                 width: 25,
                 height: 25,

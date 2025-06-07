@@ -17,7 +17,7 @@ import LoginForm from "../components/popup/LoginForm";
 import RegisterForm from "../components/popup/RegisterForm";
 import { BookingScreening, Movie } from "@/types";
 import BookTickets from "../components/popup/bookTickets";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const steps = [
   "Biljettbokning",
@@ -53,8 +53,16 @@ const Popup: React.FC<PopupProps> = ({
   const [occupiedSeats, setOccupiedSeats] = React.useState<number[]>([]);
   const router = useRouter();
 
+  const queryString = useSearchParams();
+  const screeningId = queryString.get("id");
+
   useEffect(() => {
-    router.push(`${movie._id}?movie=${movie.title}&id=${screeningData._id}`);
+    if (!screeningData) {
+      router.push(`${movie._id}?movie=${movie.title}&id=${screeningId}`);
+    } else {
+      router.push(`${movie._id}?movie=${movie.title}&id=${screeningData._id}`);
+    }
+
     retrieveBookedSeats();
   }, []);
 
@@ -102,8 +110,13 @@ const Popup: React.FC<PopupProps> = ({
   };
 
   const retrieveBookedSeats = async () => {
+    let id;
+
+    if (!screeningData) id = screeningId;
+    else id = screeningData._id;
+
     const response = await fetch(
-      `/api/movies/${movie._id}/bookings?movie=${movie.title}&id=${screeningData._id}`
+      `/api/movies/${movie._id}/bookings?movie=${movie.title}&id=${id}`
     );
 
     if (!response.ok) {
@@ -112,6 +125,10 @@ const Popup: React.FC<PopupProps> = ({
 
     const payLoad = await response.json();
     const seats = payLoad.seats;
+
+    if (!Array.isArray(seats)) {
+      return;
+    }
 
     setOccupiedSeats(seats);
   };
