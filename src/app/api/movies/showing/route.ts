@@ -9,13 +9,14 @@ export async function GET() {
   try {
     await connectToDatabase();
     const limit = 10;
+
     let currentScreenings: MovieScreening[] =
       await getHomePageScreenings(limit);
 
-    if (currentScreenings.length < 10) {
+    if (currentScreenings.length < limit) {
       try {
-        resetScreenings(); // Resets and updates all screenings in our database
-        currentScreenings = await getHomePageScreenings(limit);
+        await resetScreenings(); // Resets and updates all screenings in our database
+        currentScreenings = await getHomePageScreenings(limit); // Fetches the screenings again after reset
       } catch (error) {
         return NextResponse.json(
           {
