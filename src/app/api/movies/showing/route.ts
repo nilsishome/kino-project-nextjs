@@ -9,19 +9,20 @@ export async function GET() {
   try {
     await connectToDatabase();
     const limit = 10;
-    const currentScreenings: MovieScreening[] =
+
+    let currentScreenings: MovieScreening[] =
       await getHomePageScreenings(limit);
 
-    if (currentScreenings.length < 10) {
+    if (currentScreenings.length < limit) {
       try {
-        resetScreenings();
-        // Resets and updates all screenings in our database
+        await resetScreenings(); // Resets and updates all screenings in our database
+        currentScreenings = await getHomePageScreenings(limit); // Fetches the screenings again after reset
       } catch (error) {
         return NextResponse.json(
           {
             error: `Too many or too few screenings retrieved! ${error}`,
           },
-          { status: 404 }
+          { status: 404 },
         );
       }
     }
@@ -30,12 +31,12 @@ export async function GET() {
       {
         data: currentScreenings,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     return NextResponse.json(
       { error: `Internal Server Error ${error}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

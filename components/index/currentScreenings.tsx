@@ -9,24 +9,20 @@ const CurrentScreenings: React.FC = () => {
   const [movieData, setMovieData] = React.useState<MovieScreening[]>([]);
   const [fetchingScreenings, setFetchingScreenings] =
     React.useState<boolean>(true); // This state is for fetching screenings only once
-  const [noScreenings, setNoScreenings] = React.useState<boolean>(false); // Re-render the screenings if there are less than 10 of them
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/movies/showing`);
-        if (!response.ok) throw new Error("Failed to retrieve data!");
-
         if (fetchingScreenings) {
+          const response = await fetch(`/api/movies/showing`);
+
+          if (!response.ok) throw new Error("Failed to retrieve data!");
+
           const payload = await response.json();
           const movies: MovieScreening[] = payload.data;
-
-          if (movies.length === 10) {
-            setMovieData(movies);
-          } else {
-            setNoScreenings(true);
-          }
+          setMovieData(movies);
         }
+
         setFetchingScreenings(false);
       } catch (err) {
         console.log(err);
@@ -34,7 +30,7 @@ const CurrentScreenings: React.FC = () => {
     };
 
     fetchData();
-  }, [noScreenings, fetchingScreenings]);
+  }, [fetchingScreenings]);
 
   const dates: string[] = [];
   const movieScreenings: MovieScreening[][] = [];
@@ -103,7 +99,7 @@ const CurrentScreenings: React.FC = () => {
                     </Typography>
                   </Link>
                 </ListItem>
-              )
+              ),
             )}
           </List>
         </Box>
@@ -116,7 +112,7 @@ const CurrentScreenings: React.FC = () => {
 function sortScreenings(
   movieData: MovieScreening[],
   dates: string[],
-  movieScreenings: MovieScreening[][]
+  movieScreenings: MovieScreening[][],
 ) {
   const usedDates: number[] = [];
 
